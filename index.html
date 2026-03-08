@@ -1323,8 +1323,14 @@ function scanFr(){
   c.width=v.videoWidth;c.height=v.videoHeight;
   const ctx=c.getContext('2d');ctx.drawImage(v,0,0);
   const d=ctx.getImageData(0,0,c.width,c.height);
-  const code=jsQR(d.data,d.width,d.height,{inversionAttempts:'dontInvert'});
-  if(code&&code.data&&code.data!==curQ){stopCam();analyze(code.data);}
+  const code=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});
+  if(code&&code.data){
+    if(code.data!==curQ){
+      stopCam();
+      toast('QR detected! Analyzing…','tok');
+      analyze(code.data);
+    }
+  }
 }
 
 /* ─── UPLOAD ─── */
@@ -1357,13 +1363,19 @@ async function analyze(raw){
   const isU=/^https?:\/\//i.test(raw);
   const dom=isU?getDom(raw):null;
   showArea(raw,dom,isU);
-  setLoad('🌐 Connecting to site…');
-  let sc=null;if(isU)sc=await scrape(raw);
-  setLoad('🔎 Searching threat databases…');
-  let sr=null;if(isU)sr=await serp(dom);
-  setLoad('🤖 AI analyzing…');
-  const res=await ai(raw,sc,sr);
-  busy=false;render(res);
+  try{
+    setLoad('🌐 Connecting to site…');
+    let sc=null;if(isU)sc=await scrape(raw);
+    setLoad('🔎 Searching threat databases…');
+    let sr=null;if(isU)sr=await serp(dom);
+    setLoad('🤖 AI analyzing…');
+    const res=await ai(raw,sc,sr);
+    render(res);
+  }catch(e){
+    render('Analysis error: '+e.message+'\n\nPlease try again.');
+  }finally{
+    busy=false;
+  }
 }
 
 async function scrape(url){
@@ -1412,9 +1424,19 @@ async function callAI(msg,h){
       body:JSON.stringify({message:msg,history:h}),
       signal:AbortSignal.timeout(25000)
     });
-    if(!r.ok)throw new Error('API '+r.status);
-    return(await r.json()).reply||'';
-  }catch(e){return'Analysis failed: '+e.message+'. Please try again.';}
+    if(!r.ok){
+      const errText=await r.text().catch(()=>'');
+      throw new Error('Server error '+r.status+(errText?' — '+errText.slice(0,80):''));
+    }
+    const data=await r.json();
+    return data.reply||'';
+  }catch(e){
+    // /api/analyze が存在しない場合（デプロイ前など）に分かりやすいメッセージ
+    const msg2=e.message.includes('Failed to fetch')||e.message.includes('NetworkError')
+      ?'Cannot reach API server. Make sure the app is deployed to Vercel (not opened as a local file).'
+      :e.message;
+    return'Safety:\n⚠️ CAUTION — '+msg2+'\n\nIdentity: API unavailable\nPurpose: N/A\nAdvice: Check deployment status.';
+  }
 }
 
 /* ─── RENDER ─── */
