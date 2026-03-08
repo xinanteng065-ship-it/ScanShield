@@ -1281,7 +1281,21 @@ function openStripe(plan){
   let url=STRIPE_LINKS[plan];
   if(userEmail)url+='?prefilled_email='+encodeURIComponent(userEmail);
   window.open(url,'_blank');
-  setTimeout(()=>{if(currentPlan==='free')showEmailActivate();},4000);
+  // 別タブから戻ってきたときにメールモーダルを表示
+  let shown=false;
+  function onReturn(){
+    if(document.visibilityState==='visible'&&!shown&&currentPlan==='free'){
+      shown=true;
+      document.removeEventListener('visibilitychange',onReturn);
+      setTimeout(()=>{
+        showEmailActivate();
+        toast('Payment complete? Enter your email to activate.','tok');
+      },600);
+    }
+  }
+  document.addEventListener('visibilitychange',onReturn);
+  // 60秒後にリスナー自動解除
+  setTimeout(()=>document.removeEventListener('visibilitychange',onReturn),60000);
 }
 
 /* ─── TABS ─── */
@@ -1301,7 +1315,10 @@ async function startCam(){
     const v=document.getElementById('cv');v.srcObject=camS;
     document.getElementById('cam-init').classList.add('hide');
     document.getElementById('cam-live').classList.remove('hide');
-    v.onloadedmetadata=()=>{v.play();camT=setInterval(scanFr,250);};
+    v.onloadedmetadata=()=>{v.play();};
+    v.onplaying=()=>{
+      if(!camT)camT=setInterval(scanFr,300);
+    };
   }catch{toast('Camera access denied. Try the Upload tab.','terr');}
 }
 async function flipCam(){
@@ -1319,13 +1336,20 @@ function stopCam(){
 function scanFr(){
   if(busy)return;
   const v=document.getElementById('cv'),c=document.getElementById('cc');
-  if(!v||!v.videoWidth)return;
-  c.width=v.videoWidth;c.height=v.videoHeight;
-  const ctx=c.getContext('2d');ctx.drawImage(v,0,0);
-  const d=ctx.getImageData(0,0,c.width,c.height);
+  // videoが実際に映像を流しているか確認
+  if(!v||!v.videoWidth||!v.videoHeight||v.readyState<2||v.paused)return;
+  // canvasをvideoと同じサイズに設定
+  if(c.width!==v.videoWidth)c.width=v.videoWidth;
+  if(c.height!==v.videoHeight)c.height=v.videoHeight;
+  const ctx=c.getContext('2d',{willReadFrequently:true});
+  ctx.drawImage(v,0,0,c.width,c.height);
+  let d;
+  try{d=ctx.getImageData(0,0,c.width,c.height);}catch{return;}
+  // 正立・反転両方試みる
   const code=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});
-  if(code&&code.data){
+  if(code&&code.data&&code.data.length>0){
     if(code.data!==curQ){
+      curQ=code.data; // 同じQRを連続解析しないように先にセット
       stopCam();
       toast('QR detected! Analyzing…','tok');
       analyze(code.data);
@@ -1535,6 +1559,20 @@ window.addEventListener('DOMContentLoaded',async()=>{
   try{if(localStorage.getItem('tut_done'))document.getElementById('tutorial').style.display='none';}
   catch{document.getElementById('tutorial').style.display='none';}
   await restorePlan();
+  // Stripeから戻ってきたとき（?paid=1 または ?session_id=...）にメールモーダル表示
+  const params=new URLSearchParams(window.location.search);
+  if(params.has('paid')||params.has('session_id')){
+    // URLからパラメータを消す（履歴を汚さない）
+    history.replaceState({},'',window.location.pathname);
+    if(currentPlan==='free'){
+      // 少し待ってからモーダル表示（Webhookが届くまで数秒かかる場合あり）
+      setTimeout(()=>{
+        go('scan');
+        showEmailActivate();
+        toast('Payment received! Enter your email to activate.','tok');
+      },800);
+    }
+  }
 });
 </script>
 </body>
