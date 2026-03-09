@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>QR Debug Tool</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<style>
+body{background:#0a0a0a;color:#fff;font-family:monospace;padding:16px;margin:0}
+h2{color:#60a5fa;margin-bottom:16px}
+video,canvas{width:100%;max-width:400px;border:2px solid #333;display:block;margin:10px 0}
+#log{background:#111;border:1px solid #333;padding:12px;height:220px;overflow-y:auto;font-size:12px;line-height:1.7;border-radius:8px}
+.ok{color:#22c55e}.err{color:#ef4444}.warn{color:#f59e0b}.info{color:#60a5fa}
+button{padding:10px 20px;margin:6px 4px;border-radius:8px;border:none;cursor:pointer;font-size:14px;font-weight:700}
+.b-blue{background:#2563eb;color:#fff}
+.b-green{background:#16a34a;color:#fff}
+.b-red{background:#dc2626;color:#fff}
+input[type=file]{color:#fff;margin:8px 0;display:block}
+#result{font-size:16px;font-weight:700;padding:12px;border-radius:8px;margin:10px 0;display:none}
+.r-ok{background:rgba(34,197,94,.15);border:1px solid #22c55e;color:#22c55e}
+.r-err{background:rgba(239,68,68,.15);border:1px solid #ef4444;color:#ef4444}
+#cam-info{font-size:12px;color:#888;margin:6px 0}
+</style>
+</head>
+<body>
+<h2>🔍 QR Debug Tool</h2>
+
+<div id="result"></div>
+
+<div>
+  <button class="b-blue" onclick="startCam()">▶ Start Camera (rear)</button>
+  <button class="b-blue" onclick="startCamFront()">▶ Start Camera (front)</button>
+  <button class="b-red" onclick="stopCam()">■ Stop</button>
+</div>
+<div id="cam-info">Camera: not started</div>
+<video id="v" autoplay playsinline muted></video>
+<canvas id="c" style="display:none"></canvas>
+
+<hr style="border-color:#333;margin:16px 0"/>
+
+<div>
+  <b style="color:#60a5fa">Upload Test:</b><br/>
+  <input type="file" accept="image/*" id="fi" onchange="testUpload(event)"/>
+  <canvas id="uc" style="max-width:300px;border:1px solid #444;margin:6px 0"></canvas>
+</div>
+
+<hr style="border-color:#333;margin:16px 0"/>
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+  <b style="color:#60a5fa">Log:</b>
+  <button onclick="clearLog()" style="padding:4px 10px;font-size:11px;background:#333;color:#fff;border:none;border-radius:4px;cursor:pointer">Clear</button>
+</div>
+<div id="log"></div>
+
+<script>
+let camStream = null, camTimer = null;
+let frameCount = 0, scanCount = 0;
+
+function log(msg, type='info') {
+  const d = document.getElementById('log');
+  const t = new Date().toLocaleTimeString('en',{hour12:false});
+  d.innerHTML += `<div class="${type}">[${t}] ${msg}</div>`;
+  d.scrollTop = d.scrollHeight;
+}
+function clearLog(){document.getElementById('log').innerHTML='';}
+
+function showResult(msg, ok) {
+  const r = document.getElementById('result');
+  r.textContent = msg;
+  r.className = ok ? 'result r-ok' : 'result r-err';
+  r.style.display = 'block';
+}
+
+// ── CAMERA ──
+async function startCam(facing='environment') {
+  stopCam();
+  log(`Requesting camera (facing: ${facing})…`);
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: facing, width: {ideal:1280}, height: {ideal:720} }
+    });
+    const v = document.getElementById('v');
+    v.srcObject = camStream;
+
+    const track = camStream.getVideoTracks()[0];
+    const settings = track.getSettings();
+    log(`Camera OK: ${settings.width}x${settings.height} facing=${settings.facingMode}`, 'ok');
+    document.getElementById('cam-info').textContent =
+      `Camera: ${settings.width}x${settings.height} | facing: ${settings.facingMode||facing} | label: ${track.label}`;
+
+    v.onloadedmetadata = () => {
+      log(`Video metadata loaded: ${v.videoWidth}x${v.videoHeight}`, 'ok');
+      v.play();
+    };
+    v.onplaying = () => {
+      log(`Video playing! Starting scan loop (300ms interval)…`, 'ok');
+      if (!camTimer) camTimer = setInterval(scanFrame, 300);
+    };
+    v.onerror = (e) => log(`Video error: ${e}`, 'err');
+
+  } catch(e) {
+    log(`Camera FAILED: ${e.name} — ${e.message}`, 'err');
+    showResult(`❌ Camera error: ${e.name}`, false);
+  }
+}
+function startCamFront() { startCam('user'); }
+
+function stopCam() {
+  if(camTimer){clearInterval(camTimer);camTimer=null;}
+  if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
+  document.getElementById('cam-info').textContent = 'Camera: stopped';
+  log('Camera stopped');
+}
+
+function scanFrame() {
+  const v = document.getElementById('v');
+  const c = document.getElementById('c');
+
+  frameCount++;
+  if (frameCount % 10 === 0) {
+    log(`Frame #${frameCount}: videoWidth=${v.videoWidth} h=${v.videoHeight} readyState=${v.readyState} paused=${v.paused}`);
+  }
+
+  if (!v.videoWidth || !v.videoHeight) { log('Frame skipped: no dimensions yet', 'warn'); return; }
+  if (v.readyState < 2) { log(`Frame skipped: readyState=${v.readyState}`, 'warn'); return; }
+  if (v.paused) { log('Frame skipped: paused', 'warn'); return; }
+
+  if (c.width !== v.videoWidth) c.width = v.videoWidth;
+  if (c.height !== v.videoHeight) c.height = v.videoHeight;
+
+  const ctx = c.getContext('2d', {willReadFrequently: true});
+  ctx.drawImage(v, 0, 0, c.width, c.height);
+
+  let imgData;
+  try { imgData = ctx.getImageData(0, 0, c.width, c.height); }
+  catch(e) { log(`getImageData failed: ${e.message}`, 'err'); return; }
+
+  scanCount++;
+  const code = jsQR(imgData.data, imgData.width, imgData.height, {inversionAttempts: 'attemptBoth'});
+
+  if (code && code.data) {
+    clearInterval(camTimer); camTimer = null;
+    log(`🎉 QR FOUND after ${scanCount} scans, ${frameCount} frames: "${code.data}"`, 'ok');
+    showResult(`✅ QR detected: ${code.data}`, true);
+    stopCam();
+  }
+}
+
+// ── UPLOAD ──
+function testUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  log(`Upload: ${file.name} (${file.type}, ${(file.size/1024).toFixed(1)}KB)`);
+
+  const reader = new FileReader();
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      log(`Image loaded: ${img.width}x${img.height}px`);
+      const uc = document.getElementById('uc');
+      uc.width = img.width; uc.height = img.height;
+      const ctx = uc.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const imgData = ctx.getImageData(0, 0, uc.width, uc.height);
+      log(`Scanning with jsQR…`);
+      const code = jsQR(imgData.data, imgData.width, imgData.height, {inversionAttempts:'attemptBoth'});
+      if (code && code.data) {
+        log(`🎉 QR FOUND: "${code.data}"`, 'ok');
+        showResult(`✅ QR found: ${code.data}`, true);
+      } else {
+        log(`❌ No QR found in this image`, 'err');
+        showResult(`❌ No QR code detected in the image`, false);
+        log(`Tip: Make sure the image contains a clear QR code. Try a higher resolution image.`, 'warn');
+      }
+    };
+    img.onerror = () => log('Image load failed', 'err');
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ── INIT ──
+log('jsQR version check: ' + (typeof jsQR !== 'undefined' ? '✅ loaded' : '❌ NOT loaded'), typeof jsQR !== 'undefined' ? 'ok' : 'err');
+log('getUserMedia: ' + (navigator.mediaDevices?.getUserMedia ? '✅ available' : '❌ NOT available'), navigator.mediaDevices?.getUserMedia ? 'ok' : 'err');
+log('Protocol: ' + location.protocol + ' (camera needs https:// or localhost)', location.protocol === 'https:' || location.hostname === 'localhost' ? 'ok' : 'warn');
+log('Browser: ' + navigator.userAgent.slice(0,80));
+</script>
+</body>
+</html>
