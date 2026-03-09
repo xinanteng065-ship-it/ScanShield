@@ -1133,8 +1133,7 @@ footer{
      JAVASCRIPT
 ═══════════════════════════════════════════════ -->
 <script>
-// APIキーはVercel環境変数に保存 → /api/analyze と /api/chat 経由で呼び出す
-const API_BASE=window.location.hostname==='localhost'?'http://localhost:3000':window.location.origin;
+// API calls go through /api/* (Vercel server functions — keys are env vars)
 
 let camS=null,camT=null,hist=[],curQ='',busy=false;
 let facingMode='environment';
@@ -1168,9 +1167,9 @@ function updatePlanUI(){
 
 async function checkPlanByEmail(email){
   try{
-    const res=await fetch(API_BASE+'/api/check-plan',{
+    const res=await fetch('/api/check-plan',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email}),signal:AbortSignal.timeout(5000)
+      body:JSON.stringify({email}),signal:AbortSignal.timeout(6000)
     });
     if(!res.ok)return'free';
     return(await res.json()).plan??'free';
@@ -1421,7 +1420,7 @@ function parseH(html,url){
 async function serp(dom){
   if(!dom)return null;
   try{
-    const r=await fetch(API_BASE+'/api/search',{
+    const r=await fetch('/api/search',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({domain:dom}),signal:AbortSignal.timeout(10000)
     });
@@ -1429,37 +1428,30 @@ async function serp(dom){
     return(await r.json()).result??null;
   }catch{return null;}
 }
-const SYS=`You are a balanced web security analyst. Give FAIR assessments.
-RULES: ✅ SAFE=known brand/legit. ⚠️ CAUTION=suspicious signals. 🚨 DANGEROUS=clear scam. When in doubt → SAFE.
-FORMAT (≤150 words):
-Identity: [what service]
-Purpose: [what it does]
-Safety: [✅ SAFE / ⚠️ CAUTION / 🚨 DANGEROUS] — [reason]
-Advice: [one action]`;
+// (AI system prompt is in callAI function)
 async function ai(url,sc,sr){
   let p='[URL]\n'+url+'\n\n';
   if(sc)p+=sc+'\n\n';if(sr)p+=sr+'\n\n';p+='Respond in English only.';
   return callAI(p,[]);
 }
+
+
 async function callAI(msg,h){
   try{
-    const r=await fetch(API_BASE+'/api/analyze',{
+    const r=await fetch('/api/analyze',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({message:msg,history:h}),
-      signal:AbortSignal.timeout(25000)
+      signal:AbortSignal.timeout(28000)
     });
     if(!r.ok){
-      const errText=await r.text().catch(()=>'');
-      throw new Error('Server error '+r.status+(errText?' — '+errText.slice(0,80):''));
+      const err=await r.json().catch(()=>({}));
+      throw new Error(err.error||('Server error '+r.status));
     }
     const data=await r.json();
     return data.reply||'';
   }catch(e){
-    // /api/analyze が存在しない場合（デプロイ前など）に分かりやすいメッセージ
-    const msg2=e.message.includes('Failed to fetch')||e.message.includes('NetworkError')
-      ?'Cannot reach API server. Make sure the app is deployed to Vercel (not opened as a local file).'
-      :e.message;
-    return'Safety:\n⚠️ CAUTION — '+msg2+'\n\nIdentity: API unavailable\nPurpose: N/A\nAdvice: Check deployment status.';
+    console.error('callAI error:',e);
+    return'Safety:\n⚠️ CAUTION — '+e.message+'\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: Please try again.';
   }
 }
 

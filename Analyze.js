@@ -1,6 +1,5 @@
 // api/analyze.js
-// OpenAI GPT-4o-mini をサーバー側で呼び出す
-// APIキーはVercel環境変数 OPENAI_API_KEY に設定する
+// Vercel環境変数: OPENAI_API_KEY
 
 const SYS = `You are a balanced web security analyst. Give FAIR assessments.
 RULES: ✅ SAFE=known brand/legit. ⚠️ CAUTION=suspicious signals. 🚨 DANGEROUS=clear scam. When in doubt → SAFE.
@@ -11,7 +10,7 @@ Safety: [✅ SAFE / ⚠️ CAUTION / 🚨 DANGEROUS] — [reason]
 Advice: [one action]`;
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN ?? '*');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
@@ -37,13 +36,13 @@ export default async function handler(req, res) {
         max_tokens: 600,
         temperature: 0.2,
       }),
-      signal: AbortSignal.timeout(20000),
+      signal: AbortSignal.timeout(22000),
     });
 
     if (!r.ok) {
       const err = await r.text();
       console.error('OpenAI error:', err);
-      return res.status(502).json({ error: 'OpenAI error' });
+      return res.status(502).json({ error: 'OpenAI error: ' + r.status });
     }
 
     const data = await r.json();

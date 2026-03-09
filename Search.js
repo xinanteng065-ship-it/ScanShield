@@ -1,16 +1,15 @@
 // api/search.js
-// Serper（Google検索API）をサーバー側で呼び出す
-// APIキーはVercel環境変数 SERPER_API_KEY に設定する
+// Vercel環境変数: SERPER_API_KEY
 
 export default async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', process.env.ALLOWED_ORIGIN ?? '*');
+  res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { domain } = req.body ?? {};
-  if (!domain) return res.status(400).json({ result: null });
+  if (!domain) return res.status(200).json({ result: null });
 
   try {
     const [r1, r2] = await Promise.all([
@@ -41,6 +40,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ result: ctx });
   } catch (e) {
     console.error('search error:', e);
-    return res.status(200).json({ result: null }); // 検索失敗してもAI解析は続行
+    return res.status(200).json({ result: null });
   }
 }
