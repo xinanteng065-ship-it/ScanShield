@@ -4,7 +4,25 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>QR Debug Tool</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<script>
+(function(){
+  var urls=[
+    'https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js',
+    'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js',
+    'https://unpkg.com/jsqr@1.4.0/dist/jsQR.js'
+  ];
+  var idx=0;
+  function tryNext(){
+    if(idx>=urls.length){document.getElementById('log').innerHTML+='<div class="err">[ERROR] jsQR: ALL CDNs failed — no internet or all blocked</div>';return;}
+    var s=document.createElement('script');
+    s.src=urls[idx++];
+    s.onload=function(){document.getElementById('log').innerHTML+='<div class="ok">[OK] jsQR loaded from: '+s.src+'</div>';};
+    s.onerror=function(){document.getElementById('log').innerHTML+='<div class="warn">[WARN] CDN failed: '+s.src+', trying next…</div>';tryNext();};
+    document.head.appendChild(s);
+  }
+  tryNext();
+})();
+</script>
 <style>
 body{background:#0a0a0a;color:#fff;font-family:monospace;padding:16px;margin:0}
 h2{color:#60a5fa;margin-bottom:16px}

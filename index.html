@@ -8,7 +8,26 @@
 <meta name="theme-color" content="#050d1a"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<!-- jsQR: 複数CDNフォールバック -->
+<script>
+(function(){
+  var urls=[
+    'https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js',
+    'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js',
+    'https://unpkg.com/jsqr@1.4.0/dist/jsQR.js'
+  ];
+  var idx=0;
+  function tryNext(){
+    if(idx>=urls.length){console.error('jsQR: all CDNs failed');window._jsqrFailed=true;return;}
+    var s=document.createElement('script');
+    s.src=urls[idx++];
+    s.onload=function(){console.log('jsQR loaded OK from: '+s.src);};
+    s.onerror=function(){console.warn('jsQR CDN failed, trying next…');tryNext();};
+    document.head.appendChild(s);
+  }
+  tryNext();
+})();
+</script>
 <style>
 /* ═══════════════════════════════════════
    TOKENS  — Deep Navy × Electric Blue
@@ -1309,16 +1328,40 @@ function swTab(t){
 
 /* ─── CAMERA ─── */
 async function startCam(){
+  // jsQRが読み込まれてるか確認
+  if(typeof jsQR==='undefined'){
+    toast('QR library not loaded. Check your internet connection and reload.','terr');
+    return;
+  }
   try{
-    camS=await navigator.mediaDevices.getUserMedia({video:{facingMode,width:{ideal:1280},height:{ideal:720}}});
-    const v=document.getElementById('cv');v.srcObject=camS;
+    // スマホChrome対応: 高解像度指定をやめてシンプルに
+    const constraints={video:{facingMode:{ideal:facingMode}}};
+    camS=await navigator.mediaDevices.getUserMedia(constraints);
+    const v=document.getElementById('cv');
+    v.srcObject=camS;
     document.getElementById('cam-init').classList.add('hide');
     document.getElementById('cam-live').classList.remove('hide');
-    v.onloadedmetadata=()=>{v.play();};
+
+    // スマホでは play() を直接呼ぶ必要がある（autoplayだけでは不十分）
+    // onplaying より先に play() を呼んでから onplaying をセットする
+    try{ await v.play(); }catch(_){}
+
     v.onplaying=()=>{
-      if(!camT)camT=setInterval(scanFr,300);
+      if(!camT)camT=setInterval(scanFr,250);
     };
-  }catch{toast('Camera access denied. Try the Upload tab.','terr');}
+    // onplaying が発火しないブラウザのフォールバック
+    // videoWidth が出てきたら強制スタート
+    const fallback=setInterval(()=>{
+      if(v.videoWidth>0&&!camT){
+        clearInterval(fallback);
+        camT=setInterval(scanFr,250);
+      }
+    },200);
+    setTimeout(()=>clearInterval(fallback),8000);
+
+  }catch(e){
+    toast('Camera error: '+e.message+'. Try Upload tab.','terr');
+  }
 }
 async function flipCam(){
   facingMode=facingMode==='environment'?'user':'environment';
@@ -1335,20 +1378,20 @@ function stopCam(){
 function scanFr(){
   if(busy)return;
   const v=document.getElementById('cv'),c=document.getElementById('cc');
-  // videoが実際に映像を流しているか確認
-  if(!v||!v.videoWidth||!v.videoHeight||v.readyState<2||v.paused)return;
-  // canvasをvideoと同じサイズに設定
+  if(!v||!v.videoWidth||!v.videoHeight)return;
+  // readyState チェックを緩くする（スマホは2未満でも映像が来てることがある）
+  if(v.readyState<1)return;
+
   if(c.width!==v.videoWidth)c.width=v.videoWidth;
   if(c.height!==v.videoHeight)c.height=v.videoHeight;
   const ctx=c.getContext('2d',{willReadFrequently:true});
   ctx.drawImage(v,0,0,c.width,c.height);
   let d;
   try{d=ctx.getImageData(0,0,c.width,c.height);}catch{return;}
-  // 正立・反転両方試みる
   const code=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});
   if(code&&code.data&&code.data.length>0){
     if(code.data!==curQ){
-      curQ=code.data; // 同じQRを連続解析しないように先にセット
+      curQ=code.data;
       stopCam();
       toast('QR detected! Analyzing…','tok');
       analyze(code.data);
@@ -1362,19 +1405,36 @@ function ddLeave(){document.getElementById('dz').classList.remove('drag');}
 function ddDrop(e){e.preventDefault();ddLeave();procFile(e.dataTransfer.files[0]);}
 function fileChange(e){procFile(e.target.files[0]);}
 function procFile(f){
-  if(!f||!f.type.startsWith('image/')){toast('Please upload a valid image.','terr');return;}
+  if(typeof jsQR==='undefined'){toast('QR library not loaded. Reload the page.','terr');return;}
+  if(!f){toast('No file selected.','terr');return;}
+  toast('Reading image…','tok');
   const r=new FileReader();
   r.onload=ev=>{
     const img=new Image();
     img.onload=()=>{
-      const c=document.createElement('canvas');c.width=img.width;c.height=img.height;
-      c.getContext('2d').drawImage(img,0,0);
-      const d=c.getContext('2d').getImageData(0,0,c.width,c.height);
-      const code=jsQR(d.data,d.width,d.height);
-      if(code&&code.data)analyze(code.data);
-      else toast('No QR code found in this image.','terr');
-    };img.src=ev.target.result;
-  };r.readAsDataURL(f);
+      const c=document.createElement('canvas');
+      // 大きすぎる画像はリサイズ（スマホの高解像度写真対策）
+      const MAX=1200;
+      let w=img.width,h=img.height;
+      if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
+      if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
+      c.width=w;c.height=h;
+      const ctx=c.getContext('2d');
+      ctx.drawImage(img,0,0,w,h);
+      const d=ctx.getImageData(0,0,w,h);
+      const code=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});
+      if(code&&code.data){
+        toast('QR detected! Analyzing…','tok');
+        analyze(code.data);
+      }else{
+        toast('No QR code found. Try a clearer image.','terr');
+      }
+    };
+    img.onerror=()=>toast('Could not load image.','terr');
+    img.src=ev.target.result;
+  };
+  r.onerror=()=>toast('File read error.','terr');
+  r.readAsDataURL(f);
 }
 
 /* ─── ANALYSIS ─── */
