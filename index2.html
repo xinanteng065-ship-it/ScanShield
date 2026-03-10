@@ -1957,37 +1957,73 @@ function toast(msg,type='tok'){
 }
 
 /* ─── INIT ─── */
-window.addEventListener('DOMContentLoaded',async()=>{
-  try{if(localStorage.getItem('tut_done'))document.getElementById('tutorial').style.display='none';}
-  catch{document.getElementById('tutorial').style.display='none';}
+window.addEventListener('DOMContentLoaded', async () => {
+  try {
+    if (localStorage.getItem('tut_done')) document.getElementById('tutorial').style.display = 'none';
+  } catch (e) {
+    document.getElementById('tutorial').style.display = 'none';
+  }
 
   // Supabase Auth セッション復元
-  try{
-    const {data:{session}}=await _sb.auth.getSession();
-    if(session?.user)await onAuthStateChange(session.user);
-    else await restorePlan();
-    // Auth状態変化を監視
-    _sb.auth.onAuthStateChange(async(event,session)=>{
-      if(session?.user)await onAuthStateChange(session.user);
-      else{await onAuthStateChange(null);await restorePlan();}
+  try {
+    const { data: { session } } = await _sb.auth.getSession();
+    if (session?.user) {
+      await onAuthStateChange(session.user);
+    } else {
+      await restorePlan(); // ログインしていない場合はLocalStorageから復元を試みる
+    }
+
+    // Auth状態変化を監視（サインイン・サインアウト時）
+    _sb.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        await onAuthStateChange(session.user);
+      } else {
+        // ログアウト時
+        _authUser = null;
+        userEmail = null;
+        currentPlan = 'free';
+        try { localStorage.removeItem('ss_email'); } catch(e) {}
+        updateNavAuth();
+        updatePlanUI();
+      }
     });
-  }catch(e){
-    console.warn('Supabase auth error:',e);
+  } catch (e) {
+    console.warn('Supabase auth error:', e);
     await restorePlan();
   }
-  // Stripeから戻ってきたとき（?paid=1 または ?session_id=...）にメールモーダル表示
-  const params=new URLSearchParams(window.location.search);
-  if(params.has('paid')||params.has('session_id')){
-    // URLからパラメータを消す（履歴を汚さない）
-    history.replaceState({},'',window.location.pathname);
-    if(currentPlan==='free'){
-      // 少し待ってからモーダル表示（Webhookが届くまで数秒かかる場合あり）
-      setTimeout(()=>{
+
+  // ★追加：Stripeポータルから戻った時などに最新プランを強制チェックする
+  document.addEventListener('visibilitychange', async () => {
+    if (document.visibilityState === 'visible' && userEmail) {
+      const latestPlan = await checkPlanByEmail(userEmail);
+      if (latestPlan !== currentPlan) {
+        currentPlan = latestPlan;
+        updatePlanUI();
+        if (latestPlan === 'free') {
+          toast('Subscription status updated to Free.', 'tok');
+        }
+      }
+    }
+  });
+
+  // Stripeから戻ってきた直後の処理
+  const params = new URLSearchParams(window.location.search);
+  if (params.has('paid') || params.has('session_id')) {
+    history.replaceState({}, '', window.location.pathname);
+    // 決済直後は反映にラグがあるため、少し待ってから再確認
+    setTimeout(async () => {
+      if (userEmail) {
+        currentPlan = await checkPlanByEmail(userEmail);
+        updatePlanUI();
+      }
+      if (currentPlan === 'free') {
         go('scan');
         showEmailActivate();
-        toast('Payment received! Enter your email to activate.','tok');
-      },800);
-    }
+        toast('Verification required. Enter your email.', 'tok');
+      } else {
+        toast('Plan activated successfully!', 'tok');
+      }
+    }, 1500);
   }
 });
 
