@@ -28,6 +28,8 @@
   tryNext();
 })();
 </script>
+<!-- Supabase JS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 /* ═══════════════════════════════════════
    TOKENS  — Deep Navy × Electric Blue
@@ -776,6 +778,7 @@ footer{
     <div class="nav-r">
       <div id="plan-badge" class="plan-badge-ui free" style="display:none"></div>
       <button class="pill-btn pill-ghost" onclick="go('home');showSection('pricing')">Pricing</button>
+      <button class="pill-btn pill-ghost" id="nav-login-btn" onclick="showAuthModal('login')">Log in</button>
       <button class="pill-btn pill-blue" onclick="go('scan')">Scan Now</button>
     </div>
   </nav>
@@ -904,9 +907,9 @@ footer{
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
         Camera
       </button>
-      <button class="tab" onclick="swTab('upload')">
+      <button class="tab" onclick="canUpload()?swTab('upload'):(toast('Upload is available on Pro & Team plans.','terr'),go('home'),showSection('pricing'))">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        Upload
+        Upload <span id="upload-lock" style="font-size:10px">🔒</span>
       </button>
 
     </div>
@@ -1123,6 +1126,41 @@ footer{
 <!-- ═══════════════════════════════════════════════
      FOOTER (全ページ共通)
 ═══════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════
+     AUTH MODAL
+═══════════════════════════════════════════════ -->
+<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:1900;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;">
+  <div style="width:100%;max-width:480px;background:linear-gradient(160deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:32px 24px calc(40px + env(safe-area-inset-bottom));animation:sheet-up .4s cubic-bezier(.22,1,.36,1) both">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <h3 id="auth-title" style="font-size:22px;font-weight:800;letter-spacing:-.5px">Log In</h3>
+      <button onclick="closeAuthModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:22px;line-height:1">×</button>
+    </div>
+    <div style="display:flex;gap:6px;background:var(--navy-800);border-radius:12px;padding:4px;margin-bottom:24px">
+      <button id="auth-tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:10px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;background:var(--blue-500);color:#fff">Log In</button>
+      <button id="auth-tab-signup" onclick="switchAuthTab('signup')" style="flex:1;padding:10px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;background:transparent;color:var(--muted)">Sign Up</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div>
+        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:6px">Email</label>
+        <input type="email" id="auth-email" class="finp" placeholder="you@example.com" autocomplete="email" style="font-size:15px"/>
+      </div>
+      <div>
+        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:6px">Password</label>
+        <input type="password" id="auth-password" class="finp" placeholder="••••••••" autocomplete="current-password" style="font-size:15px" onkeydown="if(event.key==='Enter')doAuth()"/>
+      </div>
+      <div id="auth-confirm-wrap" style="display:none">
+        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:6px">Confirm Password</label>
+        <input type="password" id="auth-confirm" class="finp" placeholder="••••••••" autocomplete="new-password" style="font-size:15px" onkeydown="if(event.key==='Enter')doAuth()"/>
+      </div>
+      <button class="btn btn-blue" id="auth-submit-btn" onclick="doAuth()" style="margin-top:4px">Log In</button>
+      <div id="auth-msg" style="font-size:13px;text-align:center;min-height:18px;color:var(--muted)"></div>
+    </div>
+    <div id="auth-forgot" style="text-align:center;margin-top:14px">
+      <button onclick="doForgotPassword()" style="font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline">Forgot password?</button>
+    </div>
+  </div>
+</div>
+
 <footer>
   <div class="f-in">
     <div class="f-brand">
@@ -1138,7 +1176,8 @@ footer{
       <button class="f-link" onclick="go('guide')">Safety Guide</button><span class="f-sep">·</span>
       <button class="f-link" onclick="go('about')">About</button><span class="f-sep">·</span>
       <button class="f-link" onclick="go('privacy')">Privacy</button><span class="f-sep">·</span>
-      <button class="f-link" onclick="go('terms')">Terms</button>
+      <button class="f-link" onclick="go('terms')">Terms</button><span class="f-sep">·</span>
+      <button class="f-link" onclick="openPortal()">Manage Subscription</button>
     </div>
     <div class="f-bot">
       © 2025 Scan Shield · Independent developer ·
@@ -1154,18 +1193,124 @@ footer{
 <script>
 // API calls go through /api/* (Vercel server functions — keys are env vars)
 
+// ─── Supabase Auth 初期化 ───
+// SUPABASE_URL と SUPABASE_ANON_KEY は index.html に直接書いてOK（公開キー）
+const SUPABASE_URL = 'https://oktmwoihqlkbcmdpkzre.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdG13b2locWxrYmNtZHBrenJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjA3OTYsImV4cCI6MjA4Nzg5Njc5Nn0.f-6DLyWGDAqCTzyiJ7HDbQkDZA7K2SLSyrQApA6vOC4';
+const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 let camS=null,camT=null,hist=[],curQ='',busy=false;
 let facingMode='environment';
 
 /* ─── プラン管理 ─── */
 let currentPlan='free';
 let userEmail=null;
+let _authUser=null; // ログイン中のユーザー
 const SCAN_KEY='ss_scans_'+new Date().toDateString();
+
+/* ─── Auth モーダル ─── */
+let _authTab='login';
+function showAuthModal(tab='login'){
+  const m=document.getElementById('auth-modal');
+  m.style.display='flex';
+  switchAuthTab(tab);
+  setTimeout(()=>document.getElementById('auth-email')?.focus(),300);
+}
+function closeAuthModal(){
+  document.getElementById('auth-modal').style.display='none';
+  document.getElementById('auth-msg').textContent='';
+}
+function switchAuthTab(tab){
+  _authTab=tab;
+  const isLogin=tab==='login';
+  document.getElementById('auth-tab-login').style.cssText=isLogin?'flex:1;padding:10px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;background:var(--blue-500);color:#fff':'flex:1;padding:10px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;background:transparent;color:var(--muted)';
+  document.getElementById('auth-tab-signup').style.cssText=!isLogin?'flex:1;padding:10px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;background:var(--blue-500);color:#fff':'flex:1;padding:10px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;background:transparent;color:var(--muted)';
+  document.getElementById('auth-title').textContent=isLogin?'Log In':'Create Account';
+  document.getElementById('auth-submit-btn').textContent=isLogin?'Log In':'Sign Up';
+  document.getElementById('auth-confirm-wrap').style.display=isLogin?'none':'block';
+  document.getElementById('auth-forgot').style.display=isLogin?'block':'none';
+  document.getElementById('auth-msg').textContent='';
+}
+async function doAuth(){
+  const email=document.getElementById('auth-email').value.trim();
+  const pw=document.getElementById('auth-password').value;
+  const confirm=document.getElementById('auth-confirm').value;
+  const msg=document.getElementById('auth-msg');
+  const btn=document.getElementById('auth-submit-btn');
+  if(!email||!pw){msg.textContent='Please fill in all fields.';msg.style.color='var(--danger)';return;}
+  if(_authTab==='signup'){
+    if(pw.length<6){msg.textContent='Password must be at least 6 characters.';msg.style.color='var(--danger)';return;}
+    if(pw!==confirm){msg.textContent='Passwords do not match.';msg.style.color='var(--danger)';return;}
+  }
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0 auto"></div>';
+  try{
+    let result;
+    if(_authTab==='login'){
+      result=await _sb.auth.signInWithPassword({email,password:pw});
+    }else{
+      result=await _sb.auth.signUp({email,password:pw});
+    }
+    if(result.error){
+      msg.textContent=result.error.message;
+      msg.style.color='var(--danger)';
+    }else if(_authTab==='signup'&&!result.data?.session){
+      msg.textContent='✅ Check your email to confirm your account!';
+      msg.style.color='var(--safe)';
+    }else{
+      closeAuthModal();
+      await onAuthStateChange(result.data.user);
+      toast('Welcome! '+(result.data.user?.email||''),'tok');
+    }
+  }catch(e){
+    msg.textContent='Error: '+e.message;
+    msg.style.color='var(--danger)';
+  }
+  btn.disabled=false;
+  btn.textContent=_authTab==='login'?'Log In':'Sign Up';
+}
+async function doForgotPassword(){
+  const email=document.getElementById('auth-email').value.trim();
+  if(!email){toast('Enter your email first.','terr');return;}
+  const {error}=await _sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});
+  if(error)toast('Error: '+error.message,'terr');
+  else toast('Password reset email sent!','tok');
+}
+async function doSignOut(){
+  await _sb.auth.signOut();
+  _authUser=null;userEmail=null;currentPlan='free';
+  updatePlanUI();updateNavAuth();
+  toast('Signed out.','tok');
+}
+async function onAuthStateChange(user){
+  if(!user){_authUser=null;userEmail=null;currentPlan='free';updateNavAuth();updatePlanUI();return;}
+  _authUser=user;userEmail=user.email;
+  // Supabaseのsubscribersテーブルからプランを取得
+  currentPlan=await checkPlanByEmail(user.email);
+  updateNavAuth();updatePlanUI();
+}
+function updateNavAuth(){
+  const btn=document.getElementById('nav-login-btn');
+  if(!btn)return;
+  if(_authUser){
+    btn.textContent=_authUser.email.split('@')[0];
+    btn.onclick=()=>{
+      if(confirm('Sign out?'))doSignOut();
+    };
+  }else{
+    btn.textContent='Log in';
+    btn.onclick=()=>showAuthModal('login');
+  }
+}
 
 function getTodayScans(){try{return parseInt(localStorage.getItem(SCAN_KEY)||'0');}catch{return 0;}}
 function incTodayScans(){try{localStorage.setItem(SCAN_KEY,getTodayScans()+1);}catch{}}
-function canScan(){return currentPlan!=='free'||getTodayScans()<5;}
-function remainingScans(){return Math.max(0,5-getTodayScans());}
+function planLimit(){return currentPlan==='team'?99999:currentPlan==='pro'?10:2;}
+function canScan(){return getTodayScans()<planLimit();}
+function remainingScans(){return Math.max(0,planLimit()-getTodayScans());}
+// プランごとの機能チェック
+function canUpload(){return currentPlan==='pro'||currentPlan==='team';}
+function canChat(){return currentPlan==='pro'||currentPlan==='team';}
 
 function updatePlanUI(){
   // ヘッダーバッジ（デスクトップ）
@@ -1174,7 +1319,7 @@ function updatePlanUI(){
   const scanBadge=document.getElementById('scan-plan-badge');
   const activateLink=document.getElementById('activate-link');
 
-  const freeText=remainingScans()+' scans left today';
+  const freeText=remainingScans()+' / 2 scans left today';
   const paidText=currentPlan==='pro'?'⚡ Pro — Unlimited':'👥 Team — Unlimited';
   const cls=currentPlan==='free'?'plan-badge-ui free':'plan-badge-ui paid';
   const txt=currentPlan==='free'?freeText:paidText;
@@ -1182,6 +1327,26 @@ function updatePlanUI(){
   if(badge){badge.textContent=txt;badge.className=cls;badge.style.display='flex';}
   if(scanBadge){scanBadge.textContent=txt;scanBadge.className=cls;scanBadge.style.display='flex';}
   if(activateLink){activateLink.style.display=currentPlan==='free'?'block':'none';}
+  // Uploadタブのロックアイコン
+  const ul=document.getElementById('upload-lock');
+  if(ul)ul.style.display=canUpload()?'none':'inline';
+
+  // 有料プランのときだけ「Manage Subscription」ボタンを表示
+  let manageBtn=document.getElementById('manage-sub-btn');
+  if(currentPlan!=='free'){
+    if(!manageBtn){
+      manageBtn=document.createElement('button');
+      manageBtn.id='manage-sub-btn';
+      manageBtn.onclick=openPortal;
+      manageBtn.style.cssText='font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;';
+      manageBtn.textContent='Manage / Cancel Subscription';
+      const row=document.getElementById('scan-plan-row');
+      if(row)row.appendChild(manageBtn);
+    }
+    manageBtn.style.display='block';
+  }else{
+    if(manageBtn)manageBtn.style.display='none';
+  }
 }
 
 async function checkPlanByEmail(email){
@@ -1295,25 +1460,44 @@ const STRIPE_LINKS={
   pro:'https://buy.stripe.com/test_eVq28s0yw6W40E51aW43S01',
   team:'https://buy.stripe.com/test_dRmdRadli0xG9aB7zk43S02'
 };
+const PORTAL_URL='https://billing.stripe.com/p/login/test_00wcN6epm5S0gD3f1M43S00';
+function openPortal(){
+  let url=PORTAL_URL;
+  if(userEmail)url+='?prefilled_email='+encodeURIComponent(userEmail);
+  window.open(url,'_blank');
+}
 function openStripe(plan){
   let url=STRIPE_LINKS[plan];
   if(userEmail)url+='?prefilled_email='+encodeURIComponent(userEmail);
   window.open(url,'_blank');
-  // 別タブから戻ってきたときにメールモーダルを表示
+
+  // Stripeタブを実際に開いた後、hiddenになってからvisibleに戻ったときだけ発火
+  // （開いた直後にすぐvisibilitychangeが来る場合は無視）
+  let wentAway=false; // 一度でもhiddenになったか
   let shown=false;
+  let deadline=Date.now()+90000; // 90秒以内に戻ってきた場合のみ
+
   function onReturn(){
-    if(document.visibilityState==='visible'&&!shown&&currentPlan==='free'){
+    if(Date.now()>deadline){
+      document.removeEventListener('visibilitychange',onReturn);
+      return;
+    }
+    if(document.visibilityState==='hidden'){
+      wentAway=true; // Stripeタブに行ったことを記録
+      return;
+    }
+    // visible に戻ってきた && 一度hiddenになっていた && まだ表示してない
+    if(document.visibilityState==='visible'&&wentAway&&!shown&&currentPlan==='free'){
       shown=true;
       document.removeEventListener('visibilitychange',onReturn);
       setTimeout(()=>{
         showEmailActivate();
         toast('Payment complete? Enter your email to activate.','tok');
-      },600);
+      },800);
     }
   }
   document.addEventListener('visibilitychange',onReturn);
-  // 60秒後にリスナー自動解除
-  setTimeout(()=>document.removeEventListener('visibilitychange',onReturn),60000);
+  setTimeout(()=>document.removeEventListener('visibilitychange',onReturn),90000);
 }
 
 /* ─── TABS ─── */
@@ -1556,12 +1740,48 @@ function render(text){
   });
   document.getElementById('ab').innerHTML='<div>'+rows+'</div>';
   document.getElementById('cw').style.display='block';
-  document.getElementById('cw').innerHTML=`
+  // Teamプランのシェアボタン
+  const shareHtml=currentPlan==='team'?`
+    <div style="padding:12px 16px;border-top:1px solid var(--glass-bd);display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px">Share:</span>
+      <button onclick="shareResult('email')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg> Email</button>
+      <button onclick="shareResult('line')" class="bx">LINE</button>
+      <button onclick="shareResult('slack')" class="bx">Slack</button>
+      <button onclick="shareResult('discord')" class="bx">Discord</button>
+      <button onclick="shareResult('copy')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+    </div>`:'';
+
+  document.getElementById('cw').innerHTML=shareHtml+`
     <div id="cm" class="chat-msgs"></div>
     <div class="chat-inp">
-      <input class="cin" id="ci" type="text" placeholder="Ask anything about this site…" onkeydown="if(event.key==='Enter')sChat()"/>
+      <input class="cin" id="ci" type="text" placeholder="Ask anything about this site… (100 chars max)" maxlength="100" onkeydown="if(event.key==='Enter')sChat()"/>
       <button class="csend" onclick="sChat()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
     </div>`;
+}
+
+function shareResult(platform){
+  const text='🔍 Scan Shield Result\n\nScanned: '+curQ+'\n\n'+
+    (hist.find(m=>m.role==='assistant')?.content||'').slice(0,300)+
+    '\n\nCheck it: '+window.location.href;
+  const enc=encodeURIComponent(text);
+  const urls={
+    email:'mailto:?subject=Scan+Shield+Result&body='+enc,
+    line:'https://line.me/R/msg/text/?'+enc,
+    slack:'slack://open',
+    discord:'https://discord.com/channels/@me',
+    copy:null
+  };
+  if(platform==='copy'||!urls[platform]){
+    navigator.clipboard.writeText(text).then(()=>toast('Copied to clipboard!','tok'));
+    return;
+  }
+  if(platform==='slack'||platform==='discord'){
+    navigator.clipboard.writeText(text).then(()=>{
+      toast('Copied! Paste into '+(platform==='slack'?'Slack':'Discord'),'tok');
+    });
+    return;
+  }
+  window.open(urls[platform],'_blank');
 }
 
 /* ─── CHAT ─── */
@@ -1569,6 +1789,8 @@ const aiSVG='<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2
 const uSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
 async function sChat(){
   const inp=document.getElementById('ci');const msg=inp.value.trim();if(!msg)return;
+  if(msg.length>100){toast('Message limit: 100 characters.','terr');return;}
+  if(!canChat()){toast('Follow-up chat is available on Pro & Team plans.','terr');go('home');showSection('pricing');return;}
   inp.value='';addMsg(msg,'u');hist.push({role:'user',content:msg});
   const tid=addTyping();
   const rep=await callAI(msg+'\n\n(Analyzing: "'+curQ+'")',hist.slice(-8));
@@ -1610,7 +1832,21 @@ function toast(msg,type='tok'){
 window.addEventListener('DOMContentLoaded',async()=>{
   try{if(localStorage.getItem('tut_done'))document.getElementById('tutorial').style.display='none';}
   catch{document.getElementById('tutorial').style.display='none';}
-  await restorePlan();
+
+  // Supabase Auth セッション復元
+  try{
+    const {data:{session}}=await _sb.auth.getSession();
+    if(session?.user)await onAuthStateChange(session.user);
+    else await restorePlan();
+    // Auth状態変化を監視
+    _sb.auth.onAuthStateChange(async(event,session)=>{
+      if(session?.user)await onAuthStateChange(session.user);
+      else{await onAuthStateChange(null);await restorePlan();}
+    });
+  }catch(e){
+    console.warn('Supabase auth error:',e);
+    await restorePlan();
+  }
   // Stripeから戻ってきたとき（?paid=1 または ?session_id=...）にメールモーダル表示
   const params=new URLSearchParams(window.location.search);
   if(params.has('paid')||params.has('session_id')){
