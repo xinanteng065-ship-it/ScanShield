@@ -417,7 +417,7 @@ async function doAuth(){
     }else{
       // localStorageにメールアドレスを保存して、すぐにindex.htmlへ移動
       try{localStorage.setItem('ss_email', result.data.user.email);}catch{}
-      window.location.href = 'index.html'; 
+      window.location.href = 'index2.html'; 
     }
   }catch(e){
     showErr('Error: '+e.message);

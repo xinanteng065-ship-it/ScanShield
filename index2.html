@@ -818,7 +818,7 @@ footer{
     <button class="sb-item" onclick="go('home');showSection('pricing')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Pricing
     </button>
-    <a class="sb-item" href="login.html" id="sb-login-item">
+    <a class="sb-item" href="index.html" id="sb-login-item">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span id="sb-login-label">Log In</span>
     </a>
   </nav>
@@ -896,7 +896,7 @@ footer{
     <div class="nav-r">
       <div id="plan-badge" class="plan-badge-ui free" style="display:none"></div>
       <button class="pill-btn pill-ghost" onclick="go('home');showSection('pricing')">Pricing</button>
-      <button class="pill-btn pill-ghost" id="nav-login-btn" onclick="window.location.href='login.html'">Log in</button>
+      <button class="pill-btn pill-ghost" id="nav-login-btn" onclick="window.location.href='index.html'">Log in</button>
       <button class="pill-btn pill-blue" onclick="go('scan')">Scan Now</button>
     </div>
   </nav>
@@ -1423,7 +1423,7 @@ function updateNavAuth(){
     };
   }else{
     btn.textContent='Log in';
-    btn.onclick=()=>window.location.href='login.html'; // login.htmlへ飛ばす
+    btn.onclick=()=>window.location.href='index.html';
   }
 }
 
