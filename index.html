@@ -438,7 +438,11 @@ function toast(msg,type){
     const {data:{session}}=await _sb.auth.getSession();
     if(session?.user){
       try{localStorage.setItem('ss_email', session.user.email);}catch{}
-      window.location.href = 'index2.html';
+      
+      // ↓ デザイン確認中は、ここの先頭に「//」をつけて無効化しておく
+      // window.location.href = 'index2.html';
+      
+      console.log("ログイン済みですが、テストのため移動をストップしています");
       return;
     }
     
