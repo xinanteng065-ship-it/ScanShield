@@ -407,7 +407,12 @@ async function doAuth(){
 async function doForgot(){
   const email=document.getElementById('f-email').value.trim();
   if(!email){showErr('Enter your email address first.');return;}
-  const {error}=await _sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin+'/index2.html'});
+
+  // 修正箇所：飛び先を「パスワード再設定専用のページ」にする
+  const {error}=await _sb.auth.resetPasswordForEmail(email,{
+    redirectTo: window.location.origin + '/reset-password.html'
+  });
+
   if(error)showErr(error.message);
   else showOk('Password reset email sent! Check your inbox.');
 }
