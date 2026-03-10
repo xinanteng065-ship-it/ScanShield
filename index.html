@@ -287,29 +287,6 @@ body{
       Back to Scan Shield
     </button>
 
-    <!-- Logged-in state -->
-    <div id="logged-in-view" style="display:none">
-      <h1>Welcome back 👋</h1>
-      <p class="sub" id="logged-in-email" style="margin-bottom:16px"></p>
-      <div class="manage-card show" id="manage-card">
-        <div class="plan-name" id="manage-plan-name">Free Plan</div>
-        <p id="manage-plan-desc">Upgrade to Pro for unlimited scans and full AI features.</p>
-        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:4px">
-          <a class="btn-manage" id="manage-link" href="https://billing.stripe.com/p/login/test_00wcN6epm5S0gD3f1M43S00" target="_blank">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            Manage / Cancel Subscription
-          </a>
-          <button class="btn-signout" onclick="doSignOut()">Sign Out</button>
-        </div>
-      </div>
-      <div style="margin-top:20px">
-        <a href="/app" class="btn-submit" style="text-decoration:none;display:flex">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
-          Go to Scanner
-        </a>
-      </div>
-    </div>
-
     <!-- Auth form -->
     <div id="auth-form-view">
       <h1 id="form-title">Welcome back</h1>
@@ -446,43 +423,43 @@ async function checkPlan(email){
   }catch{return'free';}
 }
 
-async function showLoggedIn(user){
-  const plan=await checkPlan(user.email);
-  document.getElementById('auth-form-view').style.display='none';
-  document.getElementById('logged-in-view').style.display='block';
-  document.getElementById('logged-in-email').textContent=user.email;
-
-  const planNames={free:'Free Plan',pro:'⚡ Pro Plan',team:'👥 Team Plan'};
-  const planDescs={
-    free:'You are on the Free plan. Upgrade to Pro for unlimited scans.',
-    pro:'You have Pro — unlimited scans & full AI features.',
-    team:'You have Team — unlimited scans, all features & sharing.'
-  };
-  document.getElementById('manage-plan-name').textContent=planNames[plan]||'Free Plan';
-  document.getElementById('manage-plan-desc').textContent=planDescs[plan]||planDescs.free;
-
-  // メールをprefillしたポータルURL
-  const portalUrl=PORTAL_URL+(user.email?'?prefilled_email='+encodeURIComponent(user.email):'');
-  document.getElementById('manage-link').href=portalUrl;
-
-  // localStorageにも保存（index.htmlとの連携）
-  try{localStorage.setItem('ss_email',user.email);}catch{}
-}
-
-async function doSignOut(){
-  await _sb.auth.signOut();
-  try{localStorage.removeItem('ss_email');}catch{}
-  document.getElementById('logged-in-view').style.display='none';
-  document.getElementById('auth-form-view').style.display='block';
-  switchTab('login');
-  toast('Signed out successfully.','tok');
-}
+// ↓↓↓ 不要になった showLoggedIn と doSignOut は削除します ↓↓↓
 
 function toast(msg,type){
   document.querySelectorAll('.toast').forEach(e=>e.remove());
   const t=document.createElement('div');t.className='toast '+type;t.textContent=msg;
   document.body.appendChild(t);setTimeout(()=>t.remove(),3200);
 }
+
+// ── Init: セッション確認 ──
+(async()=>{
+  try{
+    // 1. すでにセッションがある（ログイン済み）場合は、すぐに移動
+    const {data:{session}}=await _sb.auth.getSession();
+    if(session?.user){
+      try{localStorage.setItem('ss_email', session.user.email);}catch{}
+      window.location.href = 'index2.html';
+      return;
+    }
+    
+    // 2. 新規登録時のメールリンクから戻ってきた場合の処理
+    const hash=new URLSearchParams(window.location.hash.slice(1));
+    if(hash.get('type')==='signup'||hash.get('access_token')){
+      const {data,error}=await _sb.auth.getUser();
+      if(!error&&data.user){
+        try{localStorage.setItem('ss_email', data.user.email);}catch{}
+        window.location.href = 'index2.html';
+        return;
+      }
+    }
+    
+    // 3. ?tab=signup でサインアップタブを開く
+    const params=new URLSearchParams(window.location.search);
+    if(params.get('tab')==='signup')switchTab('signup');
+  }catch(e){
+    console.warn('Auth init error:',e);
+  }
+})();
 
 // ── Init: セッション確認 ──
 (async()=>{
