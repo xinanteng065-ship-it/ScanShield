@@ -3,5 +3,12 @@
     "api/webhook.js": {
       "maxDuration": 10
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/",       "destination": "/landing.html" },
+    { "source": "/app",    "destination": "/index.html" },
+    { "source": "/login",  "destination": "/login.html" },
+    { "source": "/cancel", "destination": "/cancel.html" }
+  ]
+
 }
