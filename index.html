@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sign In — Scan Shield</title>
 <link rel="icon" type="image/png" href="scan_shield.png">
-<meta name="description" content="Sign in to your Scan Shield account."/>
+<meta name="description" content="Sign in or create your Scan Shield account."/>
 <meta name="theme-color" content="#050d1a"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
@@ -13,8 +13,8 @@
 <style>
 :root{
   --navy-900:#020810;--navy-800:#050d1a;--navy-700:#091528;--navy-600:#0d1f3c;
-  --navy-400:#1e3a6e;--blue-500:#2563eb;--blue-400:#3b82f6;
-  --blue-300:#60a5fa;--cyan:#06b6d4;--cyan-lt:#67e8f9;
+  --navy-400:#1e3a6e;--blue-600:#1d4ed8;--blue-500:#2563eb;--blue-400:#3b82f6;
+  --blue-300:#60a5fa;--blue-200:#93c5fd;--cyan:#06b6d4;--cyan-lt:#67e8f9;
   --white:#fff;--glass:rgba(255,255,255,.04);--glass-bd:rgba(255,255,255,.09);
   --muted:rgba(255,255,255,.45);--muted2:rgba(255,255,255,.25);
   --safe:#22c55e;--danger:#ef4444;
@@ -103,31 +103,40 @@ body{
   padding:52px 44px;
   display:flex;flex-direction:column;justify-content:center;
 }
-@media(max-width:700px){.auth-right{padding:36px 24px}}
-
+@media(max-width:700px){
+  .auth-right{padding:36px 24px}
+}
 .back-link{
   display:inline-flex;align-items:center;gap:6px;
-  font-size:13px;color:var(--muted);
-  margin-bottom:32px;background:none;border:none;
-  cursor:pointer;font-family:var(--font);padding:0;transition:color .15s;
+  font-size:13px;color:var(--muted);text-decoration:none;
+  margin-bottom:32px;transition:color .15s;background:none;border:none;
+  cursor:pointer;font-family:var(--font);padding:0;
 }
 .back-link:hover{color:var(--blue-300)}
 .back-link svg{width:14px;height:14px}
-
-/* ── OTP UI ── */
-.step-indicator{
-  display:flex;align-items:center;gap:8px;margin-bottom:28px;
+.auth-right h1{font-size:26px;font-weight:800;letter-spacing:-.7px;margin-bottom:6px}
+.auth-right .sub{font-size:14px;color:var(--muted);margin-bottom:32px;line-height:1.6}
+.auth-right .sub a,.auth-right .sub button{
+  color:var(--blue-300);text-decoration:none;background:none;
+  border:none;cursor:pointer;font-family:var(--font);font-size:14px;font-weight:600;
 }
-.step-dot{
-  width:8px;height:8px;border-radius:50%;
-  background:var(--glass-bd);transition:all .3s;
+.auth-right .sub a:hover,.auth-right .sub button:hover{text-decoration:underline}
+
+/* ── Tabs ── */
+.tab-row{
+  display:flex;gap:5px;background:var(--navy-700);
+  border:1px solid var(--glass-bd);border-radius:14px;padding:4px;margin-bottom:28px;
 }
-.step-dot.on{background:var(--blue-400);width:24px;border-radius:4px;}
+.auth-tab{
+  flex:1;padding:11px;border-radius:10px;border:none;
+  font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;
+  transition:all .2s;
+}
+.auth-tab.on{background:linear-gradient(135deg,var(--blue-500),var(--blue-400));color:#fff;box-shadow:0 2px 10px rgba(37,99,235,.3)}
+.auth-tab.off{background:transparent;color:var(--muted)}
+.auth-tab.off:hover{color:#fff}
 
-.auth-title{font-size:26px;font-weight:800;letter-spacing:-.7px;margin-bottom:6px}
-.auth-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6}
-.auth-sub strong{color:#fff;font-weight:600}
-
+/* ── Form ── */
 .form-group{margin-bottom:18px}
 .form-label{
   display:block;font-size:12px;font-weight:700;
@@ -141,18 +150,7 @@ body{
 }
 .form-input:focus{border-color:rgba(59,130,246,.55);background:var(--navy-600);box-shadow:0 0 0 3px rgba(37,99,235,.12)}
 .form-input::placeholder{color:var(--muted2)}
-
-/* OTP 桁入力 */
-.otp-inputs{display:flex;gap:9px;margin-bottom:22px}
-.otp-digit{
-  flex:1;height:58px;border-radius:13px;
-  background:var(--navy-700);border:2px solid var(--glass-bd);
-  color:#fff;font-family:var(--mono);font-size:24px;font-weight:700;
-  text-align:center;outline:none;transition:border-color .18s;
-  caret-color:var(--blue-300);
-}
-.otp-digit:focus{border-color:rgba(59,130,246,.6);background:var(--navy-600)}
-.otp-digit.filled{border-color:rgba(59,130,246,.35)}
+.form-input.err{border-color:rgba(239,68,68,.5)}
 
 .btn-submit{
   width:100%;padding:15px;border-radius:var(--r);
@@ -160,7 +158,7 @@ body{
   color:#fff;border:none;cursor:pointer;
   font-family:var(--font);font-size:15px;font-weight:700;
   box-shadow:0 4px 20px rgba(37,99,235,.4);
-  transition:all .2s;
+  transition:all .2s;letter-spacing:-.1px;
   display:flex;align-items:center;justify-content:center;gap:8px;
 }
 .btn-submit:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(37,99,235,.55)}
@@ -169,25 +167,35 @@ body{
 .err-msg{
   font-size:13px;color:var(--danger);
   background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);
-  border-radius:9px;padding:10px 14px;margin-bottom:16px;display:none;
+  border-radius:9px;padding:10px 14px;margin-bottom:16px;
+  display:none;
 }
 .err-msg.show{display:block}
 .ok-msg{
   font-size:13px;color:var(--safe);
   background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);
-  border-radius:9px;padding:10px 14px;margin-bottom:16px;display:none;
+  border-radius:9px;padding:10px 14px;margin-bottom:16px;
+  display:none;
 }
 .ok-msg.show{display:block}
 
-.security-note{
-  display:flex;align-items:flex-start;gap:9px;
-  background:rgba(37,99,235,.07);border:1px solid rgba(59,130,246,.15);
-  border-radius:10px;padding:12px 14px;margin-top:18px;
+.divider{
+  display:flex;align-items:center;gap:10px;
+  color:rgba(255,255,255,.18);font-size:12px;margin:20px 0;
 }
-.security-note svg{width:15px;height:15px;color:var(--blue-300);flex-shrink:0;margin-top:1px}
-.security-note p{font-size:12px;color:var(--muted);line-height:1.6}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
 
-/* Spinner */
+.forgot-link{
+  font-size:12.5px;color:var(--muted);text-align:right;
+  display:block;margin-top:-10px;margin-bottom:20px;
+  background:none;border:none;cursor:pointer;
+  font-family:var(--font);width:100%;text-align:right;
+}
+.forgot-link:hover{color:var(--blue-300)}
+
+.terms-note{font-size:11.5px;color:var(--muted);text-align:center;margin-top:18px;line-height:1.6}
+
+/* ── Spinner ── */
 .spinner{
   width:18px;height:18px;border-radius:50%;
   border:2px solid rgba(255,255,255,.3);border-top-color:#fff;
@@ -195,7 +203,7 @@ body{
 }
 @keyframes sp{to{transform:rotate(360deg)}}
 
-/* Toast */
+/* ── Toast ── */
 .toast{
   position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
   z-index:9999;padding:11px 20px;border-radius:12px;
@@ -205,6 +213,32 @@ body{
 @keyframes ts{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 .tok{background:linear-gradient(135deg,#14532d,#166534);color:#dcfce7;border:1px solid rgba(34,197,94,.3)}
 .terr{background:linear-gradient(135deg,#7f1d1d,#991b1b);color:#fee2e2;border:1px solid rgba(239,68,68,.3)}
+
+/* Manage subscription section */
+.manage-card{
+  margin-top:28px;padding:16px 18px;
+  background:rgba(37,99,235,.08);border:1px solid rgba(59,130,246,.2);
+  border-radius:var(--r);display:none;
+}
+.manage-card.show{display:block}
+.manage-card p{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6}
+.manage-card .plan-name{font-size:16px;font-weight:800;color:var(--blue-300);margin-bottom:4px}
+.btn-manage{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 18px;border-radius:10px;
+  background:var(--glass);border:1.5px solid var(--glass-bd);
+  color:#fff;font-family:var(--font);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .15s;text-decoration:none;
+}
+.btn-manage:hover{border-color:rgba(59,130,246,.4);color:var(--blue-200)}
+.btn-signout{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 18px;border-radius:10px;margin-left:8px;
+  background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.2);
+  color:rgba(239,68,68,.8);font-family:var(--font);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .15s;
+}
+.btn-signout:hover{background:rgba(239,68,68,.18);color:var(--danger)}
 </style>
 </head>
 <body>
@@ -226,20 +260,20 @@ body{
       <p>Detect phishing, malware, and scam links hidden in QR codes — before you click anything.</p>
       <div class="feat-list">
         <div class="feat-item">
-          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <p><strong>No password required</strong> — just your email</p>
-        </div>
-        <div class="feat-item">
           <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
           <p><strong>Instant verdict</strong> in under 3 seconds</p>
         </div>
         <div class="feat-item">
-          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <p><strong>AI chat assistant</strong> for follow-up questions</p>
+        </div>
+        <div class="feat-item">
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <p><strong>Zero data stored</strong> — your scans stay private</p>
         </div>
         <div class="feat-item">
-          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-          <p><strong>AI chat assistant</strong> for follow-up questions</p>
+          <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
+          <p><strong>Camera, upload, or URL</strong> — works any way</p>
         </div>
       </div>
     </div>
@@ -247,278 +281,216 @@ body{
     <div class="left-footer">© 2025 Scan Shield · AI analysis for informational purposes only.</div>
   </div>
 
-  <!-- ── Right: OTP Auth Panel ── -->
+  <!-- ── Right: Auth Panel ── -->
   <div class="auth-right">
     <button class="back-link" onclick="window.location.href='/'">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       Back to Scan Shield
     </button>
 
-    <!-- Step indicators -->
-    <div class="step-indicator">
-      <div class="step-dot on" id="dot-0"></div>
-      <div class="step-dot" id="dot-1"></div>
-    </div>
+    <!-- Auth form -->
+    <div id="auth-form-view">
+      <h1 id="form-title">Welcome back</h1>
+      <p class="sub" id="form-sub">Don't have an account? <button onclick="switchTab('signup')">Sign up free →</button></p>
 
-    <div id="err-msg" class="err-msg"></div>
-    <div id="ok-msg" class="ok-msg"></div>
+      <div class="tab-row">
+        <button class="auth-tab on" id="tab-login" onclick="switchTab('login')">Log In</button>
+        <button class="auth-tab off" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+      </div>
 
-    <!-- Phase 1: Email Input -->
-    <div id="phase-email">
-      <h1 class="auth-title">Sign in with email</h1>
-      <p class="auth-sub">No password needed. We'll send a <strong>6-digit code</strong> to your inbox.</p>
+      <div id="err-msg" class="err-msg"></div>
+      <div id="ok-msg" class="ok-msg"></div>
 
       <div class="form-group">
         <label class="form-label">Email address</label>
-        <input type="email" id="f-email" class="form-input"
-          placeholder="you@example.com" autocomplete="email"
-          onkeydown="if(event.key==='Enter')sendCode()"/>
+        <input type="email" id="f-email" class="form-input" placeholder="you@example.com" autocomplete="email" onkeydown="if(event.key==='Enter')doAuth()"/>
       </div>
-      <button class="btn-submit" id="send-btn" onclick="sendCode()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg>
-        Send Verification Code
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" id="f-pw" class="form-input" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()"/>
+      </div>
+      <div class="form-group" id="confirm-group" style="display:none">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" id="f-confirm" class="form-input" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')doAuth()"/>
+      </div>
+      <button id="forgot-btn" class="forgot-link" onclick="doForgot()">Forgot password?</button>
+      <button class="btn-submit" id="submit-btn" onclick="doAuth()">
+        <span id="submit-label">Log In</span>
       </button>
-
-      <div class="security-note">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        <p>Using a one-time code means no password can be stolen. The code expires in 10 minutes and works only once.</p>
-      </div>
+      <p class="terms-note" id="signup-terms" style="display:none">By signing up you agree to our <a href="/terms" style="color:var(--blue-300)">Terms</a> and <a href="/privacy" style="color:var(--blue-300)">Privacy Policy</a>.</p>
     </div>
 
-    <!-- Phase 2: Code Input -->
-    <div id="phase-code" style="display:none">
-      <h1 class="auth-title">Enter your code</h1>
-      <p class="auth-sub" id="code-sub">We sent a 6-digit code to <strong id="email-display"></strong></p>
-
-      <div class="otp-inputs" id="otp-inputs">
-        <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]"
-          onInput="otpInput(this,0)" onKeydown="otpKey(event,0)" autocomplete="one-time-code"/>
-        <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]"
-          onInput="otpInput(this,1)" onKeydown="otpKey(event,1)"/>
-        <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]"
-          onInput="otpInput(this,2)" onKeydown="otpKey(event,2)"/>
-        <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]"
-          onInput="otpInput(this,3)" onKeydown="otpKey(event,3)"/>
-        <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]"
-          onInput="otpInput(this,4)" onKeydown="otpKey(event,4)"/>
-        <input class="otp-digit" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]"
-          onInput="otpInput(this,5)" onKeydown="otpKey(event,5)"/>
-      </div>
-
-      <button class="btn-submit" id="verify-btn" onclick="verifyCode()" disabled>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        Verify &amp; Sign In
-      </button>
-
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;flex-wrap:wrap;gap:8px">
-        <button onclick="backToEmail()" style="font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline">
-          ← Change email
-        </button>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span id="countdown-txt" style="font-size:12px;color:var(--muted)"></span>
-          <button id="resend-btn" onclick="resendCode()" style="display:none;font-size:12px;color:var(--blue-300);background:none;border:none;cursor:pointer;font-family:var(--font);font-weight:600">
-            Resend code
-          </button>
-        </div>
-      </div>
-
-      <div class="security-note" style="margin-top:16px">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <p>Didn't receive the code? Check your spam folder, or use the "Resend" button after 60 seconds.</p>
-      </div>
-    </div>
   </div>
 </div>
 
 <script>
+// ── Supabase init ──
 const SUPABASE_URL='https://oktmwoihqlkbcmdpkzre.supabase.co';
 const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdG13b2locWxrYmNtZHBrenJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjA3OTYsImV4cCI6MjA4Nzg5Njc5Nn0.f-6DLyWGDAqCTzyiJ7HDbQkDZA7K2SLSyrQApA6vOC4';
 const _sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-let _email='';
-let _countdownTimer=null;
+const PORTAL_URL='https://billing.stripe.com/p/login/test_00wcN6epm5S0gD3f1M43S00';
 
-// ── Helpers ──
+let _tab='login';
+
+function switchTab(tab){
+  _tab=tab;
+  const isLogin=tab==='login';
+  document.getElementById('tab-login').className='auth-tab '+(isLogin?'on':'off');
+  document.getElementById('tab-signup').className='auth-tab '+(!isLogin?'on':'off');
+  document.getElementById('form-title').textContent=isLogin?'Welcome back':'Create account';
+  document.getElementById('form-sub').innerHTML=isLogin
+    ?'Don\'t have an account? <button onclick="switchTab(\'signup\')">Sign up free →</button>'
+    :'Already have an account? <button onclick="switchTab(\'login\')">Log in →</button>';
+  document.getElementById('submit-label').textContent=isLogin?'Log In':'Create Account';
+  document.getElementById('confirm-group').style.display=isLogin?'none':'block';
+  document.getElementById('forgot-btn').style.display=isLogin?'block':'none';
+  document.getElementById('signup-terms').style.display=isLogin?'none':'block';
+  document.getElementById('f-pw').autocomplete=isLogin?'current-password':'new-password';
+  clearMsgs();
+}
+
 function clearMsgs(){
   document.getElementById('err-msg').className='err-msg';
   document.getElementById('ok-msg').className='ok-msg';
 }
 function showErr(msg){
-  document.getElementById('err-msg').textContent=msg;
-  document.getElementById('err-msg').className='err-msg show';
+  const e=document.getElementById('err-msg');e.textContent=msg;e.className='err-msg show';
   document.getElementById('ok-msg').className='ok-msg';
 }
 function showOk(msg){
-  document.getElementById('ok-msg').textContent=msg;
-  document.getElementById('ok-msg').className='ok-msg show';
+  const e=document.getElementById('ok-msg');e.textContent=msg;e.className='ok-msg show';
   document.getElementById('err-msg').className='err-msg';
 }
-function setStep(n){
-  [0,1].forEach(i=>document.getElementById('dot-'+i).className='step-dot'+(i===n?' on':''));
-}
 
-// ── Phase 1: Send OTP ──
-async function sendCode(){
+async function doAuth(){
   const email=document.getElementById('f-email').value.trim();
+  const pw=document.getElementById('f-pw').value;
+  const confirm=document.getElementById('f-confirm').value;
   clearMsgs();
-  if(!email||!email.includes('@')){showErr('Please enter a valid email address.');return;}
-  _email=email;
 
-  const btn=document.getElementById('send-btn');
+  if(!email||!pw){showErr('Please fill in all fields.');return;}
+  if(_tab==='signup'){
+    if(pw.length<6){showErr('Password must be at least 6 characters.');return;}
+    if(pw!==confirm){showErr('Passwords do not match.');return;}
+  }
+
+  const btn=document.getElementById('submit-btn');
   btn.disabled=true;
   btn.innerHTML='<div class="spinner"></div>';
 
   try{
-    const {error}=await _sb.auth.signInWithOtp({
-      email,
-      options:{shouldCreateUser:true}
-    });
-    if(error)throw error;
-
-    // Switch to code phase
-    document.getElementById('phase-email').style.display='none';
-    document.getElementById('phase-code').style.display='block';
-    document.getElementById('email-display').textContent=email;
-    setStep(1);
-    clearMsgs();
-
-    // Focus first digit
-    document.querySelectorAll('.otp-digit')[0]?.focus();
-
-    // Start countdown
-    startCountdown();
-  }catch(e){
-    showErr(e.message||'Failed to send code. Please try again.');
-  }
-  btn.disabled=false;
-  btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg> Send Verification Code`;
-}
-
-function startCountdown(){
-  if(_countdownTimer)clearInterval(_countdownTimer);
-  let sec=60;
-  const txt=document.getElementById('countdown-txt');
-  const btn=document.getElementById('resend-btn');
-  btn.style.display='none';
-  _countdownTimer=setInterval(()=>{
-    sec--;
-    if(txt)txt.textContent='Resend in '+sec+'s';
-    if(sec<=0){
-      clearInterval(_countdownTimer);
-      if(txt)txt.textContent='';
-      if(btn)btn.style.display='inline';
+    let result;
+    if(_tab==='login'){
+      result=await _sb.auth.signInWithPassword({email,password:pw});
+    }else{
+      result=await _sb.auth.signUp({email,password:pw,options:{emailRedirectTo:window.location.origin+'/login.html'}});
     }
-  },1000);
-}
 
-async function resendCode(){
-  clearMsgs();
-  document.getElementById('resend-btn').style.display='none';
-  document.querySelectorAll('.otp-digit').forEach(d=>{d.value='';d.classList.remove('filled');});
-  document.getElementById('verify-btn').disabled=true;
-
-  try{
-    const {error}=await _sb.auth.signInWithOtp({email:_email,options:{shouldCreateUser:true}});
-    if(error)throw error;
-    showOk('New code sent! Check your inbox.');
-    startCountdown();
-    document.querySelectorAll('.otp-digit')[0]?.focus();
-  }catch(e){showErr(e.message);}
-}
-
-function backToEmail(){
-  if(_countdownTimer){clearInterval(_countdownTimer);_countdownTimer=null;}
-  document.getElementById('phase-code').style.display='none';
-  document.getElementById('phase-email').style.display='block';
-  setStep(0);
-  clearMsgs();
-}
-
-// ── OTP input handlers ──
-function otpInput(el,idx){
-  // Allow paste of full 6-digit code
-  if(el.value.length>1){
-    const digits=el.value.replace(/\D/g,'').slice(0,6).split('');
-    const inputs=document.querySelectorAll('.otp-digit');
-    digits.forEach((d,i)=>{
-      if(inputs[idx+i]){inputs[idx+i].value=d;inputs[idx+i].classList.add('filled');}
-    });
-    const nextIdx=Math.min(idx+digits.length,5);
-    inputs[nextIdx]?.focus();
-    el.value=el.value.replace(/\D/g,'')[0]||'';
-  }else{
-    el.value=el.value.replace(/\D/g,'');
-  }
-  el.classList.toggle('filled',el.value.length>0);
-  if(el.value.length>0&&idx<5){
-    document.querySelectorAll('.otp-digit')[idx+1]?.focus();
-  }
-  checkOtpComplete();
-}
-function otpKey(e,idx){
-  if(e.key==='Backspace'&&!e.target.value&&idx>0){
-    const prev=document.querySelectorAll('.otp-digit')[idx-1];
-    if(prev){prev.value='';prev.classList.remove('filled');prev.focus();}
-  }
-  if(e.key==='Enter'){const btn=document.getElementById('verify-btn');if(!btn.disabled)verifyCode();}
-}
-function checkOtpComplete(){
-  const digits=[...document.querySelectorAll('.otp-digit')].map(d=>d.value);
-  document.getElementById('verify-btn').disabled=digits.some(d=>!d);
-}
-
-// ── Phase 2: Verify OTP ──
-async function verifyCode(){
-  const digits=[...document.querySelectorAll('.otp-digit')].map(d=>d.value).join('');
-  if(digits.length!==6)return;
-  clearMsgs();
-
-  const btn=document.getElementById('verify-btn');
-  btn.disabled=true;
-  btn.innerHTML='<div class="spinner"></div>';
-
-  try{
-    const {data,error}=await _sb.auth.verifyOtp({
-      email:_email,
-      token:digits,
-      type:'email'
-    });
-    if(error)throw error;
-
-    // Store email for plan restoration
-    try{localStorage.setItem('ss_email',_email);}catch{}
-
-    showOk('✅ Verified! Redirecting…');
-    setTimeout(()=>{window.location.href='/';},900);
+    if(result.error){
+      showErr(result.error.message);
+    }else if(_tab==='signup'&&!result.data?.session){
+      showOk('✅ Check your email to confirm your account, then come back to log in!');
+    // 【修正後】
+    }else{
+      // localStorageにメールアドレスを保存して、すぐにindex.htmlへ移動
+      try{localStorage.setItem('ss_email', result.data.user.email);}catch{}
+      window.location.href = 'index2.html'; 
+    }
   }catch(e){
-    showErr('Invalid or expired code. Please try again.');
-    // Shake animation
-    const inputs=document.getElementById('otp-inputs');
-    inputs.style.animation='shake .4s ease';
-    setTimeout(()=>{inputs.style.animation='';},400);
-    // Clear inputs and refocus
-    document.querySelectorAll('.otp-digit').forEach(d=>{d.value='';d.classList.remove('filled');});
-    document.querySelectorAll('.otp-digit')[0]?.focus();
-    btn.disabled=false;
+    showErr('Error: '+e.message);
   }
 
-  btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Verify &amp; Sign In`;
+  btn.disabled=false;
+  btn.innerHTML='<span id="submit-label">'+(_tab==='login'?'Log In':'Create Account')+'</span>';
 }
 
-// ── Shake keyframe ──
-const shakeStyle=document.createElement('style');
-shakeStyle.textContent=`@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}`;
-document.head.appendChild(shakeStyle);
+async function doForgot(){
+  const email=document.getElementById('f-email').value.trim();
+  if(!email){showErr('Enter your email address first.');return;}
 
-// ── Init: Already logged in → redirect ──
+  // 修正箇所：飛び先を「パスワード再設定専用のページ」にする
+  const {error}=await _sb.auth.resetPasswordForEmail(email,{
+    redirectTo: window.location.origin + '/reset-password.html'
+  });
+
+  if(error)showErr(error.message);
+  else showOk('Password reset email sent! Check your inbox.');
+}
+
+async function checkPlan(email){
+  try{
+    const r=await fetch('/api/check-plan',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email}),signal:AbortSignal.timeout(6000)
+    });
+    if(!r.ok)return'free';
+    return(await r.json()).plan??'free';
+  }catch{return'free';}
+}
+
+// ↓↓↓ 不要になった showLoggedIn と doSignOut は削除します ↓↓↓
+
+function toast(msg,type){
+  document.querySelectorAll('.toast').forEach(e=>e.remove());
+  const t=document.createElement('div');t.className='toast '+type;t.textContent=msg;
+  document.body.appendChild(t);setTimeout(()=>t.remove(),3200);
+}
+
+// ── Init: セッション確認 ──
+(async()=>{
+  try{
+    // 1. すでにセッションがある（ログイン済み）場合は、すぐに移動
+    const {data:{session}}=await _sb.auth.getSession();
+    if(session?.user){
+      try{localStorage.setItem('ss_email', session.user.email);}catch{}
+      
+      // ↓ デザイン確認中は、ここの先頭に「//」をつけて無効化しておく
+      // window.location.href = 'index2.html';
+      
+      console.log("ログイン済みですが、テストのため移動をストップしています");
+      return;
+    }
+    
+    // 2. 新規登録時のメールリンクから戻ってきた場合の処理
+    const hash=new URLSearchParams(window.location.hash.slice(1));
+    if(hash.get('type')==='signup'||hash.get('access_token')){
+      const {data,error}=await _sb.auth.getUser();
+      if(!error&&data.user){
+        try{localStorage.setItem('ss_email', data.user.email);}catch{}
+        window.location.href = 'index2.html';
+        return;
+      }
+    }
+    
+    // 3. ?tab=signup でサインアップタブを開く
+    const params=new URLSearchParams(window.location.search);
+    if(params.get('tab')==='signup')switchTab('signup');
+  }catch(e){
+    console.warn('Auth init error:',e);
+  }
+})();
+
+// ── Init: セッション確認 ──
 (async()=>{
   try{
     const {data:{session}}=await _sb.auth.getSession();
     if(session?.user){
-      try{localStorage.setItem('ss_email',session.user.email);}catch{}
-      window.location.href='/';
+      await showLoggedIn(session.user);
+      return;
     }
-  }catch(e){console.warn('Auth init:',e);}
+    // URLパラメータ確認（メール確認後のリダイレクト）
+    const hash=new URLSearchParams(window.location.hash.slice(1));
+    if(hash.get('type')==='signup'||hash.get('access_token')){
+      const {data,error}=await _sb.auth.getUser();
+      if(!error&&data.user)await showLoggedIn(data.user);
+    }
+    // ?tab=signup でサインアップタブを開く
+    const params=new URLSearchParams(window.location.search);
+    if(params.get('tab')==='signup')switchTab('signup');
+  }catch(e){
+    console.warn('Auth init error:',e);
+  }
 })();
 </script>
 </body>
