@@ -456,14 +456,7 @@ function toast(msg,type){
 // ── Init: セッション確認 ──
 (async()=>{
   try{
-    const {data:{session}}=await _sb.auth.getSession();
-    if(session?.user){
-      try{localStorage.setItem('ss_email', session.user.email);}catch{}
-      window.location.href = 'index2.html';
-      return;
-    }
-
-    // Googleログイン後のコールバック、またはメール確認後のリダイレクト処理
+    // ① GoogleのOAuthコールバック（URLにaccess_tokenがある）場合のみリダイレクト
     const hash=new URLSearchParams(window.location.hash.slice(1));
     if(hash.get('access_token')||hash.get('type')==='signup'){
       const {data,error}=await _sb.auth.getUser();
@@ -474,9 +467,12 @@ function toast(msg,type){
       }
     }
 
-    // ?tab=signup でサインアップタブを開く
+    // ② ?tab=signup でサインアップタブを開く
     const params=new URLSearchParams(window.location.search);
     if(params.get('tab')==='signup')switchTab('signup');
+
+    // ③ 既存セッションがあっても、このページを開いた場合はリダイレクトしない
+    //    （ユーザーが意図的にログインページを開いた可能性があるため）
   }catch(e){
     console.warn('Auth init error:',e);
   }
