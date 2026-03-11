@@ -136,6 +136,31 @@ body{
 .auth-tab.off{background:transparent;color:var(--muted)}
 .auth-tab.off:hover{color:#fff}
 
+/* ── Google Button ── */
+.btn-google{
+  width:100%;padding:14px 16px;border-radius:var(--r);
+  background:var(--glass);border:1.5px solid var(--glass-bd);
+  color:#fff;cursor:pointer;
+  font-family:var(--font);font-size:15px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:all .2s;margin-bottom:4px;
+}
+.btn-google:hover{
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.2);
+  transform:translateY(-1px);
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+}
+.btn-google:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-google svg{width:20px;height:20px;flex-shrink:0}
+
+/* ── Divider ── */
+.divider{
+  display:flex;align-items:center;gap:10px;
+  color:rgba(255,255,255,.18);font-size:12px;margin:20px 0;
+}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
+
 /* ── Form ── */
 .form-group{margin-bottom:18px}
 .form-label{
@@ -179,12 +204,6 @@ body{
 }
 .ok-msg.show{display:block}
 
-.divider{
-  display:flex;align-items:center;gap:10px;
-  color:rgba(255,255,255,.18);font-size:12px;margin:20px 0;
-}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
-
 .forgot-link{
   font-size:12.5px;color:var(--muted);text-align:right;
   display:block;margin-top:-10px;margin-bottom:20px;
@@ -213,32 +232,6 @@ body{
 @keyframes ts{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 .tok{background:linear-gradient(135deg,#14532d,#166534);color:#dcfce7;border:1px solid rgba(34,197,94,.3)}
 .terr{background:linear-gradient(135deg,#7f1d1d,#991b1b);color:#fee2e2;border:1px solid rgba(239,68,68,.3)}
-
-/* Manage subscription section */
-.manage-card{
-  margin-top:28px;padding:16px 18px;
-  background:rgba(37,99,235,.08);border:1px solid rgba(59,130,246,.2);
-  border-radius:var(--r);display:none;
-}
-.manage-card.show{display:block}
-.manage-card p{font-size:13px;color:var(--muted);margin-bottom:12px;line-height:1.6}
-.manage-card .plan-name{font-size:16px;font-weight:800;color:var(--blue-300);margin-bottom:4px}
-.btn-manage{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:10px 18px;border-radius:10px;
-  background:var(--glass);border:1.5px solid var(--glass-bd);
-  color:#fff;font-family:var(--font);font-size:13px;font-weight:600;
-  cursor:pointer;transition:all .15s;text-decoration:none;
-}
-.btn-manage:hover{border-color:rgba(59,130,246,.4);color:var(--blue-200)}
-.btn-signout{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:10px 18px;border-radius:10px;margin-left:8px;
-  background:rgba(239,68,68,.1);border:1.5px solid rgba(239,68,68,.2);
-  color:rgba(239,68,68,.8);font-family:var(--font);font-size:13px;font-weight:600;
-  cursor:pointer;transition:all .15s;
-}
-.btn-signout:hover{background:rgba(239,68,68,.18);color:var(--danger)}
 </style>
 </head>
 <body>
@@ -288,7 +281,6 @@ body{
       Back to Scan Shield
     </button>
 
-    <!-- Auth form -->
     <div id="auth-form-view">
       <h1 id="form-title">Welcome back</h1>
       <p class="sub" id="form-sub">Don't have an account? <button onclick="switchTab('signup')">Sign up free →</button></p>
@@ -297,6 +289,21 @@ body{
         <button class="auth-tab on" id="tab-login" onclick="switchTab('login')">Log In</button>
         <button class="auth-tab off" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
       </div>
+
+      <!-- ── Google OAuth Button ── -->
+      <button class="btn-google" id="google-btn" onclick="doGoogle()">
+        <!-- Official Google "G" logo SVG -->
+        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+          <path fill="none" d="M0 0h48v48H0z"/>
+        </svg>
+        <span id="google-label">Continue with Google</span>
+      </button>
+
+      <div class="divider">or continue with email</div>
 
       <div id="err-msg" class="err-msg"></div>
       <div id="ok-msg" class="ok-msg"></div>
@@ -329,9 +336,36 @@ const SUPABASE_URL='https://oktmwoihqlkbcmdpkzre.supabase.co';
 const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdG13b2locWxrYmNtZHBrenJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjA3OTYsImV4cCI6MjA4Nzg5Njc5Nn0.f-6DLyWGDAqCTzyiJ7HDbQkDZA7K2SLSyrQApA6vOC4';
 const _sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
-const PORTAL_URL='https://billing.stripe.com/p/login/test_00wcN6epm5S0gD3f1M43S00';
-
 let _tab='login';
+
+// ── Google OAuth ──
+async function doGoogle(){
+  const btn=document.getElementById('google-btn');
+  btn.disabled=true;
+  btn.innerHTML='<div class="spinner"></div><span>Connecting…</span>';
+  clearMsgs();
+
+  const {error}=await _sb.auth.signInWithOAuth({
+    provider:'google',
+    options:{
+      redirectTo: window.location.origin+'/index2.html'
+    }
+  });
+
+  if(error){
+    showErr(error.message);
+    btn.disabled=false;
+    btn.innerHTML=`
+      <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;flex-shrink:0">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      <span id="google-label">Continue with Google</span>`;
+  }
+  // エラーがなければ自動でGoogleのOAuthページへリダイレクト
+}
 
 function switchTab(tab){
   _tab=tab;
@@ -391,11 +425,9 @@ async function doAuth(){
       showErr(result.error.message);
     }else if(_tab==='signup'&&!result.data?.session){
       showOk('✅ Check your email to confirm your account, then come back to log in!');
-    // 【修正後】
     }else{
-      // localStorageにメールアドレスを保存して、すぐにindex.htmlへ移動
       try{localStorage.setItem('ss_email', result.data.user.email);}catch{}
-      window.location.href = 'index2.html'; 
+      window.location.href = 'index2.html';
     }
   }catch(e){
     showErr('Error: '+e.message);
@@ -408,28 +440,12 @@ async function doAuth(){
 async function doForgot(){
   const email=document.getElementById('f-email').value.trim();
   if(!email){showErr('Enter your email address first.');return;}
-
-  // 修正箇所：飛び先を「パスワード再設定専用のページ」にする
   const {error}=await _sb.auth.resetPasswordForEmail(email,{
     redirectTo: window.location.origin + '/reset-password.html'
   });
-
   if(error)showErr(error.message);
   else showOk('Password reset email sent! Check your inbox.');
 }
-
-async function checkPlan(email){
-  try{
-    const r=await fetch('/api/check-plan',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({email}),signal:AbortSignal.timeout(6000)
-    });
-    if(!r.ok)return'free';
-    return(await r.json()).plan??'free';
-  }catch{return'free';}
-}
-
-// ↓↓↓ 不要になった showLoggedIn と doSignOut は削除します ↓↓↓
 
 function toast(msg,type){
   document.querySelectorAll('.toast').forEach(e=>e.remove());
@@ -440,21 +456,16 @@ function toast(msg,type){
 // ── Init: セッション確認 ──
 (async()=>{
   try{
-    // 1. すでにセッションがある（ログイン済み）場合は、すぐに移動
     const {data:{session}}=await _sb.auth.getSession();
     if(session?.user){
       try{localStorage.setItem('ss_email', session.user.email);}catch{}
-      
-      // ↓ デザイン確認中は、ここの先頭に「//」をつけて無効化しておく
-      // window.location.href = 'index2.html';
-      
-      console.log("ログイン済みですが、テストのため移動をストップしています");
+      window.location.href = 'index2.html';
       return;
     }
-    
-    // 2. 新規登録時のメールリンクから戻ってきた場合の処理
+
+    // Googleログイン後のコールバック、またはメール確認後のリダイレクト処理
     const hash=new URLSearchParams(window.location.hash.slice(1));
-    if(hash.get('type')==='signup'||hash.get('access_token')){
+    if(hash.get('access_token')||hash.get('type')==='signup'){
       const {data,error}=await _sb.auth.getUser();
       if(!error&&data.user){
         try{localStorage.setItem('ss_email', data.user.email);}catch{}
@@ -462,29 +473,7 @@ function toast(msg,type){
         return;
       }
     }
-    
-    // 3. ?tab=signup でサインアップタブを開く
-    const params=new URLSearchParams(window.location.search);
-    if(params.get('tab')==='signup')switchTab('signup');
-  }catch(e){
-    console.warn('Auth init error:',e);
-  }
-})();
 
-// ── Init: セッション確認 ──
-(async()=>{
-  try{
-    const {data:{session}}=await _sb.auth.getSession();
-    if(session?.user){
-      await showLoggedIn(session.user);
-      return;
-    }
-    // URLパラメータ確認（メール確認後のリダイレクト）
-    const hash=new URLSearchParams(window.location.hash.slice(1));
-    if(hash.get('type')==='signup'||hash.get('access_token')){
-      const {data,error}=await _sb.auth.getUser();
-      if(!error&&data.user)await showLoggedIn(data.user);
-    }
     // ?tab=signup でサインアップタブを開く
     const params=new URLSearchParams(window.location.search);
     if(params.get('tab')==='signup')switchTab('signup');
