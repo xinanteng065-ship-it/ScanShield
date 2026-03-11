@@ -212,6 +212,19 @@ body{
 }
 .forgot-link:hover{color:var(--blue-300)}
 
+
+/* ── Password Toggle ── */
+.pw-wrap{position:relative}
+.pw-wrap .form-input{padding-right:48px}
+.toggle-pw{
+  position:absolute;right:14px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;color:var(--muted);
+  padding:4px;display:flex;align-items:center;justify-content:center;
+  transition:color .15s;
+}
+.toggle-pw:hover{color:var(--blue-300)}
+.toggle-pw svg{width:18px;height:18px;pointer-events:none}
+
 .terms-note{font-size:11.5px;color:var(--muted);text-align:center;margin-top:18px;line-height:1.6}
 
 /* ── Spinner ── */
@@ -314,11 +327,21 @@ body{
       </div>
       <div class="form-group">
         <label class="form-label">Password</label>
-        <input type="password" id="f-pw" class="form-input" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()"/>
+        <div class="pw-wrap">
+          <input type="password" id="f-pw" class="form-input" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()"/>
+          <button type="button" class="toggle-pw" onclick="togglePw('f-pw',this)" tabindex="-1" aria-label="Show password">
+            <svg id="eye-pw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
       </div>
       <div class="form-group" id="confirm-group" style="display:none">
         <label class="form-label">Confirm Password</label>
-        <input type="password" id="f-confirm" class="form-input" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')doAuth()"/>
+        <div class="pw-wrap">
+          <input type="password" id="f-confirm" class="form-input" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')doAuth()"/>
+          <button type="button" class="toggle-pw" onclick="togglePw('f-confirm',this)" tabindex="-1" aria-label="Show confirm password">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
       </div>
       <button id="forgot-btn" class="forgot-link" onclick="doForgot()">Forgot password?</button>
       <button class="btn-submit" id="submit-btn" onclick="doAuth()">
@@ -337,6 +360,18 @@ const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 const _sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
 let _tab='login';
+
+// ── Password Toggle ──
+function togglePw(inputId, btn){
+  const inp = document.getElementById(inputId);
+  const isHidden = inp.type === 'password';
+  inp.type = isHidden ? 'text' : 'password';
+  // アイコン切替：表示中はスラッシュ付き目玉
+  btn.innerHTML = isHidden
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  btn.style.color = isHidden ? 'var(--blue-300)' : 'var(--muted)';
+}
 
 // ── Google OAuth ──
 async function doGoogle(){
@@ -424,7 +459,32 @@ async function doAuth(){
     if(result.error){
       showErr(result.error.message);
     }else if(_tab==='signup'&&!result.data?.session){
-      showOk('✅ Check your email to confirm your account, then come back to log in!');
+      // メール確認待ち画面に切り替え
+      document.getElementById('auth-form-view').innerHTML = `
+        <div style="text-align:center;padding:20px 0">
+          <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(37,99,235,.2),rgba(6,182,212,.1));border:1px solid rgba(59,130,246,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h2 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px">Check your email</h2>
+          <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px">
+            確認メールを <strong style="color:#fff">${email}</strong> に送りました。<br/>
+            メール内のリンクをクリックしてアカウントを有効化してください。
+          </p>
+          <div style="background:rgba(37,99,235,.08);border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:14px 16px;margin-bottom:20px;text-align:left">
+            <p style="font-size:12px;color:var(--muted);line-height:1.7">
+              📧 メールが届かない場合は迷惑メールフォルダを確認してください<br/>
+              ⏱ リンクの有効期限は <strong style="color:var(--blue-300)">24時間</strong> です
+            </p>
+          </div>
+          <button onclick="switchTab('login')" style="
+            width:100%;padding:14px;border-radius:14px;
+            background:linear-gradient(135deg,var(--blue-500),var(--cyan));
+            color:#fff;border:none;cursor:pointer;
+            font-family:var(--font);font-size:15px;font-weight:700;
+            box-shadow:0 4px 20px rgba(37,99,235,.4);">
+            ログイン画面へ戻る
+          </button>
+        </div>`;
     }else{
       try{localStorage.setItem('ss_email', result.data.user.email);}catch{}
       window.location.href = 'index2.html';
