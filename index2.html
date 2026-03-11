@@ -73,7 +73,6 @@ body{
   line-height:1.65;
   overflow-x:hidden;
   min-height:100vh;
-  /* Noise texture */
   background-image:
     radial-gradient(ellipse 80% 60% at 50% -10%,rgba(37,99,235,.22) 0%,transparent 70%),
     radial-gradient(ellipse 60% 40% at 100% 80%,rgba(6,182,212,.1) 0%,transparent 60%),
@@ -228,7 +227,7 @@ header{
 .trust-item svg{width:13px;height:13px;color:var(--cyan);flex-shrink:0}
 
 /* ═══════════════════════════════════════
-   PRICING — Stripe対応
+   PRICING
 ═══════════════════════════════════════ */
 .pricing-section{padding:40px 0 20px}
 .sec-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.4px;color:var(--blue-300);text-align:center;margin-bottom:8px}
@@ -637,7 +636,6 @@ footer{
   .plan-price .amt{font-size:30px}
 }
 
-/* ─── プランバッジ ─── */
 .plan-badge-ui{
   display:flex;align-items:center;
   font-size:11.5px;font-weight:700;
@@ -655,13 +653,9 @@ footer{
   color:var(--blue-300);
 }
 
-/* ─── スマホ最適化 ─── */
 @media(max-width:480px){
-  /* ナビ */
   .nav{padding:12px 14px}
-  #plan-badge{display:none!important} /* スマホではバッジ非表示→スキャン画面で表示 */
-
-  /* ヒーロー */
+  #plan-badge{display:none!important}
   .hero{padding:28px 0 24px}
   .hero-eyebrow{font-size:10.5px;padding:4px 11px}
   .hero h1{font-size:clamp(24px,7.5vw,34px);letter-spacing:-1px}
@@ -670,29 +664,21 @@ footer{
   .cta-sec{font-size:14px;padding:13px}
   .trust-row{gap:12px}
   .trust-item{font-size:11.5px}
-
-  /* プライシング */
   .billing-toggle .billing-btn{font-size:12px;padding:6px 12px}
   .plan-card{padding:18px}
   .plan-price .amt{font-size:32px}
   .plan-feats li{font-size:12.5px}
   .plan-cta{padding:13px;font-size:13.5px}
-
-  /* スキャン */
   .scan-hero{padding:20px 0 14px}
   .scan-hero h2{font-size:19px}
   .tab-bar{gap:4px;padding:4px}
   .tab{font-size:12px;padding:10px 4px;gap:4px}
   .tab svg{width:13px;height:13px}
-
-  /* カメラ */
   .cam-frame{border-radius:14px}
   .cam-init{padding:28px 0}
   .cam-big-ico{width:64px;height:64px}
   .cam-init h3{font-size:16px}
   .cam-init p{font-size:13px}
-
-  /* 結果 */
   .r-top{padding:13px 14px;gap:10px}
   .r-domain{font-size:13.5px}
   .r-rawurl{font-size:10.5px}
@@ -701,28 +687,18 @@ footer{
   .arow{grid-template-columns:70px 1fr;gap:8px;padding:9px 0}
   .albl{font-size:9.5px}
   .aval{font-size:13px}
-
-  /* チャット */
   .chat-msgs{max-height:200px;padding:12px 12px}
   .mb{font-size:13px;padding:9px 12px}
   .chat-inp{padding:9px 12px;gap:7px}
   .cin{font-size:13px}
-
-  /* ドロップ */
   .drop{padding:32px 16px}
-
-  /* フッター */
   footer{padding:22px 14px calc(22px + env(safe-area-inset-bottom))}
 }
 
-/* ═══════════════════════════════════════
-   PC SIDEBAR LAYOUT (768px+)
-═══════════════════════════════════════ */
 #sidebar{display:none}
 
 @media(min-width:768px){
   header{display:none}
-
   #sidebar{
     display:flex;flex-direction:column;
     width:240px;min-height:100vh;
@@ -745,7 +721,6 @@ footer{
   .sb-logo-gem svg{width:15px;height:15px}
   .sb-logo-txt{font-size:15px;font-weight:800;letter-spacing:-.4px}
   .sb-logo-txt em{font-style:normal;color:var(--blue-300)}
-
   .sb-nav{flex:1;padding:0 10px;display:flex;flex-direction:column;gap:2px}
   .sb-item{
     display:flex;align-items:center;gap:10px;
@@ -759,7 +734,6 @@ footer{
   .sb-item:hover{background:var(--glass);color:#fff}
   .sb-item.on{background:rgba(37,99,235,.15);color:var(--blue-300);border:1px solid rgba(59,130,246,.18)}
   .sb-divider{height:1px;background:var(--glass-bd);margin:8px 10px}
-
   .sb-bottom{padding:14px 10px;border-top:1px solid var(--glass-bd)}
   .sb-plan-card{
     padding:10px 12px;border-radius:10px;
@@ -777,10 +751,7 @@ footer{
     display:flex;align-items:center;justify-content:center;
   }
   .sb-login-btn:hover{box-shadow:0 4px 18px rgba(37,99,235,.5)}
-
   #main-content{margin-left:240px;min-height:100vh}
-
-  /* コンテンツを少し広げる */
   .wrap{max-width:700px}
   .plan-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 }
@@ -794,9 +765,6 @@ footer{
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════
-     PC SIDEBAR (hidden on mobile via CSS)
-═══════════════════════════════════════════════ -->
 <div id="sidebar">
   <div class="sb-logo" onclick="go('home')">
     <div class="sb-logo-gem"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
@@ -833,12 +801,9 @@ footer{
     </button>
   </div>
 </div>
-<!-- メインコンテンツラッパー -->
+
 <div id="main-content">
 
-<!-- ═══════════════════════════════════════════════
-     TUTORIAL OVERLAY (3 steps)
-═══════════════════════════════════════════════ -->
 <div id="tutorial">
   <div class="tut-bg-glow"></div>
   <div class="tut-highlight" id="tut-highlight"></div>
@@ -848,34 +813,22 @@ footer{
       <div class="tut-dot" id="td1"></div>
       <div class="tut-dot" id="td2"></div>
     </div>
-
-    <!-- Step 0 -->
     <div id="ts0">
-      <div class="tut-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
+      <div class="tut-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <h2 class="tut-h">Welcome to<br/>Scan Shield 👋</h2>
       <p class="tut-p">The <strong>AI-powered tool</strong> that tells you if a QR code is safe — before you click anything.<br/><br/>Let us show you how it works in <strong>30 seconds</strong>.</p>
       <button class="tut-btn" onclick="nextTut()">Get Started →</button>
       <button class="tut-skip" onclick="skipTut()">Skip tutorial</button>
     </div>
-
-    <!-- Step 1 -->
     <div id="ts1" style="display:none">
-      <div class="tut-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-      </div>
+      <div class="tut-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
       <h2 class="tut-h">Three Ways to Scan</h2>
       <p class="tut-p"><strong>📷 Camera</strong> — Point at a QR code for instant detection.<br/><br/><strong>🖼 Upload</strong> — Screenshot of a QR? Upload the image.<br/><br/><strong>🔗 URL</strong> — Already have the link? Paste it directly.</p>
       <button class="tut-btn" onclick="nextTut()">Next →</button>
       <button class="tut-skip" onclick="skipTut()">Skip</button>
     </div>
-
-    <!-- Step 2 -->
     <div id="ts2" style="display:none">
-      <div class="tut-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-      </div>
+      <div class="tut-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <h2 class="tut-h">Instant AI Verdict</h2>
       <p class="tut-p">In under <strong>3 seconds</strong>, you'll get:<br/><br/>✅ <strong>Safe</strong> · ⚠️ <strong>Caution</strong> · 🚨 <strong>Dangerous</strong><br/><br/>Plus a full explanation and a <strong>chat assistant</strong> to answer any follow-up questions.</p>
       <button class="tut-btn" onclick="skipTut()">Start Scanning →</button>
@@ -883,11 +836,6 @@ footer{
   </div>
 </div>
 
-
-
-<!-- ═══════════════════════════════════════════════
-     HEADER
-═══════════════════════════════════════════════ -->
 <header>
   <nav class="nav">
     <div class="logo" onclick="go('home')">
@@ -903,12 +851,7 @@ footer{
   </nav>
 </header>
 
-
-<!-- ═══════════════════════════════════════════════
-     PAGE: HOME
-═══════════════════════════════════════════════ -->
 <div id="page-home" class="page active">
-
   <section class="hero wrap" id="sec-home">
     <div class="hero-eyebrow"><span class="pulse"></span> AI-Powered QR Safety</div>
     <h1>Don't Scan Blind.<br/><span class="grad">Stay Protected.</span></h1>
@@ -927,7 +870,6 @@ footer{
     </div>
   </section>
 
-  <!-- How it works -->
   <section class="how-section wrap">
     <div class="sec-label">How It Works</div>
     <h2 class="sec-title">Three steps. Under 10 seconds.</h2>
@@ -938,18 +880,14 @@ footer{
     </div>
   </section>
 
-  <!-- Pricing -->
   <section class="pricing-section wrap" id="sec-pricing">
     <div class="sec-label">Pricing</div>
     <h2 class="sec-title">Simple, transparent pricing</h2>
     <p class="sec-sub">Start free. Upgrade when you need unlimited power.</p>
-
     <div class="billing-toggle">
       <div class="billing-btn on" style="cursor:default">Monthly billing · Cancel anytime</div>
     </div>
-
     <div class="plan-cards">
-      <!-- Free -->
       <div class="plan-card">
         <div class="plan-name">Free</div>
         <div class="plan-price"><span class="amt">$0</span><span class="per">/ forever</span></div>
@@ -964,8 +902,6 @@ footer{
         </ul>
         <button class="plan-cta ghost" onclick="go('scan')">Start for Free</button>
       </div>
-
-      <!-- Pro -->
       <div class="plan-card featured">
         <div class="plan-badge">⚡ Most Popular</div>
         <div class="plan-name">Pro</div>
@@ -981,8 +917,6 @@ footer{
         </ul>
         <button class="plan-cta primary" onclick="openStripe('pro')">Get Pro →</button>
       </div>
-
-      <!-- Team -->
       <div class="plan-card">
         <div class="plan-name">Team</div>
         <div class="plan-price"><span class="amt">$7</span><span class="per">/ month</span></div>
@@ -997,19 +931,13 @@ footer{
         <button class="plan-cta ghost" onclick="openStripe('team')">Get Team →</button>
       </div>
     </div>
-
     <div class="stripe-note">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       Secure payment via Stripe · Cancel anytime · No contracts, no hidden fees
     </div>
   </section>
+</div>
 
-</div><!-- /page-home -->
-
-
-<!-- ═══════════════════════════════════════════════
-     PAGE: SCAN
-═══════════════════════════════════════════════ -->
 <div id="page-scan" class="page">
   <div class="scan-hero wrap">
     <h2>Scan a QR Code</h2>
@@ -1019,7 +947,6 @@ footer{
       <button onclick="showEmailActivate()" style="font-size:12px;color:var(--blue-300);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;display:none" id="activate-link">Already subscribed?</button>
     </div>
   </div>
-
   <div class="wrap">
     <div class="tab-bar" id="tab-bar">
       <button class="tab on" onclick="swTab('camera')">
@@ -1030,10 +957,7 @@ footer{
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         Upload <span id="upload-lock" style="font-size:10px">🔒</span>
       </button>
-
     </div>
-
-    <!-- Camera tab -->
     <div class="tp on" id="tp-camera">
       <div id="cam-init" class="cam-init">
         <div class="cam-big-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
@@ -1058,8 +982,6 @@ footer{
         </div>
       </div>
     </div>
-
-    <!-- Upload tab -->
     <div class="tp" id="tp-upload">
       <div class="drop" id="dz" ondragover="ddOver(event)" ondragleave="ddLeave()" ondrop="ddDrop(event)">
         <input type="file" accept="image/*" id="fi" onchange="fileChange(event)"/>
@@ -1070,22 +992,13 @@ footer{
         <p style="color:var(--blue-300);font-size:14px;font-weight:700">Tap to Browse</p>
       </div>
     </div>
-
-
-
-    <!-- Result -->
     <div id="result-area">
       <div class="result-card" id="result-card"></div>
     </div>
-
     <div style="height:32px"></div>
   </div>
-</div><!-- /page-scan -->
+</div>
 
-
-<!-- ═══════════════════════════════════════════════
-     PAGE: GUIDE
-═══════════════════════════════════════════════ -->
 <div id="page-guide" class="page">
   <div class="g-hero wrap">
     <div class="hero-eyebrow" style="margin-bottom:14px">📚 Safety Guide</div>
@@ -1099,7 +1012,7 @@ footer{
       <p class="prev">Attackers use QR codes to hide dangerous URLs that bypass traditional security. It's called "quishing" and it's exploding in 2024–2025.</p>
       <div class="art-body" id="g1">
         <h3>The Hidden Link Problem</h3>
-        <p>A QR code encodes a URL invisibly. Your phone opens it automatically — no preview, no warning. This blind-click is exactly what attackers exploit. Traditional phishing links can be hovered to reveal the destination. QR codes offer zero preview.</p>
+        <p>A QR code encodes a URL invisibly. Your phone opens it automatically — no preview, no warning. This blind-click is exactly what attackers exploit.</p>
         <div class="callout"><strong>📊 Stat:</strong> QR phishing attacks increased 600%+ in H2 2023. By 2024, it became the #1 method to bypass corporate email security filters.</div>
         <h3>Common Attack Scenarios</h3>
         <ul>
@@ -1108,53 +1021,47 @@ footer{
           <li><strong>Fake delivery notices</strong> — "Scan to reschedule" leads to credential theft</li>
           <li><strong>Restaurant menus</strong> — tampered QR codes on tables with card skimming</li>
         </ul>
-        <div class="callout callout-safe"><strong>✅ Fix:</strong> Use Scan Shield on any QR that asks you to log in or pay. Takes 3 seconds.</div>
+        <div class="callout callout-safe"><strong>✅ Fix:</strong> Use Scan Shield on any QR that asks you to log in or pay.</div>
       </div>
       <button class="read-btn" onclick="togArt('g1')">Read more ↓</button>
     </div>
-
     <div class="art">
       <span class="art-tag">Intermediate</span>
       <h2 onclick="togArt('g2')">5 Warning Signs of a Scam QR Code</h2>
       <p class="prev">Five red flags that security professionals look for — plus one tool that checks them all automatically.</p>
       <div class="art-body" id="g2">
         <h3>1. Random or Misspelled Domain</h3>
-        <p>Real brands use their own domains. Watch for: <strong>amaz0n-secure.xyz</strong>, <strong>paypa1-login.support</strong>, random character strings.</p>
+        <p>Real brands use their own domains. Watch for: <strong>amaz0n-secure.xyz</strong>, <strong>paypa1-login.support</strong>.</p>
         <h3>2. URL Shorteners</h3>
         <p>bit.ly, tinyurl hide the real destination. Expand or verify before visiting.</p>
         <h3>3. Immediate Login Request</h3>
-        <p>Legit services rarely demand credentials the moment you land from a QR code. Especially suspicious on unrecognized domains.</p>
+        <p>Legit services rarely demand credentials the moment you land from a QR code.</p>
         <h3>4. Physical Sticker Over QR</h3>
-        <p>Touch the QR code in restaurants, parking meters, and public signs. A sticker on top of another surface is a strong attack signal.</p>
+        <p>Touch the QR code in restaurants, parking meters. A sticker on top is a strong attack signal.</p>
         <h3>5. Urgency Language</h3>
         <p>"Act now — account will close!" Legitimate companies don't deliver urgency via QR codes.</p>
       </div>
       <button class="read-btn" onclick="togArt('g2')">Read more ↓</button>
     </div>
-
     <div class="art">
       <span class="art-tag">Advanced</span>
       <h2 onclick="togArt('g3')">How Scan Shield's AI Detects Threats</h2>
       <p class="prev">A look inside the three-layer analysis engine: URL inspection, live web intelligence, and GPT-4o reasoning.</p>
       <div class="art-body" id="g3">
         <h3>Layer 1: URL Structure</h3>
-        <p>Structural signals — unusual TLDs, character substitutions, excessive subdomains, abnormal URL length — analyzed before making any network request.</p>
+        <p>Structural signals — unusual TLDs, character substitutions, excessive subdomains — analyzed before any network request.</p>
         <h3>Layer 2: Live Threat Intelligence</h3>
-        <p>Real-time search for scam reports, consumer complaints, and cybersecurity alerts about the domain. Catches newly-created phishing sites that aren't yet in static blocklists.</p>
+        <p>Real-time search for scam reports and cybersecurity alerts about the domain.</p>
         <h3>Layer 3: GPT-4o Synthesis</h3>
-        <p>All signals are fed into GPT-4o-mini with a carefully engineered security prompt. Conservative by design — only flags danger when multiple clear signals align.</p>
-        <div class="callout"><strong>💡 Why this beats blocklists:</strong> Most phishing domains live for only 24–72 hours — too short for static lists, but long enough to steal credentials. Real-time AI catches them.</div>
+        <p>All signals fed into GPT-4o-mini. Conservative by design — only flags danger when multiple clear signals align.</p>
+        <div class="callout"><strong>💡 Why this beats blocklists:</strong> Most phishing domains live for only 24–72 hours — too short for static lists, but long enough to steal credentials.</div>
       </div>
       <button class="read-btn" onclick="togArt('g3')">Read more ↓</button>
     </div>
     <div style="height:32px"></div>
   </div>
-</div><!-- /page-guide -->
+</div>
 
-
-<!-- ═══════════════════════════════════════════════
-     PAGE: ABOUT
-═══════════════════════════════════════════════ -->
 <div id="page-about" class="page">
   <div class="pg-hero wrap">
     <div class="hero-eyebrow" style="margin-bottom:14px">👋 About</div>
@@ -1164,8 +1071,7 @@ footer{
   <div class="wrap">
     <div class="prose-card">
       <h2>Our Mission</h2>
-      <p>QR codes are everywhere — restaurants, parking, events, packages. But as their use exploded, so did their abuse by scammers. In 2024, QR phishing became one of the top attack vectors targeting everyday users worldwide.</p>
-      <p>Most people have no way to tell if a QR code is safe before scanning. Existing tools are technical, slow, or only check outdated blocklists. <strong>Scan Shield changes that.</strong></p>
+      <p>QR codes are everywhere — restaurants, parking, events, packages. But as their use exploded, so did their abuse by scammers.</p>
       <h2>What Makes Us Different</h2>
       <ul>
         <li><strong>Real AI, not rules</strong> — GPT-4o analyzes context, not just blocklists</li>
@@ -1174,20 +1080,12 @@ footer{
         <li><strong>Mobile-first</strong> — Built for the phone you already have in your hand</li>
       </ul>
       <h2>Technology</h2>
-      <p>QR decoding runs locally in your browser via <a href="https://github.com/cozmo/jsQR" target="_blank" rel="noopener">jsQR</a>. Your camera feed never leaves your device. URLs are analyzed via OpenAI GPT-4o-mini and Serper's real-time search API.</p>
-      <h2>The Team</h2>
-      <div style="background:rgba(37,99,235,.08);border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:16px;font-size:13.5px;line-height:1.7;color:rgba(255,255,255,.75)">
-        Scan Shield is built and maintained by an independent developer passionate about cybersecurity and making the internet safer for non-technical users. If you find it useful, sharing it is the best support. 🙏
-      </div>
+      <p>QR decoding runs locally in your browser via <a href="https://github.com/cozmo/jsQR" target="_blank" rel="noopener">jsQR</a>. Your camera feed never leaves your device.</p>
     </div>
     <div style="height:32px"></div>
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════
-     PAGE: PRIVACY
-═══════════════════════════════════════════════ -->
 <div id="page-privacy" class="page">
   <div class="pg-hero wrap"><h1>🔒 Privacy Policy</h1><p>Last updated: June 2025</p></div>
   <div class="wrap">
@@ -1206,31 +1104,22 @@ footer{
       </table>
       <div class="l-h">3. Third Parties</div>
       <p class="l-p"><strong>OpenAI</strong> — AI analysis. <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">Policy ↗</a></p>
-      <p class="l-p"><strong>Serper.dev</strong> — Threat search. <a href="https://serper.dev/privacy" target="_blank" rel="noopener">Policy ↗</a></p>
       <p class="l-p"><strong>Stripe</strong> — Payment processing. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Policy ↗</a></p>
-      <div class="l-h">4. Children</div>
-      <p class="l-p">Not intended for users under 13. Minors should use with parental supervision.</p>
-      <div class="l-h">5. Contact</div>
-      <p class="l-p">Privacy questions? Email us directly.</p>
     </div>
     <div style="height:32px"></div>
   </div>
 </div>
 
-
-<!-- ═══════════════════════════════════════════════
-     PAGE: TERMS
-═══════════════════════════════════════════════ -->
 <div id="page-terms" class="page">
   <div class="pg-hero wrap"><h1>⚖️ Terms &amp; Disclaimer</h1><p>Last updated: June 2025</p></div>
   <div class="wrap">
     <div class="prose-card">
       <div class="l-h">1. Service</div>
-      <p class="l-p">Scan Shield provides AI-powered QR safety analysis for informational purposes only. Results are not a guarantee of safety.</p>
+      <p class="l-p">Scan Shield provides AI-powered QR safety analysis for informational purposes only.</p>
       <div class="l-h">2. Subscriptions</div>
-      <p class="l-p">Pro and Team plans are billed via Stripe. Subscriptions renew automatically. Cancel anytime from your account settings. Refunds are handled per Stripe's policy.</p>
+      <p class="l-p">Pro and Team plans are billed via Stripe. Cancel anytime from your account settings.</p>
       <div class="l-h">3. Accuracy Disclaimer</div>
-      <p class="l-p">AI analysis may produce incorrect results. Scan Shield is not liable for any damages resulting from reliance on our analysis. Always apply independent judgment.</p>
+      <p class="l-p">AI analysis may produce incorrect results. Scan Shield is not liable for any damages.</p>
       <div class="l-h">4. Governing Law</div>
       <p class="l-p">This service is operated in accordance with the laws of Japan.</p>
     </div>
@@ -1238,17 +1127,7 @@ footer{
   </div>
 </div>
 
-
-
-
-
-<!-- ═══════════════════════════════════════════════
-     FOOTER (全ページ共通)
-═══════════════════════════════════════════════ -->
-<!-- ═══════════════════════════════════════════════
-     AUTH MODAL
-═══════════════════════════════════════════════ -->
-<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:1900;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;">
+<div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:1900;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
   <div style="width:100%;max-width:480px;background:linear-gradient(160deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:32px 24px calc(40px + env(safe-area-inset-bottom));animation:sheet-up .4s cubic-bezier(.22,1,.36,1) both">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
       <h3 id="auth-title" style="font-size:22px;font-weight:800;letter-spacing:-.5px">Log In</h3>
@@ -1298,33 +1177,20 @@ footer{
       <button class="f-link" onclick="go('terms')">Terms</button><span class="f-sep">·</span>
       <button class="f-link" onclick="openPortal()">Manage Subscription</button>
     </div>
-    <div class="f-bot">
-      © 2025 Scan Shield · Independent developer ·
-      AI analysis is for informational purposes only.
-    </div>
+    <div class="f-bot">© 2025 Scan Shield · Independent developer · AI analysis is for informational purposes only.</div>
   </div>
 </footer>
 
-
-<!-- ═══════════════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════════════ -->
 <script>
-// API calls go through /api/* (Vercel server functions — keys are env vars)
-
-// ─── Supabase Auth 初期化 ───
-// SUPABASE_URL と SUPABASE_ANON_KEY は index.html に直接書いてOK（公開キー）
 const SUPABASE_URL = 'https://oktmwoihqlkbcmdpkzre.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdG13b2locWxrYmNtZHBrenJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjA3OTYsImV4cCI6MjA4Nzg5Njc5Nn0.f-6DLyWGDAqCTzyiJ7HDbQkDZA7K2SLSyrQApA6vOC4';
 const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let camS=null,camT=null,hist=[],curQ='',busy=false;
 let facingMode='environment';
-
-/* ─── プラン管理 ─── */
 let currentPlan='free';
 let userEmail=null;
-let _authUser=null; // ログイン中のユーザー
+let _authUser=null;
 const SCAN_KEY='ss_scans_'+new Date().toDateString();
 
 /* ─── Auth モーダル ─── */
@@ -1371,19 +1237,16 @@ async function doAuth(){
       result=await _sb.auth.signUp({email,password:pw});
     }
     if(result.error){
-      msg.textContent=result.error.message;
-      msg.style.color='var(--danger)';
+      msg.textContent=result.error.message;msg.style.color='var(--danger)';
     }else if(_authTab==='signup'&&!result.data?.session){
-      msg.textContent='✅ Check your email to confirm your account!';
-      msg.style.color='var(--safe)';
+      msg.textContent='✅ Check your email to confirm your account!';msg.style.color='var(--safe)';
     }else{
       closeAuthModal();
       await onAuthStateChange(result.data.user);
       toast('Welcome! '+(result.data.user?.email||''),'tok');
     }
   }catch(e){
-    msg.textContent='Error: '+e.message;
-    msg.style.color='var(--danger)';
+    msg.textContent='Error: '+e.message;msg.style.color='var(--danger)';
   }
   btn.disabled=false;
   btn.textContent=_authTab==='login'?'Log In':'Sign Up';
@@ -1395,33 +1258,25 @@ async function doForgotPassword(){
   if(error)toast('Error: '+error.message,'terr');
   else toast('Password reset email sent!','tok');
 }
-// 修正後
 async function doSignOut(){
   await _sb.auth.signOut();
   _authUser=null;userEmail=null;currentPlan='free';
-  
-  // localStorageのデータも確実に消去する
   try{localStorage.removeItem('ss_email');}catch{}
-  
   updatePlanUI();updateNavAuth();
   toast('Signed out.','tok');
 }
 async function onAuthStateChange(user){
   if(!user){_authUser=null;userEmail=null;currentPlan='free';updateNavAuth();updatePlanUI();return;}
   _authUser=user;userEmail=user.email;
-  // Supabaseのsubscribersテーブルからプランを取得
   currentPlan=await checkPlanByEmail(user.email);
   updateNavAuth();updatePlanUI();
 }
-// 修正後
 function updateNavAuth(){
   const btn=document.getElementById('nav-login-btn');
   if(!btn)return;
   if(_authUser){
     btn.textContent=_authUser.email.split('@')[0];
-    btn.onclick=()=>{
-      if(confirm('Sign out?'))doSignOut();
-    };
+    btn.onclick=()=>{if(confirm('Sign out?'))doSignOut();};
   }else{
     btn.textContent='Log in';
     btn.onclick=()=>window.location.href='index.html';
@@ -1433,32 +1288,23 @@ function incTodayScans(){try{localStorage.setItem(SCAN_KEY,getTodayScans()+1);}c
 function planLimit(){return currentPlan==='team'?99999:currentPlan==='pro'?10:2;}
 function canScan(){return getTodayScans()<planLimit();}
 function remainingScans(){return Math.max(0,planLimit()-getTodayScans());}
-// プランごとの機能チェック
 function canUpload(){return currentPlan==='pro'||currentPlan==='team';}
 function canChat(){return currentPlan==='pro'||currentPlan==='team';}
 
 function updatePlanUI(){
-  // ヘッダーバッジ（デスクトップ）
   const badge=document.getElementById('plan-badge');
-  // スキャン画面バッジ（全端末）
   const scanBadge=document.getElementById('scan-plan-badge');
   const activateLink=document.getElementById('activate-link');
-
   const freeText=remainingScans()+' / 2 scans left today';
   const paidText=currentPlan==='pro'?'⚡ Pro — Unlimited':'👥 Team — Unlimited';
   const cls=currentPlan==='free'?'plan-badge-ui free':'plan-badge-ui paid';
   const txt=currentPlan==='free'?freeText:paidText;
-
   if(badge){badge.textContent=txt;badge.className=cls;badge.style.display='flex';}
   if(scanBadge){scanBadge.textContent=txt;scanBadge.className=cls;scanBadge.style.display='flex';}
   if(activateLink){activateLink.style.display=currentPlan==='free'?'block':'none';}
-  // Uploadタブのロックアイコン
   const ul=document.getElementById('upload-lock');
   if(ul)ul.style.display=canUpload()?'none':'inline';
-  // サイドバー更新
   if(typeof updateSidebarPlan==='function')updateSidebarPlan();
-
-  // 有料プランのときだけ「Manage Subscription」ボタンを表示
   let manageBtn=document.getElementById('manage-sub-btn');
   if(currentPlan!=='free'){
     if(!manageBtn){
@@ -1506,9 +1352,7 @@ function showUpgradePrompt(){
         Free plan allows <strong style="color:#fff">5 scans per day</strong>.<br/>
         Upgrade to Pro for unlimited scans — $4.99/month.
       </p>
-      <button class="btn btn-blue" onclick="go('home');showSection('pricing')" style="max-width:260px;margin:0 auto 12px">
-        View Plans →
-      </button>
+      <button class="btn btn-blue" onclick="go('home');showSection('pricing')" style="max-width:260px;margin:0 auto 12px">View Plans →</button>
       <div style="font-size:12px;color:var(--muted)">Already subscribed? <button onclick="showEmailActivate()" style="background:none;border:none;color:var(--blue-300);cursor:pointer;font-family:var(--font);font-size:12px;text-decoration:underline">Activate your plan</button></div>
     </div>`;
   setTimeout(()=>area.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
@@ -1589,43 +1433,95 @@ const STRIPE_LINKS={
   team:'https://buy.stripe.com/test_dRmdRadli0xG9aB7zk43S02'
 };
 const PORTAL_URL='https://billing.stripe.com/p/login/test_00wcN6epm5S0gD3f1M43S00';
+
 function openPortal(){
   let url=PORTAL_URL;
   if(userEmail)url+='?prefilled_email='+encodeURIComponent(userEmail);
   window.open(url,'_blank');
 }
+
+// ★★★ 修正箇所: openStripe ★★★
 function openStripe(plan){
   let url=STRIPE_LINKS[plan];
   if(userEmail)url+='?prefilled_email='+encodeURIComponent(userEmail);
   window.open(url,'_blank');
 
-  // Stripeタブを実際に開いた後、hiddenになってからvisibleに戻ったときだけ発火
-  // （開いた直後にすぐvisibilitychangeが来る場合は無視）
-  let wentAway=false; // 一度でもhiddenになったか
+  let wentAway=false;
   let shown=false;
-  let deadline=Date.now()+90000; // 90秒以内に戻ってきた場合のみ
+  let deadline=Date.now()+90000;
 
   function onReturn(){
-    if(Date.now()>deadline){
-      document.removeEventListener('visibilitychange',onReturn);
-      return;
-    }
-    if(document.visibilityState==='hidden'){
-      wentAway=true; // Stripeタブに行ったことを記録
-      return;
-    }
-    // visible に戻ってきた && 一度hiddenになっていた && まだ表示してない
-    if(document.visibilityState==='visible'&&wentAway&&!shown&&currentPlan==='free'){
+    if(Date.now()>deadline){document.removeEventListener('visibilitychange',onReturn);return;}
+    if(document.visibilityState==='hidden'){wentAway=true;return;}
+    // ★修正: && currentPlan==='free' を削除 → 有料→有料のプラン変更にも対応
+    if(document.visibilityState==='visible'&&wentAway&&!shown){
       shown=true;
       document.removeEventListener('visibilitychange',onReturn);
-      setTimeout(()=>{
-        showEmailActivate();
-        toast('Payment complete? Enter your email to activate.','tok');
-      },800);
+      setTimeout(async()=>{
+        if(_authUser){
+          // ログイン済みなら自動でプラン再取得を試みる
+          const latest=await checkPlanByEmail(_authUser.email);
+          if(latest!==currentPlan){
+            currentPlan=latest;updatePlanUI();
+            toast('🎉 Plan updated to '+(latest==='pro'?'Pro ⚡':'Team 👥')+'!','tok');
+            return;
+          }
+          // Stripeの反映が遅い場合は手動リフレッシュモーダルを表示
+          showPlanUpdateModal(_authUser.email);
+        }else{
+          // 未ログインはメール入力モーダル
+          showEmailActivate();
+          toast('Payment complete? Enter your email to activate.','tok');
+        }
+      },1200);
     }
   }
   document.addEventListener('visibilitychange',onReturn);
   setTimeout(()=>document.removeEventListener('visibilitychange',onReturn),90000);
+}
+
+// ── プラン更新確認モーダル（ログイン済みユーザー向け） ──
+function showPlanUpdateModal(email){
+  document.getElementById('plan-update-modal')?.remove();
+  const modal=document.createElement('div');
+  modal.id='plan-update-modal';
+  modal.style.cssText='position:fixed;inset:0;z-index:1800;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;';
+  modal.innerHTML=`
+    <div style="width:100%;max-width:480px;background:linear-gradient(160deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:28px 24px calc(36px + env(safe-area-inset-bottom));animation:sheet-up .4s cubic-bezier(.22,1,.36,1) both">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:40px;margin-bottom:10px">⚡</div>
+        <h3 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px">Payment Complete?</h3>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.65">
+          Stripe payment may take a moment to reflect.<br/>
+          Click below to refresh your plan status.
+        </p>
+      </div>
+      <button class="btn btn-blue" id="plan-refresh-btn" onclick="refreshPlanNow('${email}')">
+        🔄 Refresh My Plan
+      </button>
+      <button onclick="document.getElementById('plan-update-modal').remove()"
+        style="display:block;width:100%;text-align:center;margin-top:14px;font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font)">
+        Not yet, close
+      </button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+
+async function refreshPlanNow(email){
+  const btn=document.getElementById('plan-refresh-btn');
+  if(btn){btn.disabled=true;btn.innerHTML='<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0 auto"></div>';}
+  const latest=await checkPlanByEmail(email||userEmail);
+  document.getElementById('plan-update-modal')?.remove();
+  if(latest!=='free'){
+    currentPlan=latest;
+    try{localStorage.setItem('ss_email',email||userEmail);}catch{}
+    updatePlanUI();
+    toast('🎉 Plan updated to '+(latest==='pro'?'Pro ⚡':'Team 👥')+'!','tok');
+  }else{
+    // まだ反映されていない → 3秒後に再モーダル
+    toast('Not updated yet. Retrying in 3s…','terr');
+    setTimeout(()=>showPlanUpdateModal(email||userEmail),3000);
+  }
 }
 
 /* ─── TABS ─── */
@@ -1640,37 +1536,20 @@ function swTab(t){
 
 /* ─── CAMERA ─── */
 async function startCam(){
-  // jsQRが読み込まれてるか確認
-  if(typeof jsQR==='undefined'){
-    toast('QR library not loaded. Check your internet connection and reload.','terr');
-    return;
-  }
+  if(typeof jsQR==='undefined'){toast('QR library not loaded. Check your internet connection and reload.','terr');return;}
   try{
-    // スマホChrome対応: 高解像度指定をやめてシンプルに
     const constraints={video:{facingMode:{ideal:facingMode}}};
     camS=await navigator.mediaDevices.getUserMedia(constraints);
     const v=document.getElementById('cv');
     v.srcObject=camS;
     document.getElementById('cam-init').classList.add('hide');
     document.getElementById('cam-live').classList.remove('hide');
-
-    // スマホでは play() を直接呼ぶ必要がある（autoplayだけでは不十分）
-    // onplaying より先に play() を呼んでから onplaying をセットする
-    try{ await v.play(); }catch(_){}
-
-    v.onplaying=()=>{
-      if(!camT)camT=setInterval(scanFr,250);
-    };
-    // onplaying が発火しないブラウザのフォールバック
-    // videoWidth が出てきたら強制スタート
+    try{await v.play();}catch(_){}
+    v.onplaying=()=>{if(!camT)camT=setInterval(scanFr,250);};
     const fallback=setInterval(()=>{
-      if(v.videoWidth>0&&!camT){
-        clearInterval(fallback);
-        camT=setInterval(scanFr,250);
-      }
+      if(v.videoWidth>0&&!camT){clearInterval(fallback);camT=setInterval(scanFr,250);}
     },200);
     setTimeout(()=>clearInterval(fallback),8000);
-
   }catch(e){
     toast('Camera error: '+e.message+'. Try Upload tab.','terr');
   }
@@ -1691,9 +1570,7 @@ function scanFr(){
   if(busy)return;
   const v=document.getElementById('cv'),c=document.getElementById('cc');
   if(!v||!v.videoWidth||!v.videoHeight)return;
-  // readyState チェックを緩くする（スマホは2未満でも映像が来てることがある）
   if(v.readyState<1)return;
-
   if(c.width!==v.videoWidth)c.width=v.videoWidth;
   if(c.height!==v.videoHeight)c.height=v.videoHeight;
   const ctx=c.getContext('2d',{willReadFrequently:true});
@@ -1702,12 +1579,7 @@ function scanFr(){
   try{d=ctx.getImageData(0,0,c.width,c.height);}catch{return;}
   const code=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});
   if(code&&code.data&&code.data.length>0){
-    if(code.data!==curQ){
-      curQ=code.data;
-      stopCam();
-      toast('QR detected! Analyzing…','tok');
-      analyze(code.data);
-    }
+    if(code.data!==curQ){curQ=code.data;stopCam();toast('QR detected! Analyzing…','tok');analyze(code.data);}
   }
 }
 
@@ -1725,22 +1597,15 @@ function procFile(f){
     const img=new Image();
     img.onload=()=>{
       const c=document.createElement('canvas');
-      // 大きすぎる画像はリサイズ（スマホの高解像度写真対策）
-      const MAX=1200;
-      let w=img.width,h=img.height;
+      const MAX=1200;let w=img.width,h=img.height;
       if(w>MAX){h=Math.round(h*MAX/w);w=MAX;}
       if(h>MAX){w=Math.round(w*MAX/h);h=MAX;}
       c.width=w;c.height=h;
-      const ctx=c.getContext('2d');
-      ctx.drawImage(img,0,0,w,h);
+      const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);
       const d=ctx.getImageData(0,0,w,h);
       const code=jsQR(d.data,d.width,d.height,{inversionAttempts:'attemptBoth'});
-      if(code&&code.data){
-        toast('QR detected! Analyzing…','tok');
-        analyze(code.data);
-      }else{
-        toast('No QR code found. Try a clearer image.','terr');
-      }
+      if(code&&code.data){toast('QR detected! Analyzing…','tok');analyze(code.data);}
+      else{toast('No QR code found. Try a clearer image.','terr');}
     };
     img.onerror=()=>toast('Could not load image.','terr');
     img.src=ev.target.result;
@@ -1800,14 +1665,11 @@ async function serp(dom){
     return(await r.json()).result??null;
   }catch{return null;}
 }
-// (AI system prompt is in callAI function)
 async function ai(url,sc,sr){
   let p='[URL]\n'+url+'\n\n';
   if(sc)p+=sc+'\n\n';if(sr)p+=sr+'\n\n';p+='Respond in English only.';
   return callAI(p,[]);
 }
-
-
 async function callAI(msg,h){
   try{
     const r=await fetch('/api/analyze',{
@@ -1868,7 +1730,6 @@ function render(text){
   });
   document.getElementById('ab').innerHTML='<div>'+rows+'</div>';
   document.getElementById('cw').style.display='block';
-  // Teamプランのシェアボタン
   const shareHtml=currentPlan==='team'?`
     <div style="padding:12px 16px;border-top:1px solid var(--glass-bd);display:flex;align-items:center;gap:8px;flex-wrap:wrap">
       <span style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px">Share:</span>
@@ -1878,7 +1739,6 @@ function render(text){
       <button onclick="shareResult('discord')" class="bx">Discord</button>
       <button onclick="shareResult('copy')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:12px;height:12px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
     </div>`:'';
-
   document.getElementById('cw').innerHTML=shareHtml+`
     <div id="cm" class="chat-msgs"></div>
     <div class="chat-inp">
@@ -1892,23 +1752,9 @@ function shareResult(platform){
     (hist.find(m=>m.role==='assistant')?.content||'').slice(0,300)+
     '\n\nCheck it: '+window.location.href;
   const enc=encodeURIComponent(text);
-  const urls={
-    email:'mailto:?subject=Scan+Shield+Result&body='+enc,
-    line:'https://line.me/R/msg/text/?'+enc,
-    slack:'slack://open',
-    discord:'https://discord.com/channels/@me',
-    copy:null
-  };
-  if(platform==='copy'||!urls[platform]){
-    navigator.clipboard.writeText(text).then(()=>toast('Copied to clipboard!','tok'));
-    return;
-  }
-  if(platform==='slack'||platform==='discord'){
-    navigator.clipboard.writeText(text).then(()=>{
-      toast('Copied! Paste into '+(platform==='slack'?'Slack':'Discord'),'tok');
-    });
-    return;
-  }
+  const urls={email:'mailto:?subject=Scan+Shield+Result&body='+enc,line:'https://line.me/R/msg/text/?'+enc,slack:'slack://open',discord:'https://discord.com/channels/@me',copy:null};
+  if(platform==='copy'||!urls[platform]){navigator.clipboard.writeText(text).then(()=>toast('Copied to clipboard!','tok'));return;}
+  if(platform==='slack'||platform==='discord'){navigator.clipboard.writeText(text).then(()=>toast('Copied! Paste into '+(platform==='slack'?'Slack':'Discord'),'tok'));return;}
   window.open(urls[platform],'_blank');
 }
 
@@ -1945,8 +1791,6 @@ function togArt(id){
   if(btn)btn.textContent=b.classList.contains('open')?'Collapse ↑':'Read more ↓';
 }
 
-
-
 /* ─── UTILS ─── */
 function getDom(url){try{const h=new URL(url).hostname;return h.startsWith('www.')?h.slice(4):h;}catch{return url;}}
 function cpTxt(t){navigator.clipboard.writeText(t).then(()=>toast('Copied!','tok'));}
@@ -1958,72 +1802,55 @@ function toast(msg,type='tok'){
 
 /* ─── INIT ─── */
 window.addEventListener('DOMContentLoaded', async () => {
-  try {
-    if (localStorage.getItem('tut_done')) document.getElementById('tutorial').style.display = 'none';
-  } catch (e) {
-    document.getElementById('tutorial').style.display = 'none';
+  try{
+    if(localStorage.getItem('tut_done'))document.getElementById('tutorial').style.display='none';
+  }catch(e){
+    document.getElementById('tutorial').style.display='none';
   }
 
-  // Supabase Auth セッション復元
-  try {
-    const { data: { session } } = await _sb.auth.getSession();
-    if (session?.user) {
+  try{
+    const {data:{session}}=await _sb.auth.getSession();
+    if(session?.user){
       await onAuthStateChange(session.user);
-    } else {
-      await restorePlan(); // ログインしていない場合はLocalStorageから復元を試みる
+    }else{
+      await restorePlan();
     }
-
-    // Auth状態変化を監視（サインイン・サインアウト時）
-    _sb.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
+    _sb.auth.onAuthStateChange(async(event,session)=>{
+      if(session?.user){
         await onAuthStateChange(session.user);
-      } else {
-        // ログアウト時
-        _authUser = null;
-        userEmail = null;
-        currentPlan = 'free';
-        try { localStorage.removeItem('ss_email'); } catch(e) {}
-        updateNavAuth();
-        updatePlanUI();
+      }else{
+        _authUser=null;userEmail=null;currentPlan='free';
+        try{localStorage.removeItem('ss_email');}catch(e){}
+        updateNavAuth();updatePlanUI();
       }
     });
-  } catch (e) {
-    console.warn('Supabase auth error:', e);
+  }catch(e){
+    console.warn('Supabase auth error:',e);
     await restorePlan();
   }
 
-  // ★追加：Stripeポータルから戻った時などに最新プランを強制チェックする
-  document.addEventListener('visibilitychange', async () => {
-    if (document.visibilityState === 'visible' && userEmail) {
-      const latestPlan = await checkPlanByEmail(userEmail);
-      if (latestPlan !== currentPlan) {
-        currentPlan = latestPlan;
+  // Stripeポータルや外部タブから戻った時にプランを再確認
+  document.addEventListener('visibilitychange',async()=>{
+    if(document.visibilityState==='visible'&&userEmail){
+      const latestPlan=await checkPlanByEmail(userEmail);
+      if(latestPlan!==currentPlan){
+        currentPlan=latestPlan;
         updatePlanUI();
-        if (latestPlan === 'free') {
-          toast('Subscription status updated to Free.', 'tok');
+        if(latestPlan==='free'){
+          toast('Subscription status updated to Free.','tok');
         }
       }
     }
   });
 
-  // Stripeから戻ってきた直後の処理
-  const params = new URLSearchParams(window.location.search);
-  if (params.has('paid') || params.has('session_id')) {
-    history.replaceState({}, '', window.location.pathname);
-    // 決済直後は反映にラグがあるため、少し待ってから再確認
-    setTimeout(async () => {
-      if (userEmail) {
-        currentPlan = await checkPlanByEmail(userEmail);
-        updatePlanUI();
-      }
-      if (currentPlan === 'free') {
-        go('scan');
-        showEmailActivate();
-        toast('Verification required. Enter your email.', 'tok');
-      } else {
-        toast('Plan activated successfully!', 'tok');
-      }
-    }, 1500);
+  const params=new URLSearchParams(window.location.search);
+  if(params.has('paid')||params.has('session_id')){
+    history.replaceState({},'',window.location.pathname);
+    setTimeout(async()=>{
+      if(userEmail){currentPlan=await checkPlanByEmail(userEmail);updatePlanUI();}
+      if(currentPlan==='free'){go('scan');showEmailActivate();toast('Verification required. Enter your email.','tok');}
+      else{toast('Plan activated successfully!','tok');}
+    },1500);
   }
 });
 
@@ -2043,8 +1870,7 @@ function updateSidebarPlan(){
   var loginLabel=document.getElementById('sb-login-label');
   if(loginLabel)loginLabel.textContent=_authUser?_authUser.email.split('@')[0]:'Log In';
 }
-
 </script>
-</div><!-- /main-content -->
+</div>
 </body>
 </html>
