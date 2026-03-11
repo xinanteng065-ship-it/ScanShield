@@ -453,30 +453,36 @@ function toast(msg,type){
   document.body.appendChild(t);setTimeout(()=>t.remove(),3200);
 }
 
-// ── Init: セッション確認 ──
+// ── Init ──
 (async()=>{
   try{
-    // ① GoogleのOAuthコールバック（URLにaccess_tokenがある）場合のみリダイレクト
-    const hash=new URLSearchParams(window.location.hash.slice(1));
-    if(hash.get('access_token')||hash.get('type')==='signup'){
-      const {data,error}=await _sb.auth.getUser();
-      if(!error&&data.user){
-        try{localStorage.setItem('ss_email', data.user.email);}catch{}
-        window.location.href = 'index2.html';
-        return;
-      }
-    }
-
-    // ② ?tab=signup でサインアップタブを開く
+    // ?tab=signup でサインアップタブを開く
     const params=new URLSearchParams(window.location.search);
-    if(params.get('tab')==='signup')switchTab('signup');
-
-    // ③ 既存セッションがあっても、このページを開いた場合はリダイレクトしない
-    //    （ユーザーが意図的にログインページを開いた可能性があるため）
+    if(params.get('tab')==='signup') switchTab('signup');
   }catch(e){
     console.warn('Auth init error:',e);
   }
 })();
+
+// ── OAuthコールバック：onAuthStateChange で確実に捕捉 ──
+// Googleログイン後はSupabaseがURLに #access_token を付けてリダイレクトしてくる
+// タイミング問題を避けるためイベントリスナーで待ち受ける
+const _isOAuthCallback = window.location.hash.includes('access_token');
+
+if(_isOAuthCallback){
+  // フォームをローディング表示に切り替え
+  document.getElementById('auth-form-view').innerHTML =
+    '<div style="text-align:center;padding:60px 0;color:var(--muted)">' +
+    '<div class="spinner" style="margin:0 auto 16px;width:28px;height:28px;border-width:3px"></div>' +
+    '<p style="font-size:14px;font-weight:600">Signing you in…</p></div>';
+
+  _sb.auth.onAuthStateChange((event, session)=>{
+    if((event==='SIGNED_IN'||event==='TOKEN_REFRESHED') && session?.user){
+      try{localStorage.setItem('ss_email', session.user.email);}catch{}
+      window.location.href = 'index2.html';
+    }
+  });
+}
 </script>
 </body>
 </html>
