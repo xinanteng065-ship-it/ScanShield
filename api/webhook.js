@@ -70,6 +70,11 @@ export default async function handler(req, res) {
   );
 
   try {
+    console.log('Event received:', event.type);
+const sub = event.data.object;
+if (sub.items) {
+  console.log('Price ID from Stripe:', sub.items.data[0].price.id);
+}
     switch (event.type) {
       case 'customer.subscription.created':
       case 'customer.subscription.updated': {
