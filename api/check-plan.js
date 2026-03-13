@@ -61,9 +61,14 @@ export default async function handler(req, res) {
     apiVersion: '2024-06-20',
   });
 
-  const PRICE_TO_PLAN = {};
-  if (process.env.STRIPE_PRO_PRICE_ID)  PRICE_TO_PLAN[process.env.STRIPE_PRO_PRICE_ID]  = 'pro';
-  if (process.env.STRIPE_TEAM_PRICE_ID) PRICE_TO_PLAN[process.env.STRIPE_TEAM_PRICE_ID] = 'team';
+  // 修正案：テスト用IDも考慮する場合
+const PRICE_TO_PLAN = {};
+// 本番ID
+if (process.env.STRIPE_PRO_PRICE_ID)  PRICE_TO_PLAN[process.env.STRIPE_PRO_PRICE_ID]  = 'pro';
+if (process.env.STRIPE_TEAM_PRICE_ID) PRICE_TO_PLAN[process.env.STRIPE_TEAM_PRICE_ID] = 'team';
+// テストID（環境変数にあれば）
+if (process.env.STRIPE_PRO_PRICE_ID_TEST)  PRICE_TO_PLAN[process.env.STRIPE_PRO_PRICE_ID_TEST]  = 'pro';
+if (process.env.STRIPE_TEAM_PRICE_ID_TEST) PRICE_TO_PLAN[process.env.STRIPE_TEAM_PRICE_ID_TEST] = 'team';
 
   try {
     const customers = await stripe.customers.list({
