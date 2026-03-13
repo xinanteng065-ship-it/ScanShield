@@ -1091,28 +1091,34 @@ async function doActivate() {
   const input = document.getElementById('activate-email-input');
   const email = input?.value?.trim();
   if (!email || !email.includes('@')) { toast('Please enter a valid email.', 'terr'); return; }
+
   const btn = document.getElementById('activate-btn');
   btn.disabled = true;
-  btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0 auto"></div>';
-  const plan = await checkPlanByEmail(email);
-  if (plan === 'free') {
-    btn.disabled = false;
-    btn.textContent = 'Verify & Activate';
-    toast('No active subscription found for this email.', 'terr');
-    // 5秒後に再確認ヒント
-    setTimeout(() => {
-      const inp = document.getElementById('activate-email-input');
-      if (inp) inp.style.borderColor = 'var(--danger)';
-    }, 200);
-    return;
+  btn.innerHTML = 'Verifying...';
+
+  // --- 最大3回、2秒おきにチェックする仕組み ---
+  for (let i = 0; i < 3; i++) {
+    const plan = await checkPlanByEmail(email);
+    
+    if (plan !== 'free') {
+      // 成功！
+      localStorage.setItem('ss_email', email);
+      userEmail = email;
+      currentPlan = plan;
+      updatePlanUI();
+      document.getElementById('email-activate-modal')?.remove();
+      toast('🎉 Plan activated! Welcome to ' + plan.toUpperCase(), 'tok');
+      return; // 終了
+    }
+    
+    // まだ反映されていなければ2秒待って再試行
+    if (i < 2) await new Promise(r => setTimeout(r, 2000));
   }
-  try { localStorage.setItem('ss_email', email); } catch {}
-  userEmail = email;
-  currentPlan = plan;
-  updatePlanUI();
-  document.getElementById('email-activate-modal')?.remove();
-  toast('🎉 ' + (PLAN_CONFIG[plan]?.label || plan) + ' plan activated! Unlimited scans unlocked.', 'tok');
-  go('scan');
+
+  // 全て失敗した場合
+  btn.disabled = false;
+  btn.textContent = 'Verify & Activate';
+  toast('No subscription found yet. It may take a minute to sync.', 'terr');
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
