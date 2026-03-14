@@ -1,9 +1,6 @@
 // api/analyze.js
 // Vercel環境変数: OPENAI_API_KEY
 
-// api/analyze.js
-// Vercel環境変数: OPENAI_API_KEY
-
 const getSystemPrompt = (lang) => {
   const isJa = lang === 'ja';
   
@@ -11,10 +8,10 @@ const getSystemPrompt = (lang) => {
     return `あなたは公平なウェブセキュリティアナリストです。
 ルール: ✅ 安全=有名なブランド/正当。 ⚠️ 注意=不審なシグナル。 🚨 危険=明らかな詐欺。 迷ったら → ✅ 安全。
 フォーマット (150語以内):
-Identity: [何のサービスか]
-Purpose: [何をするサイトか]
-Safety: [✅ 安全 / ⚠️ 注意 / 🚨 危険] — [理由]
-Advice: [具体的なアドバイス1つ]
+サービス名: [何のサービスか]
+目的: [何をするサイトか]
+安全性: [✅ 安全 / ⚠️ 注意 / 🚨 危険] — [理由]
+アドバイス: [具体的なアドバイス1つ]
 必ず日本語で回答してください。`;
   }
 
