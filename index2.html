@@ -1092,9 +1092,16 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
 <div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:1900;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
   <div style="width:100%;max-width:480px;background:linear-gradient(160deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:28px 20px calc(36px + env(safe-area-inset-bottom));animation:sheet-up .4s cubic-bezier(.22,1,.36,1) both">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
-      <h3 id="auth-title" style="font-size:20px;font-weight:800;letter-spacing:-.5px" data-i18n="auth_login">Log In</h3>
-      <button onclick="closeAuthModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:4px 8px">×</button>
+  <h3 id="auth-title" style="font-size:20px;font-weight:800;letter-spacing:-.5px" data-i18n="auth_login">Log In</h3>
+  
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="lang-switcher">
+      <button class="lang-btn" id="lang-en-auth" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="lang-ja-auth" onclick="setLang('ja')">JA</button>
     </div>
+    <button onclick="closeAuthModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:4px 8px">×</button>
+  </div>
+</div>
     <div style="display:flex;gap:5px;background:var(--navy-800);border-radius:12px;padding:4px;margin-bottom:20px">
       <button id="auth-tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;background:var(--blue-500);color:#fff" data-i18n="auth_login">Log In</button>
       <button id="auth-tab-signup" onclick="switchAuthTab('signup')" style="flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;background:transparent;color:var(--muted)" data-i18n="auth_signup">Sign Up</button>
@@ -1659,10 +1666,18 @@ async function doAuth(){
 }
 async function doForgotPassword(){
   const email=document.getElementById('auth-email').value.trim();
-  if(!email){toast(currentLang==='ja'?'先にメールアドレスを入力してください。':'Enter your email first.','terr');return;}
+  // 修正：currentLang === 'ja' の時が日本語
+  if(!email){
+    toast(currentLang==='ja'?'先にメールアドレスを入力してください。':'Enter your email first.','terr');
+    return;
+  }
   const{error}=await _sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});
-  if(error)toast('Error: '+error.message,'terr');
-  else toast(currentLang==='ja'?'パスワードリセットメールを送信しました！':'Password reset email sent!','tok');
+  if(error) {
+    toast('Error: '+error.message,'terr');
+  } else {
+    // 修正：currentLang === 'ja' の時が日本語
+    toast(currentLang==='ja'?'パスワードリセットメールを送信しました！':'Password reset email sent!','tok');
+  }
 }
 async function doSignOut(){
   await _sb.auth.signOut();
