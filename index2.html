@@ -1992,7 +1992,6 @@ function render(text){
       <span style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px">${t('share_label')}</span>
       <button onclick="shareResult('email')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg> ${t('share_email')}</button>
       <button onclick="shareResult('line')" class="bx">LINE</button>
-      <button onclick="shareResult('slack')" class="bx">Slack</button>
       <button onclick="shareResult('copy')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ${t('share_copy')}</button>
     </div>`:'';
   document.getElementById('cw').innerHTML=shareHtml+chatOrLock;
