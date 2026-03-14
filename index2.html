@@ -1683,11 +1683,12 @@ async function doSignOut(){
   updatePlanUI();
   updateNavAuth();
   
-  // ログアウト完了のトーストを表示（一瞬で見えなくなる可能性があります）
   toast(t('signout_done'), 'tok');
 
-  // 指定のURLへリダイレクト
-  window.location.href = 'https://scan-shield-three.vercel.app/';
+  // 100ms（0.1秒）だけ待ってからリダイレクト
+  setTimeout(() => {
+    window.location.href = 'https://scan-shield-three.vercel.app/';
+  }, 100);
 }
 function updateNavAuth(){
   // Sidebar account button
@@ -2065,45 +2066,37 @@ window.addEventListener('DOMContentLoaded',async()=>{
   // Supabase
   try{
     const{data:{session}}=await _sb.auth.getSession();
-    if(session?.user)await onAuthStateChange(session.user);
-    else await restorePlan();
+    
+    // ログインしている場合、グローバル変数にユーザー情報を入れる
+    if(session?.user) {
+      _authUser = session.user;
+      userEmail = session.user.email;
+      await applyPlan(session.user.email);
+    } else {
+      await restorePlan();
+    }
+    
+    // UIを最新の状態にする（これでボタンが出ます）
+    updateNavAuth();
+    updatePlanUI();
+
     _sb.auth.onAuthStateChange(async(event,session)=>{
-      if(session?.user)await onAuthStateChange(session.user);
-      else{_authUser=null;userEmail=null;currentPlan='free';try{localStorage.removeItem('ss_email');}catch{}updateNavAuth();updatePlanUI();}
+      if(session?.user){
+        _authUser=session.user;
+        userEmail=session.user.email;
+        await applyPlan(session.user.email);
+        updateNavAuth();
+        updatePlanUI();
+      }
+      else{
+        // ログアウト時の処理
+        _authUser=null;userEmail=null;currentPlan='free';
+        try{localStorage.removeItem('ss_email');}catch{}
+        updateNavAuth();updatePlanUI();
+      }
     });
   }catch(e){console.warn('Supabase auth error:',e);await restorePlan();}
-
-  // URL params
-  const params=new URLSearchParams(window.location.search);
-  history.replaceState({},'',window.location.pathname);
-
-  if(params.has('paid')||params.has('session_id')){
-    go('scan');
-    setTimeout(()=>{
-      if(currentPlan!=='free')toast(t('toast_payment_done'),'tok');
-      else showEmailActivate({title:t('activate_payment_title'),subtitle:t('activate_payment_subtitle')});
-    },800);
-  }else if(params.has('portal')){
-    setTimeout(async()=>{
-      const email=_authUser?.email||userEmail;if(!email)return;
-      const newPlan=await checkPlanByEmail(email);
-      if(newPlan!==currentPlan){const prev=currentPlan;currentPlan=newPlan;updatePlanUI();
-        if(newPlan==='free'&&prev!=='free'){toast(currentLang==='ja'?'サブスクリプションをキャンセルしました。無料プランに戻りました。':'Subscription cancelled. You\'re on the Free plan.','terr');try{localStorage.removeItem('ss_email');}catch{}}}
-    },1500);
-  }
-
-  try{
-    if(sessionStorage.getItem('_returning_from_portal')){
-      sessionStorage.removeItem('_returning_from_portal');
-      const email=_authUser?.email||userEmail;
-      if(email)setTimeout(async()=>{
-        const newPlan=await checkPlanByEmail(email);
-        if(newPlan!==currentPlan){currentPlan=newPlan;updatePlanUI();
-          if(newPlan==='free'){toast(currentLang==='ja'?'サブスクリプションが終了しました。無料プランです。':'Subscription ended. You\'re on the Free plan.','terr');try{localStorage.removeItem('ss_email');}catch{}}}
-      },1200);
-    }
-  }catch{}
-});
+})
 </script>
 </div>
 </body>
