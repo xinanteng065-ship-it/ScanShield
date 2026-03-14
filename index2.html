@@ -1672,14 +1672,22 @@ async function doForgotPassword(){
 }
 async function doSignOut(){
   await _sb.auth.signOut();
-  _authUser=null;userEmail=null;currentPlan='free';
-  try{localStorage.removeItem('ss_email');}catch{}
-  updatePlanUI();updateNavAuth();
-  toast(t('signout_done'),'tok');
-}
-async function onAuthStateChange(user){
-  if(!user){_authUser=null;userEmail=null;currentPlan='free';updateNavAuth();updatePlanUI();return;}
-  _authUser=user;await applyPlan(user.email);
+  _authUser=null;
+  userEmail=null;
+  currentPlan='free';
+  
+  try {
+    localStorage.removeItem('ss_email');
+  } catch(e) {}
+  
+  updatePlanUI();
+  updateNavAuth();
+  
+  // ログアウト完了のトーストを表示（一瞬で見えなくなる可能性があります）
+  toast(t('signout_done'), 'tok');
+
+  // 指定のURLへリダイレクト
+  window.location.href = 'https://scan-shield-three.vercel.app/';
 }
 function updateNavAuth(){
   // Sidebar account button
