@@ -8,22 +8,32 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { domain } = req.body ?? {};
+  // フロントエンドから lang も受け取る（デフォルトは 'en'）
+  const { domain, lang = 'en' } = req.body ?? {};
   if (!domain) return res.status(200).json({ result: null });
+
+  // 言語によって検索パラメータを動的に切り替える
+  const isJa = lang === 'ja';
+  const gl = isJa ? 'jp' : 'us';
+  const hl = isJa ? 'ja' : 'en';
+  
+  // 日本語の時は日本語のキーワードで検索する
+  const queryRisk = isJa ? `${domain} 詐欺 フィッシング 悪質 危険` : `${domain} scam phishing fraud`;
+  const queryRep  = isJa ? `${domain} 評判 口コミ 安全 レビュー` : `${domain} review legitimate safe`;
 
   try {
     const [r1, r2] = await Promise.all([
       fetch('https://google.serper.dev/search', {
         method: 'POST',
         headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: `${domain} scam phishing fraud`, gl: 'us', hl: 'en', num: 4 }),
+        body: JSON.stringify({ q: queryRisk, gl, hl, num: 4 }),
         signal: AbortSignal.timeout(6000),
       }).then(r => r.json()).catch(() => null),
 
       fetch('https://google.serper.dev/search', {
         method: 'POST',
         headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: `${domain} review legitimate safe`, gl: 'us', hl: 'en', num: 4 }),
+        body: JSON.stringify({ q: queryRep, gl, hl, num: 4 }),
         signal: AbortSignal.timeout(6000),
       }).then(r => r.json()).catch(() => null),
     ]);
