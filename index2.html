@@ -82,6 +82,12 @@ a{color:var(--blue-300);text-decoration:none}
 .page{display:none}.page.active{display:block}
 .hide{display:none!important}
 
+/* LANG SWITCHER */
+.lang-switcher{display:flex;align-items:center;gap:3px;background:var(--glass);border:1px solid var(--glass-bd);border-radius:20px;padding:3px;overflow:hidden;}
+.lang-btn{padding:5px 10px;border-radius:16px;font-family:var(--font);font-size:11.5px;font-weight:700;cursor:pointer;transition:all .18s;border:none;color:var(--muted);background:transparent;letter-spacing:.3px;}
+.lang-btn.active{background:linear-gradient(135deg,var(--blue-500),var(--cyan));color:#fff;box-shadow:0 1px 8px rgba(37,99,235,.4);}
+.lang-btn:hover:not(.active){color:#fff;}
+
 /* TUTORIAL */
 #tutorial{
   position:fixed;inset:0;z-index:2000;
@@ -187,7 +193,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .plan-badge-ui.free{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--warn);}
 .plan-badge-ui.paid{background:rgba(37,99,235,.15);border:1px solid rgba(59,130,246,.3);color:var(--blue-300);}
 
-/* Tab bar — bigger touch targets on mobile */
+/* Tab bar */
 .tab-bar{display:flex;gap:5px;background:var(--navy-700);border:1px solid var(--glass-bd);border-radius:var(--r);padding:4px;margin-bottom:16px;}
 .tab{flex:1;padding:13px 6px;border-radius:11px;background:none;border:none;color:var(--muted);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:5px;min-height:48px;}
 .tab svg{width:14px;height:14px;flex-shrink:0}
@@ -281,7 +287,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .dots span:nth-child(2){animation-delay:.2s}.dots span:nth-child(3){animation-delay:.4s}
 @keyframes dp{0%,60%,100%{transform:scale(1);opacity:.3}30%{transform:scale(1.3);opacity:1}}
 .chat-inp{padding:10px 12px;display:flex;gap:7px;border-top:1px solid var(--glass-bd);background:var(--navy-800);}
-.cin{flex:1;padding:11px 13px;background:var(--navy-700);border:1.5px solid var(--glass-bd);border-radius:11px;color:#fff;font-family:var(--font);font-size:14px;outline:none;transition:border-color .18s;}
+.cin{flex:1;padding:11px 13px;background:var(--navy-700);border:1.5px solid var(--glass-bd);border-radius:11px;color:#fff;font-family:var(--font);font-size:16px;outline:none;transition:border-color .18s;}
 .cin:focus{border-color:rgba(59,130,246,.4)}
 .cin::placeholder{color:var(--muted2);font-size:13px;}
 .csend{width:44px;height:44px;border-radius:11px;flex-shrink:0;background:linear-gradient(135deg,var(--blue-500),var(--cyan));border:none;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 8px rgba(37,99,235,.3);transition:transform .15s;}
@@ -340,7 +346,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .l-p a{color:var(--blue-300)}
 
 /* FORM INPUTS */
-.finp{width:100%;padding:13px 14px;background:var(--navy-700);border:1.5px solid var(--glass-bd);border-radius:var(--r);color:#fff;font-family:var(--font);font-size:16px;/* 16px prevents iOS zoom */outline:none;transition:border-color .18s;}
+.finp{width:100%;padding:13px 14px;background:var(--navy-700);border:1.5px solid var(--glass-bd);border-radius:var(--r);color:#fff;font-family:var(--font);font-size:16px;outline:none;transition:border-color .18s;}
 .finp:focus{border-color:rgba(59,130,246,.4);background:var(--navy-600)}
 
 /* FOOTER */
@@ -361,20 +367,12 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
 .terr{background:linear-gradient(135deg,#7f1d1d,#991b1b);color:#fee2e2;border:1px solid rgba(239,68,68,.3)}
 .tinfo{background:linear-gradient(135deg,#1e3a6e,#1d4ed8);color:#dbeafe;border:1px solid rgba(59,130,246,.3)}
 
-/* 決済後バナー */
-.paid-banner{background:linear-gradient(135deg,rgba(37,99,235,.18),rgba(6,182,212,.12));border:1.5px solid rgba(59,130,246,.4);border-radius:var(--r-lg);padding:18px 20px;margin:0 18px 16px;animation:rise .4s ease both;}
-.paid-banner h3{font-size:17px;font-weight:800;margin-bottom:6px;letter-spacing:-.3px}
-.paid-banner p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:14px}
-
-/* Sidebar */
+/* SIDEBAR */
 #sidebar{display:none}
 
-/* ===== MOBILE IMPROVEMENTS ===== */
-/* Larger touch targets for tab bar */
+/* ===== MOBILE ===== */
 .tab { min-height: 52px; padding: 12px 8px; }
-/* Prevent iOS font zoom on inputs */
 .cin, .finp { font-size: 16px !important; }
-/* Plan badge compact on small screens */
 @media(max-width: 380px) {
   .plan-badge-ui { font-size: 10.5px; padding: 4px 8px; }
   .tab { font-size: 11.5px; gap: 3px; }
@@ -382,11 +380,8 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   .scan-hero h2 { font-size: 18px; }
   .scan-hero p { font-size: 12.5px; }
 }
-/* Scan plan row wraps nicely */
 #scan-plan-row { gap: 6px; padding: 0 4px; }
-/* Upload lock icon inline */
 #upload-lock { font-size: 11px; margin-left: 2px; }
-/* Result card on small screens */
 @media(max-width: 420px) {
   .r-top { padding: 12px 12px; gap: 8px; flex-wrap: wrap; }
   .r-acts { flex-shrink: 0; }
@@ -397,7 +392,6 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   .chat-inp { padding: 8px 10px; gap: 6px; }
   .mb { padding: 8px 11px; font-size: 13px; }
 }
-/* Hero section tighter on mobile */
 @media(max-width: 480px) {
   .hero { padding: 28px 0 20px; }
   .hero h1 { font-size: clamp(24px, 7vw, 34px); }
@@ -409,7 +403,6 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   .plan-price .amt { font-size: 30px; }
   .plan-feats li { font-size: 12.5px; gap: 7px; }
 }
-/* Pricing cards: 1 column always on mobile, 3 col on tablet+ */
 @media(max-width: 640px) {
   .plan-cards { grid-template-columns: 1fr !important; }
 }
@@ -437,6 +430,8 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   #main-content{margin-left:240px;min-height:100vh}
   .wrap{max-width:700px}
   .plan-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  /* lang switcher in sidebar */
+  .sb-lang-row{padding:0 10px 10px;display:flex;justify-content:flex-start}
 }
 @media(min-width:1100px){
   #sidebar{width:256px}
@@ -454,38 +449,52 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
   <nav class="sb-nav">
     <button class="sb-item on" id="sb-home" onclick="go('home')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span data-i18n="nav_home">Home</span>
     </button>
     <button class="sb-item" id="sb-scan" onclick="go('scan')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>Scanner
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
+      <span data-i18n="nav_scanner">Scanner</span>
     </button>
     <button class="sb-item" id="sb-guide" onclick="go('guide')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Safety Guide
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      <span data-i18n="nav_guide">Safety Guide</span>
     </button>
     <button class="sb-item" id="sb-about" onclick="go('about')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>About
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span data-i18n="nav_about">About</span>
     </button>
     <div class="sb-divider"></div>
     <button class="sb-item" onclick="go('home');showSection('pricing')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>Pricing
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span data-i18n="nav_pricing">Pricing</span>
     </button>
     <a class="sb-item" href="index.html" id="sb-login-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span id="sb-login-label">Log In</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+      <span id="sb-login-label" data-i18n="nav_login">Log In</span>
     </a>
   </nav>
   <div class="sb-bottom">
     <div class="sb-plan-card">
-      <div class="sb-plan-label">Current Plan</div>
+      <div class="sb-plan-label" data-i18n="label_current_plan">Current Plan</div>
       <div class="sb-plan-val" id="sb-plan-val">Free · 5 scans/day</div>
     </div>
+    <div class="sb-lang-row">
+      <div class="lang-switcher">
+        <button class="lang-btn" id="lang-en-sb" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="lang-ja-sb" onclick="setLang('ja')">日本語</button>
+      </div>
+    </div>
     <button class="sb-login-btn" onclick="go('scan')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-right:6px;vertical-align:middle"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>Scan Now
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;margin-right:6px;vertical-align:middle"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
+      <span data-i18n="btn_scan_now">Scan Now</span>
     </button>
   </div>
 </div>
 
 <div id="main-content">
 
+<!-- TUTORIAL -->
 <div id="tutorial">
   <div class="tut-bg-glow"></div>
   <div class="tut-sheet">
@@ -496,27 +505,28 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
     </div>
     <div id="ts0">
       <div class="tut-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-      <h2 class="tut-h">Welcome to<br/>Scan Shield 👋</h2>
-      <p class="tut-p">The <strong>AI-powered tool</strong> that tells you if a QR code is safe — before you click anything.<br/><br/>Let us show you how it works in <strong>30 seconds</strong>.</p>
-      <button class="tut-btn" onclick="nextTut()">Get Started →</button>
-      <button class="tut-skip" onclick="skipTut()">Skip tutorial</button>
+      <h2 class="tut-h" data-i18n="tut0_title">Welcome to<br/>Scan Shield 👋</h2>
+      <p class="tut-p" data-i18n-html="tut0_body">The <strong>AI-powered tool</strong> that tells you if a QR code is safe — before you click anything.<br/><br/>Let us show you how it works in <strong>30 seconds</strong>.</p>
+      <button class="tut-btn" onclick="nextTut()" data-i18n="tut_next">Get Started →</button>
+      <button class="tut-skip" onclick="skipTut()" data-i18n="tut_skip">Skip tutorial</button>
     </div>
     <div id="ts1" style="display:none">
       <div class="tut-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-      <h2 class="tut-h">Three Ways to Scan</h2>
-      <p class="tut-p"><strong>📷 Camera</strong> — Point at a QR code for instant detection.<br/><br/><strong>🖼 Upload</strong> — Screenshot of a QR? Upload the image.<br/><br/><strong>🔗 URL</strong> — Already have the link? Paste it directly.</p>
-      <button class="tut-btn" onclick="nextTut()">Next →</button>
-      <button class="tut-skip" onclick="skipTut()">Skip</button>
+      <h2 class="tut-h" data-i18n="tut1_title">Three Ways to Scan</h2>
+      <p class="tut-p" data-i18n-html="tut1_body"><strong>📷 Camera</strong> — Point at a QR code for instant detection.<br/><br/><strong>🖼 Upload</strong> — Screenshot of a QR? Upload the image.<br/><br/><strong>🔗 URL</strong> — Already have the link? Paste it directly.</p>
+      <button class="tut-btn" onclick="nextTut()" data-i18n="tut_next2">Next →</button>
+      <button class="tut-skip" onclick="skipTut()" data-i18n="tut_skip2">Skip</button>
     </div>
     <div id="ts2" style="display:none">
       <div class="tut-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-      <h2 class="tut-h">Instant AI Verdict</h2>
-      <p class="tut-p">In under <strong>3 seconds</strong>, you'll get:<br/><br/>✅ <strong>Safe</strong> · ⚠️ <strong>Caution</strong> · 🚨 <strong>Dangerous</strong><br/><br/>Plus a full explanation and a <strong>chat assistant</strong> to answer any follow-up questions.</p>
-      <button class="tut-btn" onclick="skipTut()">Start Scanning →</button>
+      <h2 class="tut-h" data-i18n="tut2_title">Instant AI Verdict</h2>
+      <p class="tut-p" data-i18n-html="tut2_body">In under <strong>3 seconds</strong>, you'll get:<br/><br/>✅ <strong>Safe</strong> · ⚠️ <strong>Caution</strong> · 🚨 <strong>Dangerous</strong><br/><br/>Plus a full explanation and a <strong>chat assistant</strong> to answer any follow-up questions.</p>
+      <button class="tut-btn" onclick="skipTut()" data-i18n="tut_start">Start Scanning →</button>
     </div>
   </div>
 </div>
 
+<!-- HEADER -->
 <header>
   <nav class="nav">
     <div class="logo" onclick="go('home')">
@@ -524,128 +534,137 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       <span class="logo-txt"><em>Scan</em>Shield</span>
     </div>
     <div class="nav-r">
-      <button class="pill-btn pill-ghost" onclick="go('home');showSection('pricing')" style="display:none" id="nav-pricing-btn">Pricing</button>
-      <button class="pill-btn pill-ghost" id="nav-login-btn" onclick="window.location.href='index.html'">Log in</button>
-      <button class="pill-btn pill-blue" onclick="go('scan')">Scan</button>
+      <div class="lang-switcher">
+        <button class="lang-btn" id="lang-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn" id="lang-ja" onclick="setLang('ja')">日本語</button>
+      </div>
+      <button class="pill-btn pill-ghost" id="nav-pricing-btn" onclick="go('home');showSection('pricing')" style="display:none" data-i18n="nav_pricing">Pricing</button>
+      <button class="pill-btn pill-ghost" id="nav-login-btn" onclick="window.location.href='index.html'" data-i18n="nav_login">Log in</button>
+      <button class="pill-btn pill-blue" onclick="go('scan')" data-i18n="btn_scan_now">Scan</button>
     </div>
   </nav>
 </header>
 
+<!-- HOME PAGE -->
 <div id="page-home" class="page active">
   <section class="hero wrap" id="sec-home">
-    <div class="hero-eyebrow"><span class="pulse"></span> AI-Powered QR Safety</div>
-    <h1>Don't Scan Blind.<br/><span class="grad">Stay Protected.</span></h1>
-    <p class="hero-sub">QR codes can hide phishing links, malware, and scams. Scan Shield verifies them instantly using AI before you risk anything.</p>
+    <div class="hero-eyebrow"><span class="pulse"></span> <span data-i18n="hero_eyebrow">AI-Powered QR Safety</span></div>
+    <h1 data-i18n-html="hero_h1">Don't Scan Blind.<br/><span class="grad">Stay Protected.</span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">QR codes can hide phishing links, malware, and scams. Scan Shield verifies them instantly using AI before you risk anything.</p>
     <div class="hero-cta-row">
       <button class="cta-main" onclick="go('scan')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
-        Start Scanning for Free
+        <span data-i18n="hero_cta_main">Start Scanning for Free</span>
       </button>
-      <button class="cta-sec" onclick="showSection('pricing')">View Plans</button>
+      <button class="cta-sec" onclick="showSection('pricing')" data-i18n="hero_cta_sec">View Plans</button>
     </div>
     <div class="trust-row">
-      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> No sign-up needed</div>
-      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Zero data stored</div>
-      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Works on any device</div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="trust1">No sign-up needed</span></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="trust2">Zero data stored</span></div>
+      <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> <span data-i18n="trust3">Works on any device</span></div>
     </div>
   </section>
 
   <section class="how-section wrap">
-    <div class="sec-label">How It Works</div>
-    <h2 class="sec-title">Three steps. Under 10 seconds.</h2>
+    <div class="sec-label" data-i18n="how_label">How It Works</div>
+    <h2 class="sec-title" data-i18n="how_title">Three steps. Under 10 seconds.</h2>
     <div class="step-list">
-      <div class="step-item"><div class="step-num">01</div><div><h4>Scan or Paste</h4><p>Use your camera, upload a QR image, or paste a URL directly.</p></div></div>
-      <div class="step-item"><div class="step-num">02</div><div><h4>AI Analyzes</h4><p>GPT-4o checks URL structure, live scam databases, and page content in parallel.</p></div></div>
-      <div class="step-item"><div class="step-num">03</div><div><h4>Instant Verdict</h4><p>✅ Safe · ⚠️ Caution · 🚨 Dangerous — with a plain-English explanation and follow-up chat.</p></div></div>
+      <div class="step-item"><div class="step-num">01</div><div><h4 data-i18n="step1_h">Scan or Paste</h4><p data-i18n="step1_p">Use your camera, upload a QR image, or paste a URL directly.</p></div></div>
+      <div class="step-item"><div class="step-num">02</div><div><h4 data-i18n="step2_h">AI Analyzes</h4><p data-i18n="step2_p">GPT-4o checks URL structure, live scam databases, and page content in parallel.</p></div></div>
+      <div class="step-item"><div class="step-num">03</div><div><h4 data-i18n="step3_h">Instant Verdict</h4><p data-i18n="step3_p">✅ Safe · ⚠️ Caution · 🚨 Dangerous — with a plain-English explanation and follow-up chat.</p></div></div>
     </div>
   </section>
 
   <section class="pricing-section wrap" id="sec-pricing">
-    <div class="sec-label">Pricing</div>
-    <h2 class="sec-title">Simple, transparent pricing</h2>
-    <p class="sec-sub">Start free. Upgrade when you need unlimited power.</p>
+    <div class="sec-label" data-i18n="pricing_label">Pricing</div>
+    <h2 class="sec-title" data-i18n="pricing_title">Simple, transparent pricing</h2>
+    <p class="sec-sub" data-i18n="pricing_sub">Start free. Upgrade when you need unlimited power.</p>
     <div class="billing-toggle">
-      <div class="billing-btn on" style="cursor:default">Monthly billing · Cancel anytime</div>
+      <div class="billing-btn on" style="cursor:default" data-i18n="billing_note">Monthly billing · Cancel anytime</div>
     </div>
     <div class="plan-cards">
+      <!-- FREE -->
       <div class="plan-card">
-        <div class="plan-name">Free</div>
-        <div class="plan-price"><span class="amt">$0</span><span class="per">/ forever</span></div>
-        <p class="plan-desc">Perfect for occasional QR scanning. No credit card required.</p>
+        <div class="plan-name" data-i18n="plan_free_name">Free</div>
+        <div class="plan-price"><span class="amt">$0</span><span class="per" data-i18n="plan_free_per">/ forever</span></div>
+        <p class="plan-desc" data-i18n="plan_free_desc">Perfect for occasional QR scanning. No credit card required.</p>
         <ul class="plan-feats">
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">5 scans per day</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">AI safety verdict</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">URL direct analysis</span></li>
-          <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt">Live web threat search</span></li>
-          <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt">Follow-up AI chat</span></li>
-          <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt">Image upload scanning</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_5scans">5 scans per day</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_verdict">AI safety verdict</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_url">URL direct analysis</span></li>
+          <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_threat">Live web threat search</span></li>
+          <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_chat">Follow-up AI chat</span></li>
+          <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_upload">Image upload scanning</span></li>
         </ul>
-        <button class="plan-cta ghost" onclick="go('scan')">Start for Free</button>
+        <button class="plan-cta ghost" onclick="go('scan')" data-i18n="plan_free_cta">Start for Free</button>
       </div>
+      <!-- PRO -->
       <div class="plan-card featured">
-        <div class="plan-badge">⚡ Most Popular</div>
-        <div class="plan-name">Pro</div>
-        <div class="plan-price"><span class="amt">$4.99</span><span class="per">/ month</span></div>
-        <p class="plan-desc">Best for daily users. Full AI power with real-time threat intelligence.</p>
+        <div class="plan-badge" data-i18n="plan_popular">⚡ Most Popular</div>
+        <div class="plan-name" data-i18n="plan_pro_name">Pro</div>
+        <div class="plan-price"><span class="amt">$4.99</span><span class="per" data-i18n="plan_per_month">/ month</span></div>
+        <p class="plan-desc" data-i18n="plan_pro_desc">Best for daily users. Full AI power with real-time threat intelligence.</p>
         <ul class="plan-feats">
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Unlimited scans</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">AI safety verdict</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Live web threat search</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Follow-up AI chat</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Image upload scanning</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Priority analysis queue</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_unlimited">Unlimited scans</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_verdict">AI safety verdict</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_threat">Live web threat search</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_chat">Follow-up AI chat</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_upload">Image upload scanning</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_priority">Priority analysis queue</span></li>
         </ul>
-        <button class="plan-cta primary" onclick="openStripe('pro')">Get Pro →</button>
+        <button class="plan-cta primary" onclick="openStripe('pro')" data-i18n="plan_pro_cta">Get Pro →</button>
       </div>
+      <!-- TEAM -->
       <div class="plan-card">
-        <div class="plan-name">Team</div>
-        <div class="plan-price"><span class="amt">$7</span><span class="per">/ month</span></div>
-        <p class="plan-desc">For families or small teams who want shared protection.</p>
+        <div class="plan-name" data-i18n="plan_team_name">Team</div>
+        <div class="plan-price"><span class="amt">$7</span><span class="per" data-i18n="plan_per_month">/ month</span></div>
+        <p class="plan-desc" data-i18n="plan_team_desc">For families or small teams who want shared protection.</p>
         <ul class="plan-feats">
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Everything in Pro</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Up to 5 seats</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Shared scan dashboard</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Email alerts for dangers</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt">Priority email support</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_everything_pro">Everything in Pro</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_seats">Up to 5 seats</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_dashboard">Shared scan dashboard</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_alerts">Email alerts for dangers</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_support">Priority email support</span></li>
         </ul>
-        <button class="plan-cta ghost" onclick="openStripe('team')">Get Team →</button>
+        <button class="plan-cta ghost" onclick="openStripe('team')" data-i18n="plan_team_cta">Get Team →</button>
       </div>
     </div>
     <div class="stripe-note">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      Secure payment via Stripe · Cancel anytime · No contracts
+      <span data-i18n="stripe_note">Secure payment via Stripe · Cancel anytime · No contracts</span>
     </div>
   </section>
 </div>
 
+<!-- SCAN PAGE -->
 <div id="page-scan" class="page">
   <div class="scan-hero wrap">
-    <h2>Scan a QR Code</h2>
-    <p>Camera, upload, or paste a URL — instant AI verdict.</p>
+    <h2 data-i18n="scan_title">Scan a QR Code</h2>
+    <p data-i18n="scan_sub">Camera, upload, or paste a URL — instant AI verdict.</p>
     <div id="scan-plan-row">
       <div id="scan-plan-badge" class="plan-badge-ui free" style="display:none"></div>
-      <button onclick="showEmailActivate()" style="font-size:12px;color:var(--blue-300);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;display:none;padding:4px 0;" id="activate-link">Already subscribed?</button>
+      <button onclick="showEmailActivate()" style="font-size:12px;color:var(--blue-300);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;display:none;padding:4px 0;" id="activate-link" data-i18n="already_subscribed">Already subscribed?</button>
     </div>
   </div>
   <div class="wrap">
     <div class="tab-bar" id="tab-bar">
       <button class="tab on" id="tab-camera" onclick="swTab('camera')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        Camera
+        <span data-i18n="tab_camera">Camera</span>
       </button>
       <button class="tab" id="tab-upload" onclick="handleUploadTab()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        Upload <span id="upload-lock" style="font-size:12px;margin-left:1px">🔒</span>
+        <span data-i18n="tab_upload">Upload</span> <span id="upload-lock" style="font-size:12px;margin-left:1px">🔒</span>
       </button>
     </div>
     <div class="tp on" id="tp-camera">
       <div id="cam-init" class="cam-init">
         <div class="cam-big-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-        <h3>Real-time QR Scanner</h3>
-        <p>Point your camera at any QR code for an instant AI safety verdict.</p>
+        <h3 data-i18n="cam_title">Real-time QR Scanner</h3>
+        <p data-i18n="cam_desc">Point your camera at any QR code for an instant AI safety verdict.</p>
         <button id="cam-start-btn" class="btn btn-blue" onclick="startCam()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          Enable Camera
+          <span data-i18n="cam_enable">Enable Camera</span>
         </button>
       </div>
       <div id="cam-live" class="hide">
@@ -653,11 +672,11 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
         <div style="display:flex;justify-content:center;gap:10px;margin-top:14px">
           <button class="btn btn-ghost" onclick="flipCam()" style="flex:1;max-width:160px;padding:12px 14px;font-size:13px">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-            Flip
+            <span data-i18n="cam_flip">Flip</span>
           </button>
           <button class="btn btn-ghost" onclick="stopCam()" style="flex:1;max-width:160px;padding:12px 14px;font-size:13px">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
-            Stop
+            <span data-i18n="cam_stop">Stop</span>
           </button>
         </div>
       </div>
@@ -666,10 +685,10 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       <div class="drop" id="dz" ondragover="ddOver(event)" ondragleave="ddLeave()" ondrop="ddDrop(event)">
         <input type="file" accept="image/*" id="fi" onchange="fileChange(event)"/>
         <div class="drop-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div>
-        <h3>Drop QR image here</h3>
-        <p>JPG · PNG · WebP · GIF</p>
-        <div class="or-line">or</div>
-        <p style="color:var(--blue-300);font-size:14px;font-weight:700">Tap to Browse</p>
+        <h3 data-i18n="drop_title">Drop QR image here</h3>
+        <p data-i18n="drop_types">JPG · PNG · WebP · GIF</p>
+        <div class="or-line" data-i18n="drop_or">or</div>
+        <p style="color:var(--blue-300);font-size:14px;font-weight:700" data-i18n="drop_browse">Tap to Browse</p>
       </div>
     </div>
     <div id="result-area">
@@ -679,167 +698,172 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
 </div>
 
+<!-- GUIDE PAGE -->
 <div id="page-guide" class="page">
   <div class="g-hero wrap">
-    <div class="hero-eyebrow" style="margin-bottom:12px">📚 Safety Guide</div>
-    <h1>QR Safety Guide</h1>
-    <p>Learn how QR code scams work — and how to stay protected.</p>
+    <div class="hero-eyebrow" style="margin-bottom:12px">📚 <span data-i18n="guide_eyebrow">Safety Guide</span></div>
+    <h1 data-i18n="guide_title">QR Safety Guide</h1>
+    <p data-i18n="guide_sub">Learn how QR code scams work — and how to stay protected.</p>
   </div>
   <div class="wrap">
     <div class="art">
-      <span class="art-tag">Beginner</span>
-      <h2 onclick="togArt('g1')">What Is QR Code Phishing?</h2>
-      <p class="prev">Attackers use QR codes to hide dangerous URLs that bypass traditional security. It's called "quishing" and it's exploding in 2024–2025.</p>
+      <span class="art-tag" data-i18n="guide_beginner">Beginner</span>
+      <h2 onclick="togArt('g1')" data-i18n="g1_title">What Is QR Code Phishing?</h2>
+      <p class="prev" data-i18n="g1_prev">Attackers use QR codes to hide dangerous URLs that bypass traditional security. It's called "quishing" and it's exploding in 2024–2025.</p>
       <div class="art-body" id="g1">
-        <h3>The Hidden Link Problem</h3>
-        <p>A QR code encodes a URL invisibly. Your phone opens it automatically — no preview, no warning. This blind-click is exactly what attackers exploit.</p>
-        <div class="callout"><strong>📊 Stat:</strong> QR phishing attacks increased 600%+ in H2 2023. By 2024, it became the #1 method to bypass corporate email security filters.</div>
-        <h3>Common Attack Scenarios</h3>
+        <h3 data-i18n="g1_h1">The Hidden Link Problem</h3>
+        <p data-i18n="g1_p1">A QR code encodes a URL invisibly. Your phone opens it automatically — no preview, no warning. This blind-click is exactly what attackers exploit.</p>
+        <div class="callout" data-i18n-html="g1_callout1"><strong>📊 Stat:</strong> QR phishing attacks increased 600%+ in H2 2023. By 2024, it became the #1 method to bypass corporate email security filters.</div>
+        <h3 data-i18n="g1_h2">Common Attack Scenarios</h3>
         <ul>
-          <li><strong>Fake parking meters</strong> — sticker QR codes redirect to fake payment pages</li>
-          <li><strong>Phishing emails</strong> — QR images bypass spam filters</li>
-          <li><strong>Fake delivery notices</strong> — "Scan to reschedule" leads to credential theft</li>
-          <li><strong>Restaurant menus</strong> — tampered QR codes with card skimming</li>
+          <li data-i18n-html="g1_li1"><strong>Fake parking meters</strong> — sticker QR codes redirect to fake payment pages</li>
+          <li data-i18n-html="g1_li2"><strong>Phishing emails</strong> — QR images bypass spam filters</li>
+          <li data-i18n-html="g1_li3"><strong>Fake delivery notices</strong> — "Scan to reschedule" leads to credential theft</li>
+          <li data-i18n-html="g1_li4"><strong>Restaurant menus</strong> — tampered QR codes with card skimming</li>
         </ul>
-        <div class="callout callout-safe"><strong>✅ Fix:</strong> Use Scan Shield on any QR that asks you to log in or pay.</div>
+        <div class="callout callout-safe" data-i18n-html="g1_callout2"><strong>✅ Fix:</strong> Use Scan Shield on any QR that asks you to log in or pay.</div>
       </div>
-      <button class="read-btn" onclick="togArt('g1')">Read more ↓</button>
+      <button class="read-btn" onclick="togArt('g1')" data-i18n="read_more">Read more ↓</button>
     </div>
     <div class="art">
-      <span class="art-tag">Intermediate</span>
-      <h2 onclick="togArt('g2')">5 Warning Signs of a Scam QR Code</h2>
-      <p class="prev">Five red flags that security professionals look for — plus one tool that checks them all automatically.</p>
+      <span class="art-tag" data-i18n="guide_intermediate">Intermediate</span>
+      <h2 onclick="togArt('g2')" data-i18n="g2_title">5 Warning Signs of a Scam QR Code</h2>
+      <p class="prev" data-i18n="g2_prev">Five red flags that security professionals look for — plus one tool that checks them all automatically.</p>
       <div class="art-body" id="g2">
-        <h3>1. Random or Misspelled Domain</h3>
-        <p>Real brands use their own domains. Watch for: <strong>amaz0n-secure.xyz</strong>, <strong>paypa1-login.support</strong>.</p>
-        <h3>2. URL Shorteners</h3>
-        <p>bit.ly, tinyurl hide the real destination. Expand or verify before visiting.</p>
-        <h3>3. Immediate Login Request</h3>
-        <p>Legit services rarely demand credentials the moment you land from a QR code.</p>
-        <h3>4. Physical Sticker Over QR</h3>
-        <p>Touch the QR code in restaurants, parking meters. A sticker on top is a strong attack signal.</p>
-        <h3>5. Urgency Language</h3>
-        <p>"Act now — account will close!" Legitimate companies don't deliver urgency via QR codes.</p>
+        <h3 data-i18n="g2_h1">1. Random or Misspelled Domain</h3>
+        <p data-i18n="g2_p1">Real brands use their own domains. Watch for: amaz0n-secure.xyz, paypa1-login.support.</p>
+        <h3 data-i18n="g2_h2">2. URL Shorteners</h3>
+        <p data-i18n="g2_p2">bit.ly, tinyurl hide the real destination. Expand or verify before visiting.</p>
+        <h3 data-i18n="g2_h3">3. Immediate Login Request</h3>
+        <p data-i18n="g2_p3">Legit services rarely demand credentials the moment you land from a QR code.</p>
+        <h3 data-i18n="g2_h4">4. Physical Sticker Over QR</h3>
+        <p data-i18n="g2_p4">Touch the QR code in restaurants, parking meters. A sticker on top is a strong attack signal.</p>
+        <h3 data-i18n="g2_h5">5. Urgency Language</h3>
+        <p data-i18n="g2_p5">"Act now — account will close!" Legitimate companies don't deliver urgency via QR codes.</p>
       </div>
-      <button class="read-btn" onclick="togArt('g2')">Read more ↓</button>
+      <button class="read-btn" onclick="togArt('g2')" data-i18n="read_more">Read more ↓</button>
     </div>
     <div class="art">
-      <span class="art-tag">Advanced</span>
-      <h2 onclick="togArt('g3')">How Scan Shield's AI Detects Threats</h2>
-      <p class="prev">A look inside the three-layer analysis engine: URL inspection, live web intelligence, and GPT-4o reasoning.</p>
+      <span class="art-tag" data-i18n="guide_advanced">Advanced</span>
+      <h2 onclick="togArt('g3')" data-i18n="g3_title">How Scan Shield's AI Detects Threats</h2>
+      <p class="prev" data-i18n="g3_prev">A look inside the three-layer analysis engine: URL inspection, live web intelligence, and GPT-4o reasoning.</p>
       <div class="art-body" id="g3">
-        <h3>Layer 1: URL Structure</h3>
-        <p>Structural signals — unusual TLDs, character substitutions, excessive subdomains — analyzed before any network request.</p>
-        <h3>Layer 2: Live Threat Intelligence</h3>
-        <p>Real-time search for scam reports and cybersecurity alerts about the domain.</p>
-        <h3>Layer 3: GPT-4o Synthesis</h3>
-        <p>All signals fed into GPT-4o-mini. Conservative by design — only flags danger when multiple clear signals align.</p>
-        <div class="callout"><strong>💡 Why this beats blocklists:</strong> Most phishing domains live for only 24–72 hours — too short for static lists, but long enough to steal credentials.</div>
+        <h3 data-i18n="g3_h1">Layer 1: URL Structure</h3>
+        <p data-i18n="g3_p1">Structural signals — unusual TLDs, character substitutions, excessive subdomains — analyzed before any network request.</p>
+        <h3 data-i18n="g3_h2">Layer 2: Live Threat Intelligence</h3>
+        <p data-i18n="g3_p2">Real-time search for scam reports and cybersecurity alerts about the domain.</p>
+        <h3 data-i18n="g3_h3">Layer 3: GPT-4o Synthesis</h3>
+        <p data-i18n="g3_p3">All signals fed into GPT-4o-mini. Conservative by design — only flags danger when multiple clear signals align.</p>
+        <div class="callout" data-i18n-html="g3_callout"><strong>💡 Why this beats blocklists:</strong> Most phishing domains live for only 24–72 hours — too short for static lists, but long enough to steal credentials.</div>
       </div>
-      <button class="read-btn" onclick="togArt('g3')">Read more ↓</button>
+      <button class="read-btn" onclick="togArt('g3')" data-i18n="read_more">Read more ↓</button>
     </div>
     <div style="height:32px"></div>
   </div>
 </div>
 
+<!-- ABOUT PAGE -->
 <div id="page-about" class="page">
   <div class="pg-hero wrap">
-    <div class="hero-eyebrow" style="margin-bottom:12px">👋 About</div>
-    <h1>About Scan Shield</h1>
-    <p>Built to make QR code safety accessible to everyone, everywhere.</p>
+    <div class="hero-eyebrow" style="margin-bottom:12px">👋 <span data-i18n="about_eyebrow">About</span></div>
+    <h1 data-i18n="about_title">About Scan Shield</h1>
+    <p data-i18n="about_sub">Built to make QR code safety accessible to everyone, everywhere.</p>
   </div>
   <div class="wrap">
     <div class="prose-card">
-      <h2>Our Mission</h2>
-      <p>QR codes are everywhere — restaurants, parking, events, packages. But as their use exploded, so did their abuse by scammers.</p>
-      <h2>What Makes Us Different</h2>
+      <h2 data-i18n="about_h1">Our Mission</h2>
+      <p data-i18n="about_p1">QR codes are everywhere — restaurants, parking, events, packages. But as their use exploded, so did their abuse by scammers.</p>
+      <h2 data-i18n="about_h2">What Makes Us Different</h2>
       <ul>
-        <li><strong>Real AI, not rules</strong> — GPT-4o analyzes context, not just blocklists</li>
-        <li><strong>Live threat data</strong> — Real-time web search on every scan</li>
-        <li><strong>Privacy first</strong> — No accounts, no data storage, no tracking</li>
-        <li><strong>Mobile-first</strong> — Built for the phone you already have in your hand</li>
+        <li data-i18n-html="about_li1"><strong>Real AI, not rules</strong> — GPT-4o analyzes context, not just blocklists</li>
+        <li data-i18n-html="about_li2"><strong>Live threat data</strong> — Real-time web search on every scan</li>
+        <li data-i18n-html="about_li3"><strong>Privacy first</strong> — No accounts, no data storage, no tracking</li>
+        <li data-i18n-html="about_li4"><strong>Mobile-first</strong> — Built for the phone you already have in your hand</li>
       </ul>
-      <h2>Technology</h2>
-      <p>QR decoding runs locally in your browser via <a href="https://github.com/cozmo/jsQR" target="_blank" rel="noopener">jsQR</a>. Your camera feed never leaves your device.</p>
+      <h2 data-i18n="about_h3">Technology</h2>
+      <p data-i18n-html="about_p2">QR decoding runs locally in your browser via <a href="https://github.com/cozmo/jsQR" target="_blank" rel="noopener">jsQR</a>. Your camera feed never leaves your device.</p>
     </div>
     <div style="height:32px"></div>
   </div>
 </div>
 
+<!-- PRIVACY PAGE -->
 <div id="page-privacy" class="page">
-  <div class="pg-hero wrap"><h1>🔒 Privacy Policy</h1><p>Last updated: June 2025</p></div>
+  <div class="pg-hero wrap"><h1 data-i18n="privacy_title">🔒 Privacy Policy</h1><p data-i18n="privacy_updated">Last updated: June 2025</p></div>
   <div class="wrap">
     <div class="prose-card">
-      <div class="l-h">1. Overview</div>
-      <p class="l-p">Scan Shield is a browser-based tool. This policy explains what data is handled and how.</p>
-      <div class="l-h">2. Data Handling</div>
+      <div class="l-h" data-i18n="priv_h1">1. Overview</div>
+      <p class="l-p" data-i18n="priv_p1">Scan Shield is a browser-based tool. This policy explains what data is handled and how.</p>
+      <div class="l-h" data-i18n="priv_h2">2. Data Handling</div>
       <table class="ltbl">
-        <thead><tr><th>Data</th><th>Purpose</th><th>Stored?</th></tr></thead>
+        <thead><tr><th data-i18n="tbl_data">Data</th><th data-i18n="tbl_purpose">Purpose</th><th data-i18n="tbl_stored">Stored?</th></tr></thead>
         <tbody>
-          <tr><td>QR / URL content</td><td>Sent to OpenAI for analysis</td><td>❌ No</td></tr>
-          <tr><td>Camera feed</td><td>Local QR decoding only</td><td>❌ Never</td></tr>
-          <tr><td>Domain name</td><td>Serper threat search</td><td>❌ No</td></tr>
-          <tr><td>Payment info</td><td>Processed by Stripe (PCI compliant)</td><td>Stripe only</td></tr>
+          <tr><td data-i18n="tbl_qr">QR / URL content</td><td data-i18n="tbl_qr_p">Sent to OpenAI for analysis</td><td>❌ No</td></tr>
+          <tr><td data-i18n="tbl_cam">Camera feed</td><td data-i18n="tbl_cam_p">Local QR decoding only</td><td>❌ Never</td></tr>
+          <tr><td data-i18n="tbl_domain">Domain name</td><td data-i18n="tbl_domain_p">Serper threat search</td><td>❌ No</td></tr>
+          <tr><td data-i18n="tbl_payment">Payment info</td><td data-i18n="tbl_payment_p">Processed by Stripe (PCI compliant)</td><td data-i18n="tbl_stripe_only">Stripe only</td></tr>
         </tbody>
       </table>
-      <div class="l-h">3. Third Parties</div>
-      <p class="l-p"><strong>OpenAI</strong> — AI analysis. <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">Policy ↗</a></p>
-      <p class="l-p"><strong>Stripe</strong> — Payment processing. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Policy ↗</a></p>
+      <div class="l-h" data-i18n="priv_h3">3. Third Parties</div>
+      <p class="l-p" data-i18n-html="priv_openai"><strong>OpenAI</strong> — AI analysis. <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">Policy ↗</a></p>
+      <p class="l-p" data-i18n-html="priv_stripe"><strong>Stripe</strong> — Payment processing. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Policy ↗</a></p>
     </div>
     <div style="height:32px"></div>
   </div>
 </div>
 
+<!-- TERMS PAGE -->
 <div id="page-terms" class="page">
-  <div class="pg-hero wrap"><h1>⚖️ Terms &amp; Disclaimer</h1><p>Last updated: June 2025</p></div>
+  <div class="pg-hero wrap"><h1 data-i18n="terms_title">⚖️ Terms &amp; Disclaimer</h1><p data-i18n="terms_updated">Last updated: June 2025</p></div>
   <div class="wrap">
     <div class="prose-card">
-      <div class="l-h">1. Service</div>
-      <p class="l-p">Scan Shield provides AI-powered QR safety analysis for informational purposes only.</p>
-      <div class="l-h">2. Subscriptions</div>
-      <p class="l-p">Pro and Team plans are billed via Stripe. Cancel anytime from your account settings.</p>
-      <div class="l-h">3. Accuracy Disclaimer</div>
-      <p class="l-p">AI analysis may produce incorrect results. Scan Shield is not liable for any damages.</p>
-      <div class="l-h">4. Governing Law</div>
-      <p class="l-p">This service is operated in accordance with the laws of Japan.</p>
+      <div class="l-h" data-i18n="terms_h1">1. Service</div>
+      <p class="l-p" data-i18n="terms_p1">Scan Shield provides AI-powered QR safety analysis for informational purposes only.</p>
+      <div class="l-h" data-i18n="terms_h2">2. Subscriptions</div>
+      <p class="l-p" data-i18n="terms_p2">Pro and Team plans are billed via Stripe. Cancel anytime from your account settings.</p>
+      <div class="l-h" data-i18n="terms_h3">3. Accuracy Disclaimer</div>
+      <p class="l-p" data-i18n="terms_p3">AI analysis may produce incorrect results. Scan Shield is not liable for any damages.</p>
+      <div class="l-h" data-i18n="terms_h4">4. Governing Law</div>
+      <p class="l-p" data-i18n="terms_p4">This service is operated in accordance with the laws of Japan.</p>
     </div>
     <div style="height:32px"></div>
   </div>
 </div>
 
-<!-- Auth Modal -->
+<!-- AUTH MODAL -->
 <div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:1900;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
   <div style="width:100%;max-width:480px;background:linear-gradient(160deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:28px 20px calc(36px + env(safe-area-inset-bottom));animation:sheet-up .4s cubic-bezier(.22,1,.36,1) both">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
-      <h3 id="auth-title" style="font-size:20px;font-weight:800;letter-spacing:-.5px">Log In</h3>
+      <h3 id="auth-title" style="font-size:20px;font-weight:800;letter-spacing:-.5px" data-i18n="auth_login">Log In</h3>
       <button onclick="closeAuthModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:4px 8px">×</button>
     </div>
     <div style="display:flex;gap:5px;background:var(--navy-800);border-radius:12px;padding:4px;margin-bottom:20px">
-      <button id="auth-tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;background:var(--blue-500);color:#fff">Log In</button>
-      <button id="auth-tab-signup" onclick="switchAuthTab('signup')" style="flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;background:transparent;color:var(--muted)">Sign Up</button>
+      <button id="auth-tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;background:var(--blue-500);color:#fff" data-i18n="auth_login">Log In</button>
+      <button id="auth-tab-signup" onclick="switchAuthTab('signup')" style="flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;background:transparent;color:var(--muted)" data-i18n="auth_signup">Sign Up</button>
     </div>
     <div style="display:flex;flex-direction:column;gap:12px">
       <div>
-        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:6px">Email</label>
+        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:6px" data-i18n="label_email">Email</label>
         <input type="email" id="auth-email" class="finp" placeholder="you@example.com" autocomplete="email"/>
       </div>
       <div>
-        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:6px">Password</label>
+        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:6px" data-i18n="label_password">Password</label>
         <input type="password" id="auth-password" class="finp" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()"/>
       </div>
       <div id="auth-confirm-wrap" style="display:none">
-        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:6px">Confirm Password</label>
+        <label style="font-size:12px;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:6px" data-i18n="label_confirm_pw">Confirm Password</label>
         <input type="password" id="auth-confirm" class="finp" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')doAuth()"/>
       </div>
-      <button class="btn btn-blue" id="auth-submit-btn" onclick="doAuth()" style="margin-top:2px">Log In</button>
+      <button class="btn btn-blue" id="auth-submit-btn" onclick="doAuth()" data-i18n="auth_login" style="margin-top:2px">Log In</button>
       <div id="auth-msg" style="font-size:13px;text-align:center;min-height:18px;color:var(--muted)"></div>
     </div>
     <div id="auth-forgot" style="text-align:center;margin-top:12px">
-      <button onclick="doForgotPassword()" style="font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;padding:6px 0">Forgot password?</button>
+      <button onclick="doForgotPassword()" style="font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;padding:6px 0" data-i18n="auth_forgot">Forgot password?</button>
     </div>
   </div>
 </div>
 
+<!-- FOOTER -->
 <footer>
   <div class="f-in">
     <div class="f-brand">
@@ -847,22 +871,540 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
         <div class="logo-gem"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <span class="logo-txt"><em>Scan</em>Shield</span>
       </div>
-      <p>Free AI-powered QR code safety checker. Detect phishing, malware, and scams before you click.</p>
+      <p data-i18n="footer_desc">Free AI-powered QR code safety checker. Detect phishing, malware, and scams before you click.</p>
     </div>
     <div class="f-links">
-      <button class="f-link" onclick="go('home')">Home</button><span class="f-sep">·</span>
-      <button class="f-link" onclick="go('scan')">Scanner</button><span class="f-sep">·</span>
-      <button class="f-link" onclick="go('guide')">Safety Guide</button><span class="f-sep">·</span>
-      <button class="f-link" onclick="go('about')">About</button><span class="f-sep">·</span>
-      <button class="f-link" onclick="go('privacy')">Privacy</button><span class="f-sep">·</span>
-      <button class="f-link" onclick="go('terms')">Terms</button><span class="f-sep">·</span>
-      <button class="f-link" onclick="openPortal()">Manage Subscription</button>
+      <button class="f-link" onclick="go('home')" data-i18n="nav_home">Home</button><span class="f-sep">·</span>
+      <button class="f-link" onclick="go('scan')" data-i18n="nav_scanner">Scanner</button><span class="f-sep">·</span>
+      <button class="f-link" onclick="go('guide')" data-i18n="nav_guide">Safety Guide</button><span class="f-sep">·</span>
+      <button class="f-link" onclick="go('about')" data-i18n="nav_about">About</button><span class="f-sep">·</span>
+      <button class="f-link" onclick="go('privacy')" data-i18n="nav_privacy">Privacy</button><span class="f-sep">·</span>
+      <button class="f-link" onclick="go('terms')" data-i18n="nav_terms">Terms</button><span class="f-sep">·</span>
+      <button class="f-link" onclick="openPortal()" data-i18n="nav_manage_sub">Manage Subscription</button>
     </div>
-    <div class="f-bot">© 2025 Scan Shield · Independent developer · AI analysis is for informational purposes only.</div>
+    <div class="f-bot" data-i18n="footer_copy">© 2025 Scan Shield · Independent developer · AI analysis is for informational purposes only.</div>
   </div>
 </footer>
 
 <script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// i18n TRANSLATIONS
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const TRANSLATIONS = {
+  en: {
+    // Nav
+    nav_home: 'Home',
+    nav_scanner: 'Scanner',
+    nav_guide: 'Safety Guide',
+    nav_about: 'About',
+    nav_pricing: 'Pricing',
+    nav_login: 'Log In',
+    nav_privacy: 'Privacy',
+    nav_terms: 'Terms',
+    nav_manage_sub: 'Manage Subscription',
+    label_current_plan: 'Current Plan',
+    btn_scan_now: 'Scan Now',
+    // Tutorial
+    tut0_title: 'Welcome to\nScan Shield 👋',
+    tut0_body: 'The <strong>AI-powered tool</strong> that tells you if a QR code is safe — before you click anything.<br/><br/>Let us show you how it works in <strong>30 seconds</strong>.',
+    tut1_title: 'Three Ways to Scan',
+    tut1_body: '<strong>📷 Camera</strong> — Point at a QR code for instant detection.<br/><br/><strong>🖼 Upload</strong> — Screenshot of a QR? Upload the image.<br/><br/><strong>🔗 URL</strong> — Already have the link? Paste it directly.',
+    tut2_title: 'Instant AI Verdict',
+    tut2_body: 'In under <strong>3 seconds</strong>, you\'ll get:<br/><br/>✅ <strong>Safe</strong> · ⚠️ <strong>Caution</strong> · 🚨 <strong>Dangerous</strong><br/><br/>Plus a full explanation and a <strong>chat assistant</strong> to answer any follow-up questions.',
+    tut_next: 'Get Started →',
+    tut_next2: 'Next →',
+    tut_skip: 'Skip tutorial',
+    tut_skip2: 'Skip',
+    tut_start: 'Start Scanning →',
+    // Hero
+    hero_eyebrow: 'AI-Powered QR Safety',
+    hero_h1: 'Don\'t Scan Blind.<br/><span class="grad">Stay Protected.</span>',
+    hero_sub: 'QR codes can hide phishing links, malware, and scams. Scan Shield verifies them instantly using AI before you risk anything.',
+    hero_cta_main: 'Start Scanning for Free',
+    hero_cta_sec: 'View Plans',
+    trust1: 'No sign-up needed',
+    trust2: 'Zero data stored',
+    trust3: 'Works on any device',
+    // How it works
+    how_label: 'How It Works',
+    how_title: 'Three steps. Under 10 seconds.',
+    step1_h: 'Scan or Paste',
+    step1_p: 'Use your camera, upload a QR image, or paste a URL directly.',
+    step2_h: 'AI Analyzes',
+    step2_p: 'GPT-4o checks URL structure, live scam databases, and page content in parallel.',
+    step3_h: 'Instant Verdict',
+    step3_p: '✅ Safe · ⚠️ Caution · 🚨 Dangerous — with a plain-English explanation and follow-up chat.',
+    // Pricing
+    pricing_label: 'Pricing',
+    pricing_title: 'Simple, transparent pricing',
+    pricing_sub: 'Start free. Upgrade when you need unlimited power.',
+    billing_note: 'Monthly billing · Cancel anytime',
+    plan_free_name: 'Free',
+    plan_free_per: '/ forever',
+    plan_free_desc: 'Perfect for occasional QR scanning. No credit card required.',
+    plan_free_cta: 'Start for Free',
+    plan_popular: '⚡ Most Popular',
+    plan_pro_name: 'Pro',
+    plan_per_month: '/ month',
+    plan_pro_desc: 'Best for daily users. Full AI power with real-time threat intelligence.',
+    plan_pro_cta: 'Get Pro →',
+    plan_team_name: 'Team',
+    plan_team_desc: 'For families or small teams who want shared protection.',
+    plan_team_cta: 'Get Team →',
+    feat_5scans: '5 scans per day',
+    feat_verdict: 'AI safety verdict',
+    feat_url: 'URL direct analysis',
+    feat_threat: 'Live web threat search',
+    feat_chat: 'Follow-up AI chat',
+    feat_upload: 'Image upload scanning',
+    feat_unlimited: 'Unlimited scans',
+    feat_priority: 'Priority analysis queue',
+    feat_everything_pro: 'Everything in Pro',
+    feat_seats: 'Up to 5 seats',
+    feat_dashboard: 'Shared scan dashboard',
+    feat_alerts: 'Email alerts for dangers',
+    feat_support: 'Priority email support',
+    stripe_note: 'Secure payment via Stripe · Cancel anytime · No contracts',
+    // Scanner
+    scan_title: 'Scan a QR Code',
+    scan_sub: 'Camera, upload, or paste a URL — instant AI verdict.',
+    already_subscribed: 'Already subscribed?',
+    tab_camera: 'Camera',
+    tab_upload: 'Upload',
+    cam_title: 'Real-time QR Scanner',
+    cam_desc: 'Point your camera at any QR code for an instant AI safety verdict.',
+    cam_enable: 'Enable Camera',
+    cam_flip: 'Flip',
+    cam_stop: 'Stop',
+    drop_title: 'Drop QR image here',
+    drop_types: 'JPG · PNG · WebP · GIF',
+    drop_or: 'or',
+    drop_browse: 'Tap to Browse',
+    // Guide
+    guide_eyebrow: 'Safety Guide',
+    guide_title: 'QR Safety Guide',
+    guide_sub: 'Learn how QR code scams work — and how to stay protected.',
+    guide_beginner: 'Beginner',
+    guide_intermediate: 'Intermediate',
+    guide_advanced: 'Advanced',
+    g1_title: 'What Is QR Code Phishing?',
+    g1_prev: 'Attackers use QR codes to hide dangerous URLs that bypass traditional security. It\'s called "quishing" and it\'s exploding in 2024–2025.',
+    g1_h1: 'The Hidden Link Problem',
+    g1_p1: 'A QR code encodes a URL invisibly. Your phone opens it automatically — no preview, no warning. This blind-click is exactly what attackers exploit.',
+    g1_callout1: '<strong>📊 Stat:</strong> QR phishing attacks increased 600%+ in H2 2023. By 2024, it became the #1 method to bypass corporate email security filters.',
+    g1_h2: 'Common Attack Scenarios',
+    g1_li1: '<strong>Fake parking meters</strong> — sticker QR codes redirect to fake payment pages',
+    g1_li2: '<strong>Phishing emails</strong> — QR images bypass spam filters',
+    g1_li3: '<strong>Fake delivery notices</strong> — "Scan to reschedule" leads to credential theft',
+    g1_li4: '<strong>Restaurant menus</strong> — tampered QR codes with card skimming',
+    g1_callout2: '<strong>✅ Fix:</strong> Use Scan Shield on any QR that asks you to log in or pay.',
+    g2_title: '5 Warning Signs of a Scam QR Code',
+    g2_prev: 'Five red flags that security professionals look for — plus one tool that checks them all automatically.',
+    g2_h1: '1. Random or Misspelled Domain',
+    g2_p1: 'Real brands use their own domains. Watch for: amaz0n-secure.xyz, paypa1-login.support.',
+    g2_h2: '2. URL Shorteners',
+    g2_p2: 'bit.ly, tinyurl hide the real destination. Expand or verify before visiting.',
+    g2_h3: '3. Immediate Login Request',
+    g2_p3: 'Legit services rarely demand credentials the moment you land from a QR code.',
+    g2_h4: '4. Physical Sticker Over QR',
+    g2_p4: 'Touch the QR code in restaurants, parking meters. A sticker on top is a strong attack signal.',
+    g2_h5: '5. Urgency Language',
+    g2_p5: '"Act now — account will close!" Legitimate companies don\'t deliver urgency via QR codes.',
+    g3_title: 'How Scan Shield\'s AI Detects Threats',
+    g3_prev: 'A look inside the three-layer analysis engine: URL inspection, live web intelligence, and GPT-4o reasoning.',
+    g3_h1: 'Layer 1: URL Structure',
+    g3_p1: 'Structural signals — unusual TLDs, character substitutions, excessive subdomains — analyzed before any network request.',
+    g3_h2: 'Layer 2: Live Threat Intelligence',
+    g3_p2: 'Real-time search for scam reports and cybersecurity alerts about the domain.',
+    g3_h3: 'Layer 3: GPT-4o Synthesis',
+    g3_p3: 'All signals fed into GPT-4o-mini. Conservative by design — only flags danger when multiple clear signals align.',
+    g3_callout: '<strong>💡 Why this beats blocklists:</strong> Most phishing domains live for only 24–72 hours — too short for static lists, but long enough to steal credentials.',
+    read_more: 'Read more ↓',
+    collapse: 'Collapse ↑',
+    // About
+    about_eyebrow: 'About',
+    about_title: 'About Scan Shield',
+    about_sub: 'Built to make QR code safety accessible to everyone, everywhere.',
+    about_h1: 'Our Mission',
+    about_p1: 'QR codes are everywhere — restaurants, parking, events, packages. But as their use exploded, so did their abuse by scammers.',
+    about_h2: 'What Makes Us Different',
+    about_li1: '<strong>Real AI, not rules</strong> — GPT-4o analyzes context, not just blocklists',
+    about_li2: '<strong>Live threat data</strong> — Real-time web search on every scan',
+    about_li3: '<strong>Privacy first</strong> — No accounts, no data storage, no tracking',
+    about_li4: '<strong>Mobile-first</strong> — Built for the phone you already have in your hand',
+    about_h3: 'Technology',
+    about_p2: 'QR decoding runs locally in your browser via <a href="https://github.com/cozmo/jsQR" target="_blank" rel="noopener">jsQR</a>. Your camera feed never leaves your device.',
+    // Privacy
+    privacy_title: '🔒 Privacy Policy',
+    privacy_updated: 'Last updated: June 2025',
+    priv_h1: '1. Overview',
+    priv_p1: 'Scan Shield is a browser-based tool. This policy explains what data is handled and how.',
+    priv_h2: '2. Data Handling',
+    tbl_data: 'Data', tbl_purpose: 'Purpose', tbl_stored: 'Stored?',
+    tbl_qr: 'QR / URL content', tbl_qr_p: 'Sent to OpenAI for analysis',
+    tbl_cam: 'Camera feed', tbl_cam_p: 'Local QR decoding only',
+    tbl_domain: 'Domain name', tbl_domain_p: 'Serper threat search',
+    tbl_payment: 'Payment info', tbl_payment_p: 'Processed by Stripe (PCI compliant)',
+    tbl_stripe_only: 'Stripe only',
+    priv_h3: '3. Third Parties',
+    priv_openai: '<strong>OpenAI</strong> — AI analysis. <a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">Policy ↗</a>',
+    priv_stripe: '<strong>Stripe</strong> — Payment processing. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Policy ↗</a>',
+    // Terms
+    terms_title: '⚖️ Terms & Disclaimer',
+    terms_updated: 'Last updated: June 2025',
+    terms_h1: '1. Service', terms_p1: 'Scan Shield provides AI-powered QR safety analysis for informational purposes only.',
+    terms_h2: '2. Subscriptions', terms_p2: 'Pro and Team plans are billed via Stripe. Cancel anytime from your account settings.',
+    terms_h3: '3. Accuracy Disclaimer', terms_p3: 'AI analysis may produce incorrect results. Scan Shield is not liable for any damages.',
+    terms_h4: '4. Governing Law', terms_p4: 'This service is operated in accordance with the laws of Japan.',
+    // Auth
+    auth_login: 'Log In',
+    auth_signup: 'Sign Up',
+    auth_forgot: 'Forgot password?',
+    label_email: 'Email',
+    label_password: 'Password',
+    label_confirm_pw: 'Confirm Password',
+    // Footer
+    footer_desc: 'Free AI-powered QR code safety checker. Detect phishing, malware, and scams before you click.',
+    footer_copy: '© 2025 Scan Shield · Independent developer · AI analysis is for informational purposes only.',
+    // Dynamic UI
+    scan_limit_label: 'left today',
+    plan_unlimited_label: 'Unlimited',
+    upgrade_title: 'Daily limit reached',
+    upgrade_body: 'Free plan: <strong style="color:#fff">5 scans/day</strong>.<br/>Upgrade to Pro for unlimited scans.',
+    upgrade_view_plans: 'View Plans →',
+    upgrade_activate: 'Activate your plan',
+    already_sub_q: 'Already subscribed?',
+    chat_locked: '💬 <strong style="color:#fff">Follow-up chat</strong> is available on Pro &amp; Team plans.',
+    chat_upgrade_link: 'Upgrade →',
+    chat_placeholder: 'Ask about this site… (100 chars)',
+    copy_btn: 'Copy',
+    open_btn: 'Open',
+    upload_locked_msg: 'Upload is available on Pro & Team plans.',
+    loading_connecting: '🌐 Connecting to site…',
+    loading_threat: '🔎 Searching threat databases…',
+    loading_ai: '🤖 AI analyzing…',
+    toast_qr_detected: 'QR detected! Analyzing…',
+    toast_reading_img: 'Reading image…',
+    toast_no_qr: 'No QR code found. Try a clearer image.',
+    toast_copied: 'Copied!',
+    toast_cam_err: 'Camera error: ',
+    toast_no_file: 'No file selected.',
+    toast_img_err: 'Could not load image.',
+    toast_file_err: 'File read error.',
+    toast_lib_err: 'QR library not loaded. Reload the page.',
+    toast_plan_activated: '🎉 Plan activated! Welcome to ',
+    toast_payment_done: '🎉 Payment Complete!',
+    toast_plan_not_found: 'No subscription found yet. It may take a minute to sync.',
+    activate_title: 'Activate Your Plan ⚡',
+    activate_subtitle: 'Enter the email you used to purchase.<br/>We\'ll verify your subscription instantly.',
+    activate_payment_title: '🎉 Payment Complete!',
+    activate_payment_subtitle: 'Enter the email you used on Stripe.<br/>Your plan will activate instantly.',
+    verify_btn: 'Verify & Activate',
+    verifying_btn: 'Verifying...',
+    cancel_btn: 'Cancel',
+    pre_stripe_title_pro: 'Get Pro',
+    pre_stripe_title_team: 'Get Team',
+    pre_stripe_sub: 'You\'ll complete payment on Stripe\'s secure page.<br/>After paying, come back here to activate.',
+    pre_stripe_after: 'After payment:',
+    pre_stripe_steps: '1. Return to this page<br/>2. Enter the email you used for payment<br/>3. Your plan activates instantly ✅',
+    pre_stripe_cta: 'Continue to Payment →',
+    share_label: 'Share:',
+    share_email: 'Email',
+    share_copy: 'Copy',
+    share_slack_copied: 'Copied! Paste into Slack',
+    clipboard_copied: 'Copied to clipboard!',
+    chat_scan_limit: 'Chat is available on Pro & Team plans.',
+  },
+
+  ja: {
+    // Nav
+    nav_home: 'ホーム',
+    nav_scanner: 'スキャナー',
+    nav_guide: '安全ガイド',
+    nav_about: 'このアプリについて',
+    nav_pricing: '料金プラン',
+    nav_login: 'ログイン',
+    nav_privacy: 'プライバシー',
+    nav_terms: '利用規約',
+    nav_manage_sub: 'サブスクリプション管理',
+    label_current_plan: '現在のプラン',
+    btn_scan_now: '今すぐスキャン',
+    // Tutorial
+    tut0_title: 'Scan Shieldへ\nようこそ 👋',
+    tut0_body: 'QRコードが安全かどうかを<strong>AIがリアルタイム</strong>で判定します。<br/><br/><strong>30秒</strong>で使い方をご説明します。',
+    tut1_title: '3つのスキャン方法',
+    tut1_body: '<strong>📷 カメラ</strong> — QRコードにかざすだけで即座に検出。<br/><br/><strong>🖼 アップロード</strong> — スクリーンショットをアップロード。<br/><br/><strong>🔗 URL</strong> — リンクをそのまま貼り付け。',
+    tut2_title: '即時AIによる判定',
+    tut2_body: '<strong>3秒以内</strong>に結果が届きます：<br/><br/>✅ <strong>安全</strong> · ⚠️ <strong>注意</strong> · 🚨 <strong>危険</strong><br/><br/>詳細説明と<strong>チャットアシスタント</strong>による追加質問にも対応。',
+    tut_next: '始める →',
+    tut_next2: '次へ →',
+    tut_skip: 'チュートリアルをスキップ',
+    tut_skip2: 'スキップ',
+    tut_start: 'スキャンを開始 →',
+    // Hero
+    hero_eyebrow: 'AI搭載 QRコード安全チェック',
+    hero_h1: '危険なQRコードを<br/><span class="grad">スキャン前に見破る。</span>',
+    hero_sub: 'QRコードにはフィッシングリンク、マルウェア、詐欺が潜んでいます。Scan ShieldがAIで即座に検証します。',
+    hero_cta_main: '無料でスキャンを始める',
+    hero_cta_sec: 'プランを見る',
+    trust1: '登録不要',
+    trust2: 'データ保存なし',
+    trust3: 'あらゆる端末で動作',
+    // How it works
+    how_label: '使い方',
+    how_title: '3ステップ、10秒以内。',
+    step1_h: 'スキャンまたは貼り付け',
+    step1_p: 'カメラ、QR画像のアップロード、またはURLを直接貼り付け。',
+    step2_h: 'AIが分析',
+    step2_p: 'GPT-4oがURL構造、リアルタイム詐欺データベース、ページ内容を同時にチェック。',
+    step3_h: '即時判定',
+    step3_p: '✅ 安全 · ⚠️ 注意 · 🚨 危険 — わかりやすい説明とフォローアップチャット付き。',
+    // Pricing
+    pricing_label: '料金プラン',
+    pricing_title: 'シンプルで透明な料金体系',
+    pricing_sub: '無料でスタート。必要になったらアップグレード。',
+    billing_note: '月額課金 · いつでもキャンセル可能',
+    plan_free_name: '無料',
+    plan_free_per: '/ 永久無料',
+    plan_free_desc: 'たまにQRをスキャンする方に最適。クレジットカード不要。',
+    plan_free_cta: '無料で始める',
+    plan_popular: '⚡ 人気No.1',
+    plan_pro_name: 'Pro',
+    plan_per_month: '/ 月',
+    plan_pro_desc: '毎日使う方に最適。リアルタイム脅威情報搭載のフルAIパワー。',
+    plan_pro_cta: 'Proを始める →',
+    plan_team_name: 'チーム',
+    plan_team_desc: '家族や小規模チームで安全を共有したい方向け。',
+    plan_team_cta: 'チームプランを始める →',
+    feat_5scans: '1日5回スキャン',
+    feat_verdict: 'AI安全判定',
+    feat_url: 'URL直接分析',
+    feat_threat: 'ライブ脅威検索',
+    feat_chat: 'AIフォローアップチャット',
+    feat_upload: '画像アップロードスキャン',
+    feat_unlimited: '無制限スキャン',
+    feat_priority: '優先分析キュー',
+    feat_everything_pro: 'Proの全機能',
+    feat_seats: '最大5席',
+    feat_dashboard: '共有スキャンダッシュボード',
+    feat_alerts: '危険時メールアラート',
+    feat_support: '優先メールサポート',
+    stripe_note: 'Stripeによる安全な決済 · いつでもキャンセル · 契約なし',
+    // Scanner
+    scan_title: 'QRコードをスキャン',
+    scan_sub: 'カメラ、アップロード、またはURLを貼り付け — AIが即時判定。',
+    already_subscribed: 'すでに購読済みの方はこちら',
+    tab_camera: 'カメラ',
+    tab_upload: 'アップロード',
+    cam_title: 'リアルタイムQRスキャナー',
+    cam_desc: 'QRコードにカメラをかざすだけで、AIが即座に安全判定を行います。',
+    cam_enable: 'カメラを起動',
+    cam_flip: '反転',
+    cam_stop: '停止',
+    drop_title: 'QR画像をここにドロップ',
+    drop_types: 'JPG · PNG · WebP · GIF',
+    drop_or: 'または',
+    drop_browse: 'タップしてファイルを選択',
+    // Guide
+    guide_eyebrow: '安全ガイド',
+    guide_title: 'QRコード安全ガイド',
+    guide_sub: 'QRコード詐欺の仕組みを学んで、身を守りましょう。',
+    guide_beginner: '初級',
+    guide_intermediate: '中級',
+    guide_advanced: '上級',
+    g1_title: 'QRコードフィッシングとは？',
+    g1_prev: '攻撃者はQRコードを使って危険なURLを隠します。「クイッシング」と呼ばれ、2024〜2025年に急増しています。',
+    g1_h1: '見えないリンクの問題',
+    g1_p1: 'QRコードはURLを見えない形で埋め込みます。スマホは自動的に開くため、プレビューも警告もありません。この「盲目クリック」が攻撃者の狙いです。',
+    g1_callout1: '<strong>📊 データ：</strong> 2023年後半にQRフィッシング攻撃が600%以上増加。2024年には企業メールセキュリティをすり抜ける最大の手法となりました。',
+    g1_h2: 'よくある攻撃シナリオ',
+    g1_li1: '<strong>偽の駐車場料金機</strong> — ステッカーQRが偽の支払いページへ誘導',
+    g1_li2: '<strong>フィッシングメール</strong> — QR画像がスパムフィルターをすり抜ける',
+    g1_li3: '<strong>偽の配送通知</strong> — 「再配達のためスキャン」が認証情報の盗難へ',
+    g1_li4: '<strong>レストランのメニュー</strong> — 改ざんされたQRでカード情報スキミング',
+    g1_callout2: '<strong>✅ 対策：</strong> ログインや支払いを求めるQRコードは必ずScan Shieldで確認しましょう。',
+    g2_title: '詐欺QRコードの5つの警告サイン',
+    g2_prev: 'セキュリティ専門家が注目する5つの危険信号と、それらを自動チェックするツール。',
+    g2_h1: '1. おかしなドメインやスペルミス',
+    g2_p1: '本物のブランドは自社ドメインを使います。amaz0n-secure.xyz、paypa1-login.support などに注意。',
+    g2_h2: '2. URL短縮サービス',
+    g2_p2: 'bit.ly、tinyurlは本当の宛先を隠します。アクセス前に展開・確認しましょう。',
+    g2_h3: '3. 即座のログイン要求',
+    g2_p3: '正規サービスがQRコード経由で突然ログインを求めることは稀です。',
+    g2_h4: '4. QRコード上のステッカー',
+    g2_p3: 'レストランや駐車場のQRを触ってみてください。上にステッカーが貼られていたら攻撃の強いサインです。',
+    g2_h5: '5. 緊急を煽る言葉',
+    g2_p5: '「今すぐ行動 — アカウントが閉鎖されます！」正規企業はQRコードで緊急性を演出しません。',
+    g3_title: 'Scan ShieldのAIが脅威を検出する仕組み',
+    g3_prev: '3層分析エンジンの内部：URL検査、ライブウェブ情報収集、GPT-4oによる推論。',
+    g3_h1: 'レイヤー1：URL構造',
+    g3_p1: '異常なTLD、文字の置き換え、過剰なサブドメインなど構造的なシグナルをネットワークリクエスト前に分析。',
+    g3_h2: 'レイヤー2：ライブ脅威インテリジェンス',
+    g3_p2: 'ドメインに関する詐欺報告やサイバーセキュリティアラートをリアルタイム検索。',
+    g3_h3: 'レイヤー3：GPT-4o統合分析',
+    g3_p3: '全シグナルをGPT-4o-miniへ入力。保守的な設計で、複数の明確なシグナルが一致した場合のみ危険とフラグ。',
+    g3_callout: '<strong>💡 ブロックリストより優れている理由：</strong> ほとんどのフィッシングドメインは24〜72時間しか存在しません。静的リストには短すぎますが、認証情報を盗むには十分です。',
+    read_more: '続きを読む ↓',
+    collapse: '折りたたむ ↑',
+    // About
+    about_eyebrow: 'このアプリについて',
+    about_title: 'Scan Shieldについて',
+    about_sub: 'QRコードの安全性を、すべての人にわかりやすく届けるために作りました。',
+    about_h1: 'ミッション',
+    about_p1: 'QRコードはレストラン、駐車場、イベント、荷物など至る所にあります。その普及とともに、詐欺師による悪用も急増しました。',
+    about_h2: '他との違い',
+    about_li1: '<strong>本物のAI、ルールではない</strong> — GPT-4oがコンテキストを分析（ブロックリストだけではない）',
+    about_li2: '<strong>ライブ脅威データ</strong> — 毎回のスキャンでリアルタイム検索',
+    about_li3: '<strong>プライバシー優先</strong> — アカウント不要、データ保存なし、追跡なし',
+    about_li4: '<strong>モバイルファースト</strong> — お手元のスマートフォンに最適化',
+    about_h3: 'テクノロジー',
+    about_p2: 'QRデコードは<a href="https://github.com/cozmo/jsQR" target="_blank" rel="noopener">jsQR</a>を使用してブラウザ内で完結します。カメラ映像はデバイス外に送信されません。',
+    // Privacy
+    privacy_title: '🔒 プライバシーポリシー',
+    privacy_updated: '最終更新：2025年6月',
+    priv_h1: '1. 概要',
+    priv_p1: 'Scan Shieldはブラウザベースのツールです。このポリシーでは、どのようなデータが扱われるかを説明します。',
+    priv_h2: '2. データの取り扱い',
+    tbl_data: 'データ', tbl_purpose: '目的', tbl_stored: '保存？',
+    tbl_qr: 'QR / URLコンテンツ', tbl_qr_p: 'OpenAIへ分析のため送信',
+    tbl_cam: 'カメラ映像', tbl_cam_p: 'ローカルQRデコードのみ',
+    tbl_domain: 'ドメイン名', tbl_domain_p: 'Serper脅威検索',
+    tbl_payment: '支払い情報', tbl_payment_p: 'Stripe処理（PCI準拠）',
+    tbl_stripe_only: 'Stripeのみ',
+    priv_h3: '3. サードパーティ',
+    priv_openai: '<strong>OpenAI</strong> — AI分析。<a href="https://openai.com/policies/privacy-policy" target="_blank" rel="noopener">ポリシー ↗</a>',
+    priv_stripe: '<strong>Stripe</strong> — 決済処理。<a href="https://stripe.com/privacy" target="_blank" rel="noopener">ポリシー ↗</a>',
+    // Terms
+    terms_title: '⚖️ 利用規約・免責事項',
+    terms_updated: '最終更新：2025年6月',
+    terms_h1: '1. サービス', terms_p1: 'Scan ShieldはAI搭載のQRコード安全分析を情報提供目的でのみ提供します。',
+    terms_h2: '2. サブスクリプション', terms_p2: 'ProおよびTeamプランはStripeで課金されます。アカウント設定からいつでもキャンセル可能です。',
+    terms_h3: '3. 正確性の免責', terms_p3: 'AI分析は誤った結果を生成することがあります。Scan Shieldはいかなる損害についても責任を負いません。',
+    terms_h4: '4. 準拠法', terms_p4: 'このサービスは日本の法律に従って運営されています。',
+    // Auth
+    auth_login: 'ログイン',
+    auth_signup: '新規登録',
+    auth_forgot: 'パスワードを忘れた方',
+    label_email: 'メールアドレス',
+    label_password: 'パスワード',
+    label_confirm_pw: 'パスワード（確認）',
+    // Footer
+    footer_desc: '無料のAI搭載QRコード安全チェッカー。クリック前にフィッシング・マルウェア・詐欺を検出。',
+    footer_copy: '© 2025 Scan Shield · 個人開発 · AI分析は情報提供目的のみです。',
+    // Dynamic UI
+    scan_limit_label: '残り',
+    plan_unlimited_label: '無制限',
+    upgrade_title: '本日の上限に達しました',
+    upgrade_body: '無料プラン：<strong style="color:#fff">1日5回</strong>まで。<br/>Proにアップグレードして無制限スキャン。',
+    upgrade_view_plans: 'プランを見る →',
+    upgrade_activate: 'プランを有効化',
+    already_sub_q: 'すでに購読済みの方',
+    chat_locked: '💬 <strong style="color:#fff">フォローアップチャット</strong>はProおよびTeamプランでご利用いただけます。',
+    chat_upgrade_link: 'アップグレード →',
+    chat_placeholder: 'このサイトについて質問… (100文字)',
+    copy_btn: 'コピー',
+    open_btn: '開く',
+    upload_locked_msg: 'アップロードはProおよびTeamプランでご利用いただけます。',
+    loading_connecting: '🌐 サイトに接続中…',
+    loading_threat: '🔎 脅威データベースを検索中…',
+    loading_ai: '🤖 AIが分析中…',
+    toast_qr_detected: 'QRコードを検出！分析中…',
+    toast_reading_img: '画像を読み込み中…',
+    toast_no_qr: 'QRコードが見つかりません。より鮮明な画像をお試しください。',
+    toast_copied: 'コピーしました！',
+    toast_cam_err: 'カメラエラー：',
+    toast_no_file: 'ファイルが選択されていません。',
+    toast_img_err: '画像を読み込めませんでした。',
+    toast_file_err: 'ファイル読み込みエラー。',
+    toast_lib_err: 'QRライブラリが読み込まれていません。ページを再読み込みしてください。',
+    toast_plan_activated: '🎉 プランが有効化されました！ようこそ ',
+    toast_payment_done: '🎉 支払い完了！',
+    toast_plan_not_found: 'まだサブスクリプションが見つかりません。同期に1分ほどかかる場合があります。',
+    activate_title: 'プランを有効化 ⚡',
+    activate_subtitle: 'ご購入時のメールアドレスを入力してください。<br/>サブスクリプションを即座に確認します。',
+    activate_payment_title: '🎉 支払い完了！',
+    activate_payment_subtitle: 'Stripeで使用したメールアドレスを入力してください。<br/>プランが即座に有効化されます。',
+    verify_btn: '確認して有効化',
+    verifying_btn: '確認中...',
+    cancel_btn: 'キャンセル',
+    pre_stripe_title_pro: 'Proプランを取得',
+    pre_stripe_title_team: 'チームプランを取得',
+    pre_stripe_sub: 'Stripeのセキュアなページで決済を完了してください。<br/>支払い後、こちらに戻って有効化してください。',
+    pre_stripe_after: '支払い後の手順：',
+    pre_stripe_steps: '1. このページに戻る<br/>2. 支払いに使用したメールアドレスを入力<br/>3. プランが即座に有効化 ✅',
+    pre_stripe_cta: '決済に進む →',
+    share_label: '共有：',
+    share_email: 'メール',
+    share_copy: 'コピー',
+    share_slack_copied: 'コピーしました！Slackに貼り付けてください',
+    clipboard_copied: 'クリップボードにコピーしました！',
+    chat_scan_limit: 'チャットはProおよびTeamプランでご利用いただけます。',
+  }
+};
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// LANGUAGE DETECTION & MANAGEMENT
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function detectDefaultLang() {
+  // 1. Check localStorage
+  try {
+    const saved = localStorage.getItem('ss_lang');
+    if (saved === 'en' || saved === 'ja') return saved;
+  } catch {}
+  // 2. Detect browser language
+  const langs = navigator.languages || [navigator.language || 'en'];
+  for (const l of langs) {
+    const code = l.toLowerCase().split('-')[0];
+    if (code === 'ja') return 'ja';
+    if (code === 'en') return 'en';
+  }
+  // 3. Default to English
+  return 'en';
+}
+
+let currentLang = detectDefaultLang();
+
+function t(key) {
+  return TRANSLATIONS[currentLang]?.[key] ?? TRANSLATIONS['en']?.[key] ?? key;
+}
+
+function setLang(lang) {
+  currentLang = lang;
+  try { localStorage.setItem('ss_lang', lang); } catch {}
+  applyTranslations();
+  updateLangButtons();
+  document.documentElement.lang = lang;
+}
+
+function updateLangButtons() {
+  ['lang-en','lang-ja','lang-en-sb','lang-ja-sb'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const isEn = id.includes('-en');
+    el.classList.toggle('active', isEn ? currentLang === 'en' : currentLang === 'ja');
+  });
+}
+
+function applyTranslations() {
+  // Text content
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (val) el.textContent = val;
+  });
+  // HTML content
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.getAttribute('data-i18n-html');
+    const val = t(key);
+    if (val) el.innerHTML = val;
+  });
+  // Update dynamic UI strings
+  updatePlanUI();
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SUPABASE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const SUPABASE_URL = 'https://oktmwoihqlkbcmdpkzre.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdG13b2locWxrYmNtZHBrenJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjA3OTYsImV4cCI6MjA4Nzg5Njc5Nn0.f-6DLyWGDAqCTzyiJ7HDbQkDZA7K2SLSyrQApA6vOC4';
 const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -874,21 +1416,12 @@ let userEmail=null;
 let _authUser=null;
 const SCAN_KEY='ss_scans_'+new Date().toDateString();
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Stripe URL設定
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 本番用: Stripe Dashboard > Payment Links でコピーしたURLに書き換える
-// テスト中はこのままでOK（テストモードで動作）
 const STRIPE_LINKS = {
   pro:  'https://buy.stripe.com/test_eVq28s0yw6W40E51aW43S01',
   team: 'https://buy.stripe.com/test_dRmdRadli0xG9aB7zk43S02'
 };
-// 本番用: Stripe Dashboard > Settings > Billing > Customer portal > Portal link
 const PORTAL_URL = 'https://billing.stripe.com/p/login/test_00wcN6epm5S0gD3f1M43S00';
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Plan config
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const PLAN_CONFIG = {
   free:  { limit: 5,     upload: false, chat: false, label: 'Free' },
   pro:   { limit: 99999, upload: true,  chat: true,  label: 'Pro ⚡' },
@@ -903,13 +1436,12 @@ function incTodayScans() { try{ localStorage.setItem(SCAN_KEY, getTodayScans()+1
 function canScan()       { return getTodayScans() < planLimit(); }
 function remainingScans(){ return Math.max(0, planLimit() - getTodayScans()); }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// UI 更新
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function updatePlanUI() {
   const isFree = currentPlan === 'free';
   const cfg = PLAN_CONFIG[currentPlan] || PLAN_CONFIG.free;
-  const badgeText = isFree ? `${remainingScans()} / 5 left today` : `${cfg.label} — Unlimited`;
+  const badgeText = isFree
+    ? `${remainingScans()} / 5 ${t('scan_limit_label')}`
+    : `${cfg.label} — ${t('plan_unlimited_label')}`;
   const badgeCls = isFree ? 'plan-badge-ui free' : 'plan-badge-ui paid';
 
   ['plan-badge','scan-plan-badge'].forEach(id => {
@@ -924,9 +1456,11 @@ function updatePlanUI() {
   if (lockEl) lockEl.textContent = canUpload() ? '' : '🔒';
 
   const activateLink = document.getElementById('activate-link');
-  if (activateLink) activateLink.style.display = isFree ? 'inline-block' : 'none';
+  if (activateLink) {
+    activateLink.textContent = t('already_subscribed');
+    activateLink.style.display = isFree ? 'inline-block' : 'none';
+  }
 
-  // Manage/Cancel ボタン
   let manageBtn = document.getElementById('manage-sub-btn');
   if (!isFree) {
     if (!manageBtn) {
@@ -934,10 +1468,10 @@ function updatePlanUI() {
       manageBtn.id = 'manage-sub-btn';
       manageBtn.onclick = openPortal;
       manageBtn.style.cssText = 'font-size:12px;color:var(--blue-300);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;padding:4px 0;';
-      manageBtn.textContent = 'Manage / Cancel';
       const row = document.getElementById('scan-plan-row');
       if (row) row.appendChild(manageBtn);
     }
+    manageBtn.textContent = t('nav_manage_sub');
     manageBtn.style.display = 'inline-block';
   } else if (manageBtn) {
     manageBtn.style.display = 'none';
@@ -947,15 +1481,10 @@ function updatePlanUI() {
 
   if (isFree) {
     const uploadPane = document.getElementById('tp-upload');
-    if (uploadPane && uploadPane.classList.contains('on')) {
-      swTab('camera');
-    }
+    if (uploadPane && uploadPane.classList.contains('on')) swTab('camera');
   }
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// プラン確認 API
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 async function checkPlanByEmail(email) {
   try {
     const res = await fetch('/api/check-plan', {
@@ -968,9 +1497,7 @@ async function checkPlanByEmail(email) {
     const data = await res.json();
     const plan = data.plan ?? 'free';
     return ['free','pro','team'].includes(plan) ? plan : 'free';
-  } catch {
-    return 'free';
-  }
+  } catch { return 'free'; }
 }
 
 async function applyPlan(email) {
@@ -998,13 +1525,7 @@ async function restorePlan() {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Stripe 決済フロー（修正版）
-//
-// 問題: visibilitychange はモバイルで動作しないことがある
-// 解決: Stripe Payment Link の「決済後リダイレクト先」を
-//       https://yourdomain.com/?paid=1 に設定する
-//       → ユーザーが戻ってきたときに ?paid=1 を検出して
-//         メール入力 or プラン確認を行う
+// STRIPE
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function openStripe(plan) {
   showPreStripeModal(plan);
@@ -1013,6 +1534,7 @@ function openStripe(plan) {
 function showPreStripeModal(plan) {
   document.getElementById('pre-stripe-modal')?.remove();
   const cfg = PLAN_CONFIG[plan];
+  const titleKey = plan === 'pro' ? 'pre_stripe_title_pro' : 'pre_stripe_title_team';
   const modal = document.createElement('div');
   modal.id = 'pre-stripe-modal';
   modal.style.cssText = 'position:fixed;inset:0;z-index:1800;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;';
@@ -1020,22 +1542,16 @@ function showPreStripeModal(plan) {
     <div style="width:100%;max-width:480px;background:linear-gradient(160deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:28px 20px calc(36px + env(safe-area-inset-bottom));animation:sheet-up .4s cubic-bezier(.22,1,.36,1) both">
       <div style="text-align:center;margin-bottom:22px">
         <div style="font-size:42px;margin-bottom:10px">${plan === 'pro' ? '⚡' : '👥'}</div>
-        <h3 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px">Get ${cfg.label}</h3>
-        <p style="font-size:13.5px;color:var(--muted);line-height:1.65">You'll complete payment on Stripe's secure page.<br/>After paying, come back here to activate.</p>
+        <h3 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px">${t(titleKey)}</h3>
+        <p style="font-size:13.5px;color:var(--muted);line-height:1.65">${t('pre_stripe_sub')}</p>
       </div>
       <div style="background:rgba(37,99,235,.1);border:1.5px solid rgba(59,130,246,.25);border-radius:14px;padding:14px 16px;margin-bottom:18px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue-300);margin-bottom:8px">After payment:</div>
-        <div style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.7">
-          1. Return to this page<br/>
-          2. Enter the email you used for payment<br/>
-          3. Your plan activates instantly ✅
-        </div>
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--blue-300);margin-bottom:8px">${t('pre_stripe_after')}</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.8);line-height:1.7">${t('pre_stripe_steps')}</div>
       </div>
-      <button class="btn btn-blue" onclick="goToStripe('${plan}')">
-        Continue to Payment →
-      </button>
+      <button class="btn btn-blue" onclick="goToStripe('${plan}')">${t('pre_stripe_cta')}</button>
       <button onclick="document.getElementById('pre-stripe-modal').remove()"
-        style="display:block;width:100%;text-align:center;margin-top:12px;font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);padding:8px 0">Cancel</button>
+        style="display:block;width:100%;text-align:center;margin-top:12px;font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);padding:8px 0">${t('cancel_btn')}</button>
     </div>`;
   document.body.appendChild(modal);
 }
@@ -1043,32 +1559,24 @@ function showPreStripeModal(plan) {
 function goToStripe(plan) {
   document.getElementById('pre-stripe-modal')?.remove();
   let url = STRIPE_LINKS[plan];
-  // メールプリフィル（Stripeでメールを自動入力）
   if (userEmail) url += (url.includes('?') ? '&' : '?') + 'prefilled_email=' + encodeURIComponent(userEmail);
-  // モバイル対応: location.href を使う（window.open はモバイルでブロックされることがある）
-  // Stripe決済後リダイレクト先: https://あなたのドメイン/?paid=1
-  // ↑ Stripe Dashboard > Payment Links > After payment で設定すること
   window.location.href = url;
 }
 
 function openPortal() {
   let url = PORTAL_URL;
   if (userEmail) url += (url.includes('?') ? '&' : '?') + 'prefilled_email=' + encodeURIComponent(userEmail);
-  // ポータルから戻った後のプラン再チェック
   try { sessionStorage.setItem('_returning_from_portal', '1'); } catch {}
   window.location.href = url;
 }
 
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 決済後アクティベーション（メール入力）
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function showEmailActivate(opts = {}) {
   document.getElementById('email-activate-modal')?.remove();
   const modal = document.createElement('div');
   modal.id = 'email-activate-modal';
   modal.style.cssText = 'position:fixed;inset:0;z-index:1800;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;';
-  const title = opts.title || 'Activate Your Plan ⚡';
-  const subtitle = opts.subtitle || 'Enter the email you used to purchase.<br/>We\'ll verify your subscription instantly.';
+  const title = opts.title || t('activate_title');
+  const subtitle = opts.subtitle || t('activate_subtitle');
   modal.innerHTML = `
     <div style="width:100%;max-width:480px;background:linear-gradient(160deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:28px 20px calc(36px + env(safe-area-inset-bottom));animation:sheet-up .4s cubic-bezier(.22,1,.36,1) both">
       <div style="text-align:center;margin-bottom:20px">
@@ -1079,9 +1587,9 @@ function showEmailActivate(opts = {}) {
       <input type="email" id="activate-email-input" class="finp" placeholder="you@example.com" autocomplete="email"
         style="margin-bottom:12px;display:block;width:100%"
         onkeydown="if(event.key==='Enter')doActivate()"/>
-      <button class="btn btn-blue" onclick="doActivate()" id="activate-btn">Verify &amp; Activate</button>
+      <button class="btn btn-blue" onclick="doActivate()" id="activate-btn">${t('verify_btn')}</button>
       <button onclick="document.getElementById('email-activate-modal').remove()"
-        style="display:block;width:100%;text-align:center;margin-top:12px;font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);padding:8px 0">Cancel</button>
+        style="display:block;width:100%;text-align:center;margin-top:12px;font-size:13px;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--font);padding:8px 0">${t('cancel_btn')}</button>
     </div>`;
   document.body.appendChild(modal);
   setTimeout(() => document.getElementById('activate-email-input')?.focus(), 400);
@@ -1090,39 +1598,33 @@ function showEmailActivate(opts = {}) {
 async function doActivate() {
   const input = document.getElementById('activate-email-input');
   const email = input?.value?.trim();
-  if (!email || !email.includes('@')) { toast('Please enter a valid email.', 'terr'); return; }
+  if (!email || !email.includes('@')) { toast(currentLang === 'ja' ? '有効なメールアドレスを入力してください。' : 'Please enter a valid email.', 'terr'); return; }
 
   const btn = document.getElementById('activate-btn');
   btn.disabled = true;
-  btn.innerHTML = 'Verifying...';
+  btn.innerHTML = t('verifying_btn');
 
-  // --- 最大3回、2秒おきにチェックする仕組み ---
   for (let i = 0; i < 3; i++) {
     const plan = await checkPlanByEmail(email);
-    
     if (plan !== 'free') {
-      // 成功！
       localStorage.setItem('ss_email', email);
       userEmail = email;
       currentPlan = plan;
       updatePlanUI();
       document.getElementById('email-activate-modal')?.remove();
-      toast('🎉 Plan activated! Welcome to ' + plan.toUpperCase(), 'tok');
-      return; // 終了
+      toast(t('toast_plan_activated') + plan.toUpperCase(), 'tok');
+      return;
     }
-    
-    // まだ反映されていなければ2秒待って再試行
     if (i < 2) await new Promise(r => setTimeout(r, 2000));
   }
 
-  // 全て失敗した場合
   btn.disabled = false;
-  btn.textContent = 'Verify & Activate';
-  toast('No subscription found yet. It may take a minute to sync.', 'terr');
+  btn.textContent = t('verify_btn');
+  toast(t('toast_plan_not_found'), 'terr');
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Auth
+// AUTH
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 let _authTab = 'login';
 
@@ -1142,8 +1644,10 @@ function switchAuthTab(tab) {
   const base = 'flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;cursor:pointer;transition:all .18s;';
   document.getElementById('auth-tab-login').style.cssText  = base + (isLogin  ? 'font-weight:700;background:var(--blue-500);color:#fff' : 'font-weight:600;background:transparent;color:var(--muted)');
   document.getElementById('auth-tab-signup').style.cssText = base + (!isLogin ? 'font-weight:700;background:var(--blue-500);color:#fff' : 'font-weight:600;background:transparent;color:var(--muted)');
-  document.getElementById('auth-title').textContent         = isLogin ? 'Log In' : 'Create Account';
-  document.getElementById('auth-submit-btn').textContent    = isLogin ? 'Log In' : 'Sign Up';
+  document.getElementById('auth-tab-login').textContent  = t('auth_login');
+  document.getElementById('auth-tab-signup').textContent = t('auth_signup');
+  document.getElementById('auth-title').textContent       = isLogin ? t('auth_login') : t('auth_signup');
+  document.getElementById('auth-submit-btn').textContent  = isLogin ? t('auth_login') : t('auth_signup');
   document.getElementById('auth-confirm-wrap').style.display = isLogin ? 'none' : 'block';
   document.getElementById('auth-forgot').style.display       = isLogin ? 'block' : 'none';
   document.getElementById('auth-msg').textContent = '';
@@ -1154,10 +1658,19 @@ async function doAuth() {
   const confirm = document.getElementById('auth-confirm').value;
   const msg   = document.getElementById('auth-msg');
   const btn   = document.getElementById('auth-submit-btn');
-  if (!email || !pw) { msg.textContent = 'Please fill in all fields.'; msg.style.color = 'var(--danger)'; return; }
+  if (!email || !pw) {
+    msg.textContent = currentLang === 'ja' ? 'すべての項目を入力してください。' : 'Please fill in all fields.';
+    msg.style.color = 'var(--danger)'; return;
+  }
   if (_authTab === 'signup') {
-    if (pw.length < 6) { msg.textContent = 'Password must be at least 6 characters.'; msg.style.color = 'var(--danger)'; return; }
-    if (pw !== confirm) { msg.textContent = 'Passwords do not match.'; msg.style.color = 'var(--danger)'; return; }
+    if (pw.length < 6) {
+      msg.textContent = currentLang === 'ja' ? 'パスワードは6文字以上必要です。' : 'Password must be at least 6 characters.';
+      msg.style.color = 'var(--danger)'; return;
+    }
+    if (pw !== confirm) {
+      msg.textContent = currentLang === 'ja' ? 'パスワードが一致しません。' : 'Passwords do not match.';
+      msg.style.color = 'var(--danger)'; return;
+    }
   }
   btn.disabled = true;
   btn.innerHTML = '<div class="spinner" style="width:18px;height:18px;border-width:2px;margin:0 auto"></div>';
@@ -1166,25 +1679,28 @@ async function doAuth() {
     if (_authTab === 'login') result = await _sb.auth.signInWithPassword({ email, password: pw });
     else result = await _sb.auth.signUp({ email, password: pw });
     if (result.error) { msg.textContent = result.error.message; msg.style.color = 'var(--danger)'; }
-    else if (_authTab === 'signup' && !result.data?.session) { msg.textContent = '✅ Check your email to confirm!'; msg.style.color = 'var(--safe)'; }
+    else if (_authTab === 'signup' && !result.data?.session) {
+      msg.textContent = currentLang === 'ja' ? '✅ 確認メールをご確認ください！' : '✅ Check your email to confirm!';
+      msg.style.color = 'var(--safe)';
+    }
     else { closeAuthModal(); await onAuthStateChange(result.data.user); toast('Welcome! ' + (result.data.user?.email || ''), 'tok'); }
   } catch (e) { msg.textContent = 'Error: ' + e.message; msg.style.color = 'var(--danger)'; }
   btn.disabled = false;
-  btn.textContent = _authTab === 'login' ? 'Log In' : 'Sign Up';
+  btn.textContent = _authTab === 'login' ? t('auth_login') : t('auth_signup');
 }
 async function doForgotPassword() {
   const email = document.getElementById('auth-email').value.trim();
-  if (!email) { toast('Enter your email first.', 'terr'); return; }
+  if (!email) { toast(currentLang === 'ja' ? '先にメールアドレスを入力してください。' : 'Enter your email first.', 'terr'); return; }
   const { error } = await _sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
   if (error) toast('Error: ' + error.message, 'terr');
-  else toast('Password reset email sent!', 'tok');
+  else toast(currentLang === 'ja' ? 'パスワードリセットメールを送信しました！' : 'Password reset email sent!', 'tok');
 }
 async function doSignOut() {
   await _sb.auth.signOut();
   _authUser = null; userEmail = null; currentPlan = 'free';
   try { localStorage.removeItem('ss_email'); } catch {}
   updatePlanUI(); updateNavAuth();
-  toast('Signed out.', 'tok');
+  toast(currentLang === 'ja' ? 'ログアウトしました。' : 'Signed out.', 'tok');
 }
 async function onAuthStateChange(user) {
   if (!user) { _authUser = null; userEmail = null; currentPlan = 'free'; updateNavAuth(); updatePlanUI(); return; }
@@ -1196,15 +1712,15 @@ function updateNavAuth() {
   if (!btn) return;
   if (_authUser) {
     btn.textContent = _authUser.email.split('@')[0];
-    btn.onclick = () => { if (confirm('Sign out?')) doSignOut(); };
+    btn.onclick = () => { if (confirm(currentLang === 'ja' ? 'ログアウトしますか？' : 'Sign out?')) doSignOut(); };
   } else {
-    btn.textContent = 'Log in';
+    btn.textContent = t('nav_login');
     btn.onclick = () => window.location.href = 'index.html';
   }
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Tutorial
+// TUTORIAL
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 let tutStep = 0;
 function nextTut() {
@@ -1221,7 +1737,7 @@ function skipTut() {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Page routing
+// PAGE ROUTING
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function go(p) {
   document.querySelectorAll('.page').forEach(e => e.classList.remove('active'));
@@ -1239,32 +1755,32 @@ function showSection(id) {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Tabs
+// TABS
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function handleUploadTab() {
   if (canUpload()) {
     swTab('upload');
   } else {
-    toast('Upload is available on Pro & Team plans.', 'terr');
+    toast(t('upload_locked_msg'), 'terr');
     go('home');
     showSection('pricing');
   }
 }
-function swTab(t) {
+function swTab(tab) {
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
   document.querySelectorAll('.tp').forEach(p => p.classList.remove('on'));
-  const tabEl = document.getElementById('tab-'+t);
+  const tabEl = document.getElementById('tab-'+tab);
   if (tabEl) tabEl.classList.add('on');
-  const paneEl = document.getElementById('tp-'+t);
+  const paneEl = document.getElementById('tp-'+tab);
   if (paneEl) paneEl.classList.add('on');
-  if (t !== 'camera') stopCam();
+  if (tab !== 'camera') stopCam();
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Camera
+// CAMERA
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 async function startCam() {
-  if (typeof jsQR === 'undefined') { toast('QR library not loaded. Reload the page.', 'terr'); return; }
+  if (typeof jsQR === 'undefined') { toast(t('toast_lib_err'), 'terr'); return; }
   try {
     camS = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: facingMode } } });
     const v = document.getElementById('cv');
@@ -1275,7 +1791,7 @@ async function startCam() {
     v.onplaying = () => { if (!camT) camT = setInterval(scanFr, 250); };
     const fb = setInterval(() => { if (v.videoWidth > 0 && !camT) { clearInterval(fb); camT = setInterval(scanFr, 250); } }, 200);
     setTimeout(() => clearInterval(fb), 8000);
-  } catch(e) { toast('Camera error: ' + e.message, 'terr'); }
+  } catch(e) { toast(t('toast_cam_err') + e.message, 'terr'); }
 }
 async function flipCam() {
   facingMode = facingMode === 'environment' ? 'user' : 'environment';
@@ -1300,20 +1816,20 @@ function scanFr() {
   ctx.drawImage(v, 0, 0, c.width, c.height);
   let d; try { d = ctx.getImageData(0, 0, c.width, c.height); } catch { return; }
   const code = jsQR(d.data, d.width, d.height, { inversionAttempts: 'attemptBoth' });
-  if (code?.data && code.data !== curQ) { curQ = code.data; stopCam(); toast('QR detected! Analyzing…', 'tok'); analyze(code.data); }
+  if (code?.data && code.data !== curQ) { curQ = code.data; stopCam(); toast(t('toast_qr_detected'), 'tok'); analyze(code.data); }
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Upload
+// UPLOAD
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function ddOver(e)  { e.preventDefault(); document.getElementById('dz').classList.add('drag'); }
 function ddLeave()  { document.getElementById('dz').classList.remove('drag'); }
 function ddDrop(e)  { e.preventDefault(); ddLeave(); procFile(e.dataTransfer.files[0]); }
 function fileChange(e) { procFile(e.target.files[0]); }
 function procFile(f) {
-  if (typeof jsQR === 'undefined') { toast('QR library not loaded. Reload the page.', 'terr'); return; }
-  if (!f) { toast('No file selected.', 'terr'); return; }
-  toast('Reading image…', 'tok');
+  if (typeof jsQR === 'undefined') { toast(t('toast_lib_err'), 'terr'); return; }
+  if (!f) { toast(t('toast_no_file'), 'terr'); return; }
+  toast(t('toast_reading_img'), 'tok');
   const r = new FileReader();
   r.onload = ev => {
     const img = new Image();
@@ -1326,18 +1842,18 @@ function procFile(f) {
       c.getContext('2d').drawImage(img, 0, 0, w, h);
       const d = c.getContext('2d').getImageData(0, 0, w, h);
       const code = jsQR(d.data, d.width, d.height, { inversionAttempts: 'attemptBoth' });
-      if (code?.data) { toast('QR detected! Analyzing…', 'tok'); analyze(code.data); }
-      else toast('No QR code found. Try a clearer image.', 'terr');
+      if (code?.data) { toast(t('toast_qr_detected'), 'tok'); analyze(code.data); }
+      else toast(t('toast_no_qr'), 'terr');
     };
-    img.onerror = () => toast('Could not load image.', 'terr');
+    img.onerror = () => toast(t('toast_img_err'), 'terr');
     img.src = ev.target.result;
   };
-  r.onerror = () => toast('File read error.', 'terr');
+  r.onerror = () => toast(t('toast_file_err'), 'terr');
   r.readAsDataURL(f);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Analysis
+// ANALYSIS
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 async function analyze(raw) {
   if (!canScan()) { showUpgradePrompt(); return; }
@@ -1348,11 +1864,11 @@ async function analyze(raw) {
   const dom = isU ? getDom(raw) : null;
   showArea(raw, dom, isU);
   try {
-    setLoad('🌐 Connecting to site…');
+    setLoad(t('loading_connecting'));
     let sc = null; if (isU) sc = await scrape(raw);
-    setLoad('🔎 Searching threat databases…');
+    setLoad(t('loading_threat'));
     let sr = null; if (isU) sr = await serp(dom);
-    setLoad('🤖 AI analyzing…');
+    setLoad(t('loading_ai'));
     const res = await ai(raw, sc, sr);
     render(res);
   } catch(e) {
@@ -1368,13 +1884,13 @@ async function scrape(url) {
 }
 function parseH(html, url) {
   const p = new DOMParser().parseFromString(html, 'text/html');
-  const t = p.querySelector('title')?.textContent.trim() || '';
+  const ttl = p.querySelector('title')?.textContent.trim() || '';
   const m = p.querySelector('meta[name="description"]')?.getAttribute('content')?.trim() || '';
   const pw = !!p.querySelector('input[type="password"]');
   const f = p.querySelectorAll('form').length;
   const h = [...p.querySelectorAll('h1,h2')].map(e => e.textContent.trim()).slice(0, 3).join(' / ');
   const b = (p.body?.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 400);
-  return `[PAGE]\nURL:${url}\nTitle:${t||'N/A'}\nMeta:${m||'N/A'}\nHeadings:${h||'N/A'}\nPW:${pw?'YES':'No'}\nForms:${f}\nBody:${b||'N/A'}`;
+  return `[PAGE]\nURL:${url}\nTitle:${ttl||'N/A'}\nMeta:${m||'N/A'}\nHeadings:${h||'N/A'}\nPW:${pw?'YES':'No'}\nForms:${f}\nBody:${b||'N/A'}`;
 }
 async function serp(dom) {
   if (!dom) return null;
@@ -1402,7 +1918,7 @@ async function callAI(msg, h) {
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Render
+// RENDER
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function showArea(raw, dom, isU) {
   const a = document.getElementById('result-area');
@@ -1416,8 +1932,8 @@ function showArea(raw, dom, isU) {
         <div class="r-rawurl">${raw}</div>
       </div>
       <div class="r-acts">
-        <button class="bx" onclick="cpTxt('${raw.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>Copy</button>
-        ${isU ? `<a class="bx go" href="${raw}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Open</a>` : ''}
+        <button class="bx" onclick="cpTxt('${raw.replace(/'/g,"\\'")}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>${t('copy_btn')}</button>
+        ${isU ? `<a class="bx go" href="${raw}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>${t('open_btn')}</a>` : ''}
       </div>
     </div>
     <div id="ab" class="r-body"></div>
@@ -1443,27 +1959,27 @@ function render(text) {
   const chatOrLock = canChat()
     ? `<div id="cm" class="chat-msgs"></div>
        <div class="chat-inp">
-         <input class="cin" id="ci" type="text" placeholder="Ask about this site… (100 chars)" maxlength="100" onkeydown="if(event.key==='Enter')sChat()"/>
+         <input class="cin" id="ci" type="text" placeholder="${t('chat_placeholder')}" maxlength="100" onkeydown="if(event.key==='Enter')sChat()"/>
          <button class="csend" onclick="sChat()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
        </div>`
     : `<div style="padding:16px;text-align:center;font-size:13px;color:var(--muted)">
-         💬 <strong style="color:#fff">Follow-up chat</strong> is available on Pro &amp; Team plans.
-         <button onclick="go('home');showSection('pricing')" style="display:block;margin:8px auto 0;font-size:12.5px;color:var(--blue-300);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;padding:4px 0">Upgrade →</button>
+         ${t('chat_locked')}
+         <button onclick="go('home');showSection('pricing')" style="display:block;margin:8px auto 0;font-size:12.5px;color:var(--blue-300);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;padding:4px 0">${t('chat_upgrade_link')}</button>
        </div>`;
   const shareHtml = currentPlan === 'team' ? `
     <div style="padding:12px 14px;border-top:1px solid var(--glass-bd);display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-      <span style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px">Share:</span>
-      <button onclick="shareResult('email')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg> Email</button>
+      <span style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px">${t('share_label')}</span>
+      <button onclick="shareResult('email')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg> ${t('share_email')}</button>
       <button onclick="shareResult('line')" class="bx">LINE</button>
       <button onclick="shareResult('slack')" class="bx">Slack</button>
-      <button onclick="shareResult('copy')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+      <button onclick="shareResult('copy')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ${t('share_copy')}</button>
     </div>` : '';
   document.getElementById('cw').innerHTML = shareHtml + chatOrLock;
 }
 function shareResult(platform) {
   const text = '🔍 Scan Shield Result\n\nScanned: ' + curQ + '\n\n' + (hist.find(m => m.role === 'assistant')?.content || '').slice(0, 300) + '\n\nCheck it: ' + window.location.href;
   const enc = encodeURIComponent(text);
-  if (platform === 'copy' || platform === 'slack') { navigator.clipboard.writeText(text).then(() => toast(platform === 'slack' ? 'Copied! Paste into Slack' : 'Copied to clipboard!', 'tok')); return; }
+  if (platform === 'copy' || platform === 'slack') { navigator.clipboard.writeText(text).then(() => toast(platform === 'slack' ? t('share_slack_copied') : t('clipboard_copied'), 'tok')); return; }
   if (platform === 'email') window.open('mailto:?subject=Scan+Shield+Result&body='+enc, '_blank');
   if (platform === 'line')  window.open('https://line.me/R/msg/text/?'+enc, '_blank');
 }
@@ -1473,22 +1989,22 @@ function showUpgradePrompt() {
   document.getElementById('result-card').innerHTML = `
     <div style="padding:32px 22px;text-align:center">
       <div style="font-size:42px;margin-bottom:12px">🔒</div>
-      <h3 style="font-size:18px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px">Daily limit reached</h3>
-      <p style="font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:22px">Free plan: <strong style="color:#fff">5 scans/day</strong>.<br/>Upgrade to Pro for unlimited scans.</p>
-      <button class="btn btn-blue" onclick="go('home');showSection('pricing')" style="max-width:260px;margin:0 auto 12px">View Plans →</button>
-      <div style="font-size:12px;color:var(--muted);margin-top:6px">Already subscribed? <button onclick="showEmailActivate()" style="background:none;border:none;color:var(--blue-300);cursor:pointer;font-family:var(--font);font-size:12px;text-decoration:underline">Activate your plan</button></div>
+      <h3 style="font-size:18px;font-weight:800;margin-bottom:8px;letter-spacing:-.3px">${t('upgrade_title')}</h3>
+      <p style="font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:22px">${t('upgrade_body')}</p>
+      <button class="btn btn-blue" onclick="go('home');showSection('pricing')" style="max-width:260px;margin:0 auto 12px">${t('upgrade_view_plans')}</button>
+      <div style="font-size:12px;color:var(--muted);margin-top:6px">${t('already_sub_q')} <button onclick="showEmailActivate()" style="background:none;border:none;color:var(--blue-300);cursor:pointer;font-family:var(--font);font-size:12px;text-decoration:underline">${t('upgrade_activate')}</button></div>
     </div>`;
   setTimeout(() => area.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 80);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Chat
+// CHAT
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 const aiSVG = '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
 const uSVG  = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
 async function sChat() {
   const inp = document.getElementById('ci'); const msg = inp.value.trim(); if (!msg) return;
-  if (!canChat()) { toast('Chat is available on Pro & Team plans.', 'terr'); go('home'); showSection('pricing'); return; }
+  if (!canChat()) { toast(t('chat_scan_limit'), 'terr'); go('home'); showSection('pricing'); return; }
   inp.value = ''; addMsg(msg, 'u'); hist.push({ role: 'user', content: msg });
   const tid = addTyping();
   const rep = await callAI(msg + '\n\n(Analyzing: "' + curQ + '")', hist.slice(-8));
@@ -1509,27 +2025,27 @@ function addTyping() {
 function rmTyping(id) { document.getElementById(id)?.remove(); }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Guide
+// GUIDE
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function togArt(id) {
   const b = document.getElementById(id); b.classList.toggle('open');
   const btn = b.nextElementSibling;
-  if (btn) btn.textContent = b.classList.contains('open') ? 'Collapse ↑' : 'Read more ↓';
+  if (btn) btn.textContent = b.classList.contains('open') ? t('collapse') : t('read_more');
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Utils
+// UTILS
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function getDom(url) { try { const h = new URL(url).hostname; return h.startsWith('www.') ? h.slice(4) : h; } catch { return url; } }
-function cpTxt(t) { navigator.clipboard.writeText(t).then(() => toast('Copied!', 'tok')); }
+function cpTxt(text) { navigator.clipboard.writeText(text).then(() => toast(t('toast_copied'), 'tok')); }
 function toast(msg, type='tok') {
   document.querySelectorAll('.toast').forEach(e => e.remove());
-  const t = document.createElement('div'); t.className = 'toast ' + type; t.textContent = msg;
-  document.body.appendChild(t); setTimeout(() => t.remove(), 3200);
+  const el = document.createElement('div'); el.className = 'toast ' + type; el.textContent = msg;
+  document.body.appendChild(el); setTimeout(() => el.remove(), 3200);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Sidebar
+// SIDEBAR
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 function sbActive(page) {
   ['home','scan','guide','about'].forEach(p => {
@@ -1540,23 +2056,28 @@ function sbActive(page) {
 function updateSidebarPlan() {
   const el = document.getElementById('sb-plan-val');
   if (!el) return;
-  if (currentPlan === 'team') el.textContent = 'Team 👥 · Unlimited';
-  else if (currentPlan === 'pro') el.textContent = 'Pro ⚡ · Unlimited';
-  else el.textContent = 'Free · ' + remainingScans() + ' / 5 left';
+  if (currentPlan === 'team') el.textContent = 'Team 👥 · ' + t('plan_unlimited_label');
+  else if (currentPlan === 'pro') el.textContent = 'Pro ⚡ · ' + t('plan_unlimited_label');
+  else el.textContent = 'Free · ' + remainingScans() + ' / 5 ' + t('scan_limit_label');
   const loginLabel = document.getElementById('sb-login-label');
-  if (loginLabel) loginLabel.textContent = _authUser ? _authUser.email.split('@')[0] : 'Log In';
+  if (loginLabel) loginLabel.textContent = _authUser ? _authUser.email.split('@')[0] : t('nav_login');
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Init
+// INIT
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 window.addEventListener('DOMContentLoaded', async () => {
-  // チュートリアル
+  // Apply language on load
+  applyTranslations();
+  updateLangButtons();
+  document.documentElement.lang = currentLang;
+
+  // Tutorial
   try {
     if (localStorage.getItem('tut_done')) document.getElementById('tutorial').style.display = 'none';
   } catch { document.getElementById('tutorial').style.display = 'none'; }
 
-  // Supabase セッション復元
+  // Supabase session restore
   try {
     const { data: { session } } = await _sb.auth.getSession();
     if (session?.user) await onAuthStateChange(session.user);
@@ -1571,35 +2092,24 @@ window.addEventListener('DOMContentLoaded', async () => {
     await restorePlan();
   }
 
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  // URLパラメータ処理
-  //
-  // ?paid=1      → Stripe決済後のリダイレクト
-  //               メール入力画面を表示してアクティベート
-  // ?portal=1    → Customer Portal から戻った
-  //               プラン再チェック（キャンセル検出）
-  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // URL params
   const params = new URLSearchParams(window.location.search);
-  history.replaceState({}, '', window.location.pathname); // URLクリーンアップ
+  history.replaceState({}, '', window.location.pathname);
 
   if (params.has('paid') || params.has('session_id')) {
-    // Stripe決済完了後
     go('scan');
     setTimeout(() => {
       if (currentPlan !== 'free') {
-        // すでにプランが判明している場合
-        toast('🎉 Plan activated successfully!', 'tok');
+        toast(t('toast_payment_done'), 'tok');
       } else {
-        // メールで紐付けが必要
         showEmailActivate({
-          title: '🎉 Payment Complete!',
-          subtitle: 'Enter the email you used on Stripe.<br/>Your plan will activate instantly.'
+          title: t('activate_payment_title'),
+          subtitle: t('activate_payment_subtitle')
         });
       }
     }, 800);
 
   } else if (params.has('portal')) {
-    // Customer Portal から戻った（キャンセル後の可能性）
     setTimeout(async () => {
       const email = _authUser?.email || userEmail;
       if (!email) return;
@@ -1609,26 +2119,26 @@ window.addEventListener('DOMContentLoaded', async () => {
         currentPlan = newPlan;
         updatePlanUI();
         if (newPlan === 'free' && prev !== 'free') {
-          toast('Subscription cancelled. You\'re on the Free plan.', 'terr');
+          toast(currentLang === 'ja' ? 'サブスクリプションをキャンセルしました。無料プランに戻りました。' : 'Subscription cancelled. You\'re on the Free plan.', 'terr');
           try { localStorage.removeItem('ss_email'); } catch {}
         }
       }
     }, 1500);
   }
 
-  // sessionStorage フラグ（openPortal用）
   try {
     if (sessionStorage.getItem('_returning_from_portal')) {
       sessionStorage.removeItem('_returning_from_portal');
-      // ポータルのリダイレクト先を /?portal=1 に設定してある前提だが
-      // 設定していない場合のフォールバックとして再チェック
       const email = _authUser?.email || userEmail;
       if (email) {
         setTimeout(async () => {
           const newPlan = await checkPlanByEmail(email);
           if (newPlan !== currentPlan) {
             currentPlan = newPlan; updatePlanUI();
-            if (newPlan === 'free') { toast('Subscription ended. You\'re on the Free plan.', 'terr'); try { localStorage.removeItem('ss_email'); } catch {} }
+            if (newPlan === 'free') {
+              toast(currentLang === 'ja' ? 'サブスクリプションが終了しました。無料プランです。' : 'Subscription ended. You\'re on the Free plan.', 'terr');
+              try { localStorage.removeItem('ss_email'); } catch {}
+            }
           }
         }, 1200);
       }
