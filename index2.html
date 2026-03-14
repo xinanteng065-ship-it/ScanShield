@@ -1885,7 +1885,8 @@ async function analyze(raw){
     setLoad(t('loading_connecting'));
     let sc=null;if(isU)sc=await scrape(raw);
     setLoad(t('loading_threat'));
-    let sr=null;if(isU)sr=await serp(dom);
+    // ⭕️ 修正後（フルURLである raw も渡す）
+    let sr=null;if(isU)sr=await serp(raw, dom);
     setLoad(t('loading_ai'));
     const res=await ai(raw,sc,sr);render(res);
   }catch(e){render('Analysis error: '+e.message+'\n\nPlease try again.');}
@@ -1906,11 +1907,16 @@ function parseH(html,url){
   const b=(p.body?.textContent||'').replace(/\s+/g,' ').trim().slice(0,400);
   return `[PAGE]\nURL:${url}\nTitle:${ttl||'N/A'}\nMeta:${m||'N/A'}\nHeadings:${h||'N/A'}\nPW:${pw?'YES':'No'}\nForms:${f}\nBody:${b||'N/A'}`;
 }
-// ⭕️ 修正後（bodyの中に lang: currentLang を追加します）
-async function serp(dom){
-  if(!dom)return null;
+// ⭕️ 修正後（引数に url を追加し、body にも含める）
+async function serp(url, dom){
+  if(!dom && !url)return null;
   try{
-    const r=await fetch('/api/search',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({domain:dom, lang: currentLang}),signal:AbortSignal.timeout(10000)});
+    const r=await fetch('/api/search',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({url: url, domain: dom, lang: currentLang}), // url を追加！
+      signal:AbortSignal.timeout(10000)
+    });
     if(!r.ok)return null;return(await r.json()).result??null;
   }catch{return null;}
 }
