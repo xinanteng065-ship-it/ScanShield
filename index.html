@@ -130,28 +130,28 @@ body{
       <span class="logo-txt"><em>Scan</em>Shield</span>
     </div>
     <div class="left-body">
-      <h2>AI-powered<br/><span>QR Safety</span><br/>for everyone.</h2>
-      <p>Detect phishing, malware, and scam links hidden in QR codes — before you click anything.</p>
+      <h2 id="left-h2">AI-powered<br/><span>QR Safety</span><br/>for everyone.</h2>
+      <p id="left-p">Detect phishing, malware, and scam links hidden in QR codes — before you click anything.</p>
       <div class="feat-list">
         <div class="feat-item">
           <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <p><strong>Instant verdict</strong> in under 3 seconds</p>
+          <p id="feat1"><strong>Instant verdict</strong> in under 3 seconds</p>
         </div>
         <div class="feat-item">
           <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-          <p><strong>AI chat assistant</strong> for follow-up questions</p>
+          <p id="feat2"><strong>AI chat assistant</strong> for follow-up questions</p>
         </div>
         <div class="feat-item">
           <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <p><strong>Zero data stored</strong> — your scans stay private</p>
+          <p id="feat3"><strong>Zero data stored</strong> — your scans stay private</p>
         </div>
         <div class="feat-item">
           <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-          <p><strong>Camera, upload, or URL</strong> — works any way</p>
+          <p id="feat4"><strong>Camera, upload, or URL</strong> — works any way</p>
         </div>
       </div>
     </div>
-    <div class="left-footer">© 2025 Scan Shield · AI analysis for informational purposes only.</div>
+    <div class="left-footer" id="left-footer">© 2025 Scan Shield · AI analysis for informational purposes only.</div>
   </div>
 
   <div class="auth-right">
@@ -249,6 +249,13 @@ const T = {
     check_email_p:   (e) => `We sent a verification link to <strong style="color:#fff">${e}</strong>.<br/>Please click the link to activate your account.`,
     check_email_note:'📧 Check your spam folder if you don\'t see it.<br/>⏱ Link expires in <strong style="color:var(--blue-300)">24 hours</strong>.',
     btn_back_login:  'Back to Log In',
+    left_h2:         'AI-powered<br/><span>QR Safety</span><br/>for everyone.',
+    left_p:          'Detect phishing, malware, and scam links hidden in QR codes — before you click anything.',
+    feat1:           '<strong>Instant verdict</strong> in under 3 seconds',
+    feat2:           '<strong>AI chat assistant</strong> for follow-up questions',
+    feat3:           '<strong>Zero data stored</strong> — your scans stay private',
+    feat4:           '<strong>Camera, upload, or URL</strong> — works any way',
+    left_footer:     '© 2025 Scan Shield · AI analysis for informational purposes only.',
   },
   ja: {
     title_login:     'おかえりなさい',
@@ -276,6 +283,13 @@ const T = {
     check_email_p:   (e) => `<strong style="color:#fff">${e}</strong> に確認リンクを送信しました。<br/>メール内のリンクをクリックしてアカウントを有効化してください。`,
     check_email_note:'📧 メールが届かない場合は迷惑メールフォルダを確認してください。<br/>⏱ リンクの有効期限は <strong style="color:var(--blue-300)">24時間</strong> です。',
     btn_back_login:  'ログイン画面へ戻る',
+    left_h2:         'AI搭載<br/><span>QRコード安全</span><br/>チェッカー',
+    left_p:          'QRコードに潜むフィッシング・マルウェア・詐欺リンクを、クリック前にAIが即座に検出します。',
+    feat1:           '<strong>即時判定</strong> — 3秒以内',
+    feat2:           '<strong>AIチャット</strong> — 追加質問に対応',
+    feat3:           '<strong>データ保存なし</strong> — プライバシー完全保護',
+    feat4:           '<strong>カメラ・アップロード・URL</strong> — どこでも使える',
+    left_footer:     '© 2025 Scan Shield · AI分析は情報提供目的のみです。',
   }
 };
 
@@ -319,14 +333,21 @@ function updateLangButtons() {
 }
 
 function applyTranslations() {
-  // null でも止まらない setText/setHTML を使う
+  // 右パネル
   setText('google-label', t('google_btn'));
   setText('divider-or',   t('divider'));
   setText('lbl-email',    t('lbl_email'));
   setText('lbl-password', t('lbl_password'));
   setText('lbl-confirm',  t('lbl_confirm'));
   setText('forgot-btn',   t('forgot'));
-  // ※ lbl-back はこのページには存在しないので参照しない
+  // 左パネル
+  setHTML('left-h2',     t('left_h2'));
+  setText('left-p',      t('left_p'));
+  setHTML('feat1',       t('feat1'));
+  setHTML('feat2',       t('feat2'));
+  setHTML('feat3',       t('feat3'));
+  setHTML('feat4',       t('feat4'));
+  setText('left-footer', t('left_footer'));
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
