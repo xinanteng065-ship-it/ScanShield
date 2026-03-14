@@ -1,13 +1,32 @@
 // api/analyze.js
 // Vercel環境変数: OPENAI_API_KEY
 
-const SYS = `You are a balanced web security analyst. Give FAIR assessments.
+// api/analyze.js
+// Vercel環境変数: OPENAI_API_KEY
+
+const getSystemPrompt = (lang) => {
+  const isJa = lang === 'ja';
+  
+  if (isJa) {
+    return `あなたは公平なウェブセキュリティアナリストです。
+ルール: ✅ 安全=有名なブランド/正当。 ⚠️ 注意=不審なシグナル。 🚨 危険=明らかな詐欺。 迷ったら → ✅ 安全。
+フォーマット (150語以内):
+Identity: [何のサービスか]
+Purpose: [何をするサイトか]
+Safety: [✅ 安全 / ⚠️ 注意 / 🚨 危険] — [理由]
+Advice: [具体的なアドバイス1つ]
+必ず日本語で回答してください。`;
+  }
+
+  return `You are a balanced web security analyst. Give FAIR assessments.
 RULES: ✅ SAFE=known brand/legit. ⚠️ CAUTION=suspicious signals. 🚨 DANGEROUS=clear scam. When in doubt → SAFE.
 FORMAT (≤150 words):
 Identity: [what service]
 Purpose: [what it does]
 Safety: [✅ SAFE / ⚠️ CAUTION / 🚨 DANGEROUS] — [reason]
-Advice: [one action]`;
+Advice: [one action]
+Always respond in English.`;
+};
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -16,7 +35,8 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { message, history = [] } = req.body ?? {};
+  // フロントエンドから lang を受け取るように変更
+  const { message, history = [], lang = 'en' } = req.body ?? {};
   if (!message) return res.status(400).json({ error: 'No message' });
 
   try {
@@ -29,7 +49,7 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: SYS },
+          { role: 'system', content: getSystemPrompt(lang) },
           ...history.slice(-8),
           { role: 'user', content: message },
         ],
@@ -41,7 +61,6 @@ export default async function handler(req, res) {
 
     if (!r.ok) {
       const err = await r.text();
-      console.error('OpenAI error:', err);
       return res.status(502).json({ error: 'OpenAI error: ' + r.status });
     }
 
@@ -50,7 +69,6 @@ export default async function handler(req, res) {
     return res.status(200).json({ reply });
 
   } catch (e) {
-    console.error('analyze error:', e);
     return res.status(500).json({ error: e.message });
   }
 }
