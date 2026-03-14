@@ -205,13 +205,12 @@ body{
 .ok-msg.show{display:block}
 
 .forgot-link{
-  font-size:12.5px;color:var(--muted);text-align:right;
+  font-size:12.5px;color:var(--muted);
   display:block;margin-top:-10px;margin-bottom:20px;
   background:none;border:none;cursor:pointer;
   font-family:var(--font);width:100%;text-align:right;
 }
 .forgot-link:hover{color:var(--blue-300)}
-
 
 /* ── Password Toggle ── */
 .pw-wrap{position:relative}
@@ -245,11 +244,13 @@ body{
 @keyframes ts{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 .tok{background:linear-gradient(135deg,#14532d,#166534);color:#dcfce7;border:1px solid rgba(34,197,94,.3)}
 .terr{background:linear-gradient(135deg,#7f1d1d,#991b1b);color:#fee2e2;border:1px solid rgba(239,68,68,.3)}
-/* 言語スイッチのスタイル */
-.lang-switcher { display: flex; gap: 4px; background: var(--glass); border: 1px solid var(--glass-bd); border-radius: 20px; padding: 3px; }
-.lang-btn { padding: 4px 10px; border-radius: 16px; font-size: 11px; font-weight: 700; cursor: pointer; border: none; transition: all .2s; }
-.lang-btn.on { background: var(--blue-500); color: #fff; }
-.lang-btn.off { background: transparent; color: var(--muted); }
+
+/* ── Lang Switcher ── */
+.lang-switcher{display:flex;gap:4px;background:var(--glass);border:1px solid var(--glass-bd);border-radius:20px;padding:3px;}
+.lang-btn{padding:4px 10px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:all .2s;font-family:var(--font);}
+.lang-btn.on{background:var(--blue-500);color:#fff;}
+.lang-btn.off{background:transparent;color:var(--muted);}
+.lang-btn:hover:not(.on){color:#fff;}
 </style>
 </head>
 <body>
@@ -292,37 +293,30 @@ body{
     <div class="left-footer">© 2025 Scan Shield · AI analysis for informational purposes only.</div>
   </div>
 
+  <!-- ── Right: Auth Panel ── -->
   <div class="auth-right">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
-    <button class="back-link" onclick="window.location.href='/'" style="margin-bottom:0;">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      <span data-i18n="back_to_scan">Back to Scan Shield</span>
-    </button>
-    
-    <div class="lang-switcher">
-      <button class="lang-btn" id="lang-en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" id="lang-ja" onclick="setLang('ja')">JA</button>
-    </div>
-  </div>
-
-  <div id="auth-form-view">
-    <h1 id="form-title" data-i18n="welcome">Welcome back</h1>
-    <p class="sub" id="form-sub">
-      </p>
-
-    <div class="tab-row">
-      <button class="auth-tab on" id="tab-login" onclick="switchTab('login')" data-i18n="login_tab">Log In</button>
-      <button class="auth-tab off" id="tab-signup" onclick="switchTab('signup')" data-i18n="signup_tab">Sign Up</button>
-    </div>
-    
-    <div class="form-group">
-      <label class="form-label" data-i18n="email_label">Email address</label>
-      <input type="email" id="f-email" class="form-input" placeholder="you@example.com" ... />
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:32px;">
+      <button class="back-link" onclick="window.location.href='/'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        <span id="lbl-back">Back to Scan Shield</span>
+      </button>
+      <div class="lang-switcher">
+        <button class="lang-btn on" id="lang-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn off" id="lang-ja" onclick="setLang('ja')">JA</button>
+      </div>
     </div>
 
-      <!-- ── Google OAuth Button ── -->
+    <div id="auth-form-view">
+      <h1 id="form-title">Welcome back</h1>
+      <p class="sub" id="form-sub"></p>
+
+      <div class="tab-row">
+        <button class="auth-tab on" id="tab-login" onclick="switchTab('login')">Log In</button>
+        <button class="auth-tab off" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <!-- Google OAuth -->
       <button class="btn-google" id="google-btn" onclick="doGoogle()">
-        <!-- Official Google "G" logo SVG -->
         <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
           <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -333,29 +327,29 @@ body{
         <span id="google-label">Continue with Google</span>
       </button>
 
-      <div class="divider">or continue with email</div>
+      <div class="divider" id="divider-or">or continue with email</div>
 
       <div id="err-msg" class="err-msg"></div>
       <div id="ok-msg" class="ok-msg"></div>
 
       <div class="form-group">
-        <label class="form-label">Email address</label>
+        <label class="form-label" id="lbl-email">Email address</label>
         <input type="email" id="f-email" class="form-input" placeholder="you@example.com" autocomplete="email" onkeydown="if(event.key==='Enter')doAuth()"/>
       </div>
       <div class="form-group">
-        <label class="form-label">Password</label>
+        <label class="form-label" id="lbl-password">Password</label>
         <div class="pw-wrap">
           <input type="password" id="f-pw" class="form-input" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()"/>
-          <button type="button" class="toggle-pw" onclick="togglePw('f-pw',this)" tabindex="-1" aria-label="Show password">
-            <svg id="eye-pw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <button type="button" class="toggle-pw" onclick="togglePw('f-pw',this)" tabindex="-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
       </div>
       <div class="form-group" id="confirm-group" style="display:none">
-        <label class="form-label">Confirm Password</label>
+        <label class="form-label" id="lbl-confirm">Confirm Password</label>
         <div class="pw-wrap">
           <input type="password" id="f-confirm" class="form-input" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')doAuth()"/>
-          <button type="button" class="toggle-pw" onclick="togglePw('f-confirm',this)" tabindex="-1" aria-label="Show confirm password">
+          <button type="button" class="toggle-pw" onclick="togglePw('f-confirm',this)" tabindex="-1">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
@@ -364,269 +358,293 @@ body{
       <button class="btn-submit" id="submit-btn" onclick="doAuth()">
         <span id="submit-label">Log In</span>
       </button>
-      <p class="terms-note" id="signup-terms" style="display:none">By signing up you agree to our <a href="/terms" style="color:var(--blue-300)">Terms</a> and <a href="/privacy" style="color:var(--blue-300)">Privacy Policy</a>.</p>
+      <p class="terms-note" id="signup-terms" style="display:none"></p>
     </div>
-
   </div>
 </div>
 
 <script>
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 1. 言語データの定義 (i18n)
+// 1. 翻訳データ
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const AUTH_TRANSLATIONS = {
+const T = {
   en: {
-    back_to_scan: "Back to Scan Shield",
-    welcome: "Welcome back",
-    create: "Create account",
-    login_tab: "Log In",
-    signup_tab: "Sign Up",
-    google_btn: "Continue with Google",
-    email_label: "Email address",
-    pw_label: "Password",
-    confirm_label: "Confirm Password",
-    forgot_pw: "Forgot password?",
-    login_btn: "Log In",
-    signup_btn: "Create Account",
-    no_acc: "Don't have an account?",
-    has_acc: "Already have an account?",
-    terms_note: 'By signing up you agree to our <a href="/terms" style="color:var(--blue-300)">Terms</a> and <a href="/privacy" style="color:var(--blue-300)">Privacy Policy</a>.',
-    err_fill_all: "Please fill in all fields.",
-    err_pw_short: "Password must be at least 6 characters.",
-    err_pw_mismatch: "Passwords do not match.",
-    ok_reset_sent: "Password reset email sent! Check your inbox.",
-    google_connecting: "Connecting...",
-    check_email_h: "Check your email",
-    check_email_p: (email) => `We sent a verification link to <strong style="color:#fff">${email}</strong>.<br/>Please click the link to activate your account.`,
-    check_email_note: "📧 Check your spam folder if you don't see it.<br/>⏱ Link expires in <strong style=\"color:var(--blue-300)\">24 hours</strong>.",
-    btn_back_login: "Back to Log In"
+    back:            'Back to Scan Shield',
+    title_login:     'Welcome back',
+    title_signup:    'Create account',
+    tab_login:       'Log In',
+    tab_signup:      'Sign Up',
+    sub_no_acc:      "Don't have an account?",
+    sub_has_acc:     'Already have an account?',
+    google_btn:      'Continue with Google',
+    google_busy:     'Connecting…',
+    divider:         'or continue with email',
+    lbl_email:       'Email address',
+    lbl_password:    'Password',
+    lbl_confirm:     'Confirm Password',
+    forgot:          'Forgot password?',
+    btn_login:       'Log In',
+    btn_signup:      'Create Account',
+    terms:           'By signing up you agree to our <a href="/terms" style="color:var(--blue-300)">Terms</a> and <a href="/privacy" style="color:var(--blue-300)">Privacy Policy</a>.',
+    err_fill:        'Please fill in all fields.',
+    err_short:       'Password must be at least 6 characters.',
+    err_mismatch:    'Passwords do not match.',
+    ok_reset:        'Password reset email sent! Check your inbox.',
+    err_email_first: 'Enter your email address first.',
+    check_email_h:   'Check your email',
+    check_email_p:   (e) => `We sent a verification link to <strong style="color:#fff">${e}</strong>.<br/>Please click the link to activate your account.`,
+    check_email_note:'📧 Check your spam folder if you don\'t see it.<br/>⏱ Link expires in <strong style="color:var(--blue-300)">24 hours</strong>.',
+    btn_back_login:  'Back to Log In',
   },
   ja: {
-    back_to_scan: "スキャナーに戻る",
-    welcome: "おかえりなさい",
-    create: "アカウント作成",
-    login_tab: "ログイン",
-    signup_tab: "新規登録",
-    google_btn: "Googleでログイン",
-    email_label: "メールアドレス",
-    pw_label: "パスワード",
-    confirm_label: "パスワード（確認）",
-    forgot_pw: "パスワードを忘れた場合",
-    login_btn: "ログイン",
-    signup_btn: "アカウントを作成",
-    no_acc: "アカウントをお持ちでないですか？",
-    has_acc: "すでにアカウントをお持ちですか？",
-    terms_note: '登録することで、当社の<a href="/terms" style="color:var(--blue-300)">利用規約</a>および<a href="/privacy" style="color:var(--blue-300)">プライバシーポリシー</a>に同意したことになります。',
-    err_fill_all: "すべての項目を入力してください。",
-    err_pw_short: "パスワードは6文字以上必要です。",
-    err_pw_mismatch: "パスワードが一致しません。",
-    ok_reset_sent: "リセットメールを送信しました！メールボックスを確認してください。",
-    google_connecting: "接続中...",
-    check_email_h: "メールを確認してください",
-    check_email_p: (email) => `<strong style="color:#fff">${email}</strong> に確認リンクを送信しました。<br/>メール内のリンクをクリックしてアカウントを有効化してください。`,
-    check_email_note: "📧 メールが届かない場合は迷惑メールフォルダを確認してください。<br/>⏱ リンクの有効期限は <strong style=\"color:var(--blue-300)\">24時間</strong> です。",
-    btn_back_login: "ログイン画面へ戻る"
+    back:            'スキャナーに戻る',
+    title_login:     'おかえりなさい',
+    title_signup:    'アカウント作成',
+    tab_login:       'ログイン',
+    tab_signup:      '新規登録',
+    sub_no_acc:      'アカウントをお持ちでないですか？',
+    sub_has_acc:     'すでにアカウントをお持ちですか？',
+    google_btn:      'Googleでログイン',
+    google_busy:     '接続中…',
+    divider:         'またはメールアドレスで続ける',
+    lbl_email:       'メールアドレス',
+    lbl_password:    'パスワード',
+    lbl_confirm:     'パスワード（確認）',
+    forgot:          'パスワードを忘れた方',
+    btn_login:       'ログイン',
+    btn_signup:      'アカウントを作成',
+    terms:           '登録することで、当社の<a href="/terms" style="color:var(--blue-300)">利用規約</a>および<a href="/privacy" style="color:var(--blue-300)">プライバシーポリシー</a>に同意したことになります。',
+    err_fill:        'すべての項目を入力してください。',
+    err_short:       'パスワードは6文字以上必要です。',
+    err_mismatch:    'パスワードが一致しません。',
+    ok_reset:        'リセットメールを送信しました！メールをご確認ください。',
+    err_email_first: '先にメールアドレスを入力してください。',
+    check_email_h:   'メールを確認してください',
+    check_email_p:   (e) => `<strong style="color:#fff">${e}</strong> に確認リンクを送信しました。<br/>メール内のリンクをクリックしてアカウントを有効化してください。`,
+    check_email_note:'📧 メールが届かない場合は迷惑メールフォルダを確認してください。<br/>⏱ リンクの有効期限は <strong style="color:var(--blue-300)">24時間</strong> です。',
+    btn_back_login:  'ログイン画面へ戻る',
   }
 };
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 2. 言語管理ロジック
+// 2. 言語管理
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-let currentLang = localStorage.getItem('ss_lang') || 'en';
+let currentLang = (()=>{
+  try { const s = localStorage.getItem('ss_lang'); if (s==='en'||s==='ja') return s; } catch {}
+  const nav = (navigator.languages || [navigator.language || 'en'])[0].toLowerCase().split('-')[0];
+  return nav === 'ja' ? 'ja' : 'en';
+})();
+
+function t(k, ...args) {
+  const v = T[currentLang]?.[k] ?? T['en']?.[k] ?? k;
+  return typeof v === 'function' ? v(...args) : v;
+}
 
 function setLang(lang) {
   currentLang = lang;
-  localStorage.setItem('ss_lang', lang);
-  applyAuthTranslations();
+  try { localStorage.setItem('ss_lang', lang); } catch {}
+  document.documentElement.lang = lang;
+  updateLangButtons();
+  applyTranslations();
+  switchTab(_tab); // タブ状態を現在の言語で再描画
 }
 
-function applyAuthTranslations() {
-  const t = AUTH_TRANSLATIONS[currentLang];
-  
-  // data-i18n属性を持つ要素を一括置換
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (t[key]) el.innerHTML = t[key];
-  });
+function updateLangButtons() {
+  document.getElementById('lang-en').className = 'lang-btn ' + (currentLang === 'en' ? 'on' : 'off');
+  document.getElementById('lang-ja').className = 'lang-btn ' + (currentLang === 'ja' ? 'on' : 'off');
+}
 
-  // ボタンの状態更新
-  const btnEn = document.getElementById('lang-en');
-  const btnJa = document.getElementById('lang-ja');
-  if(btnEn && btnJa) {
-    btnEn.className = 'lang-btn ' + (currentLang === 'en' ? 'on' : 'off');
-    btnJa.className = 'lang-btn ' + (currentLang === 'ja' ? 'on' : 'off');
-  }
-
-  // 現在のタブの状態に合わせて再描画
-  switchTab(_tab);
+// 静的テキストを一括更新（タブ依存でないもの）
+function applyTranslations() {
+  document.getElementById('lbl-back').textContent    = t('back');
+  document.getElementById('google-label').textContent = t('google_btn');
+  document.getElementById('divider-or').textContent  = t('divider');
+  document.getElementById('lbl-email').textContent   = t('lbl_email');
+  document.getElementById('lbl-password').textContent = t('lbl_password');
+  document.getElementById('lbl-confirm').textContent  = t('lbl_confirm');
+  document.getElementById('forgot-btn').textContent  = t('forgot');
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 3. 認証・UIロジック (Supabase連携)
+// 3. Supabase
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-const SUPABASE_URL='https://oktmwoihqlkbcmdpkzre.supabase.co';
-const SUPABASE_SERVICE_ROLE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdG13b2locWxrYmNtZHBrenJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjA3OTYsImV4cCI6MjA4Nzg5Njc5Nn0.f-6DLyWGDAqCTzyiJ7HDbQkDZA7K2SLSyrQApA6vOC4';
-const _sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const SUPABASE_URL     = 'https://oktmwoihqlkbcmdpkzre.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdG13b2locWxrYmNtZHBrenJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjA3OTYsImV4cCI6MjA4Nzg5Njc5Nn0.f-6DLyWGDAqCTzyiJ7HDbQkDZA7K2SLSyrQApA6vOC4';
+const _sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-let _tab='login';
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 4. UI ロジック
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let _tab = 'login';
 
-function togglePw(inputId, btn){
+function togglePw(inputId, btn) {
   const inp = document.getElementById(inputId);
-  const isHidden = inp.type === 'password';
-  inp.type = isHidden ? 'text' : 'password';
-  btn.innerHTML = isHidden
+  const hidden = inp.type === 'password';
+  inp.type = hidden ? 'text' : 'password';
+  btn.style.color = hidden ? 'var(--blue-300)' : 'var(--muted)';
+  btn.innerHTML = hidden
     ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
     : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
-  btn.style.color = isHidden ? 'var(--blue-300)' : 'var(--muted)';
 }
 
-async function doGoogle(){
-  const btn=document.getElementById('google-btn');
-  const t = AUTH_TRANSLATIONS[currentLang];
-  btn.disabled=true;
-  btn.innerHTML=`<div class="spinner"></div><span>${t.google_connecting}</span>`;
+function switchTab(tab) {
+  _tab = tab;
+  const isLogin = tab === 'login';
+
+  document.getElementById('tab-login').className  = 'auth-tab ' + (isLogin ? 'on' : 'off');
+  document.getElementById('tab-signup').className = 'auth-tab ' + (!isLogin ? 'on' : 'off');
+  document.getElementById('tab-login').textContent  = t('tab_login');
+  document.getElementById('tab-signup').textContent = t('tab_signup');
+
+  document.getElementById('form-title').textContent = t(isLogin ? 'title_login' : 'title_signup');
+
+  const subBtn = isLogin
+    ? `${t('sub_no_acc')} <button onclick="switchTab('signup')">${t('tab_signup')} →</button>`
+    : `${t('sub_has_acc')} <button onclick="switchTab('login')">${t('tab_login')} →</button>`;
+  document.getElementById('form-sub').innerHTML = subBtn;
+
+  document.getElementById('submit-label').textContent         = t(isLogin ? 'btn_login' : 'btn_signup');
+  document.getElementById('confirm-group').style.display      = isLogin ? 'none' : 'block';
+  document.getElementById('forgot-btn').style.display         = isLogin ? 'block' : 'none';
+  document.getElementById('forgot-btn').textContent           = t('forgot');
+  document.getElementById('signup-terms').style.display       = isLogin ? 'none' : 'block';
+  document.getElementById('signup-terms').innerHTML           = t('terms');
+  document.getElementById('f-pw').autocomplete                = isLogin ? 'current-password' : 'new-password';
+  clearMsgs();
+}
+
+function clearMsgs() {
+  document.getElementById('err-msg').className = 'err-msg';
+  document.getElementById('ok-msg').className  = 'ok-msg';
+}
+function showErr(msg) {
+  const e = document.getElementById('err-msg'); e.textContent = msg; e.className = 'err-msg show';
+  document.getElementById('ok-msg').className = 'ok-msg';
+}
+function showOk(msg) {
+  const e = document.getElementById('ok-msg'); e.textContent = msg; e.className = 'ok-msg show';
+  document.getElementById('err-msg').className = 'err-msg';
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 5. Google OAuth
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function doGoogle() {
+  const btn = document.getElementById('google-btn');
+  btn.disabled = true;
+  btn.innerHTML = `<div class="spinner"></div><span>${t('google_busy')}</span>`;
   clearMsgs();
 
-  const {error}=await _sb.auth.signInWithOAuth({
-    provider:'google',
-    options:{ redirectTo: window.location.origin+'/index2.html' }
+  const { error } = await _sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + '/index2.html' }
   });
 
-  if(error){
+  if (error) {
     showErr(error.message);
-    btn.disabled=false;
-    btn.innerHTML=`<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;flex-shrink:0"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>${t.google_btn}</span>`;
+    btn.disabled = false;
+    btn.innerHTML = `<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" style="width:20px;height:20px;flex-shrink:0"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>${t('google_btn')}</span>`;
   }
 }
 
-function switchTab(tab){
-  _tab=tab;
-  const isLogin=tab==='login';
-  const t = AUTH_TRANSLATIONS[currentLang];
-  
-  document.getElementById('tab-login').className='auth-tab '+(isLogin?'on':'off');
-  document.getElementById('tab-signup').className='auth-tab '+(!isLogin?'on':'off');
-  
-  document.getElementById('form-title').textContent = isLogin ? t.welcome : t.create;
-  document.getElementById('form-sub').innerHTML = isLogin
-    ? `${t.no_acc} <button onclick="switchTab('signup')">${t.signup_tab} →</button>`
-    : `${t.has_acc} <button onclick="switchTab('login')">${t.login_tab} →</button>`;
-  
-  document.getElementById('submit-label').textContent = isLogin ? t.login_btn : t.signup_btn;
-  document.getElementById('confirm-group').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('forgot-btn').style.display = isLogin ? 'block' : 'none';
-  document.getElementById('forgot-btn').textContent = t.forgot_pw;
-  document.getElementById('signup-terms').style.display = isLogin ? 'none' : 'block';
-  document.getElementById('signup-terms').innerHTML = t.terms_note;
-  document.getElementById('f-pw').autocomplete = isLogin ? 'current-password' : 'new-password';
-  clearMsgs();
-}
-
-function clearMsgs(){
-  document.getElementById('err-msg').className='err-msg';
-  document.getElementById('ok-msg').className='ok-msg';
-}
-function showErr(msg){
-  const e=document.getElementById('err-msg');e.textContent=msg;e.className='err-msg show';
-  document.getElementById('ok-msg').className='ok-msg';
-}
-function showOk(msg){
-  const e=document.getElementById('ok-msg');e.textContent=msg;e.className='ok-msg show';
-  document.getElementById('err-msg').className='err-msg';
-}
-
-async function doAuth(){
-  const email=document.getElementById('f-email').value.trim();
-  const pw=document.getElementById('f-pw').value;
-  const confirm=document.getElementById('f-confirm').value;
-  const t = AUTH_TRANSLATIONS[currentLang];
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 6. Email Auth
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function doAuth() {
+  const email   = document.getElementById('f-email').value.trim();
+  const pw      = document.getElementById('f-pw').value;
+  const confirm = document.getElementById('f-confirm').value;
   clearMsgs();
 
-  if(!email||!pw){showErr(t.err_fill_all);return;}
-  if(_tab==='signup'){
-    if(pw.length<6){showErr(t.err_pw_short);return;}
-    if(pw!==confirm){showErr(t.err_pw_mismatch);return;}
+  if (!email || !pw) { showErr(t('err_fill')); return; }
+  if (_tab === 'signup') {
+    if (pw.length < 6) { showErr(t('err_short')); return; }
+    if (pw !== confirm) { showErr(t('err_mismatch')); return; }
   }
 
-  const btn=document.getElementById('submit-btn');
-  btn.disabled=true;
-  btn.innerHTML='<div class="spinner"></div>';
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div>';
 
-  try{
+  try {
     let result;
-    if(_tab==='login'){
-      result=await _sb.auth.signInWithPassword({email,password:pw});
-    }else{
-      result=await _sb.auth.signUp({email,password:pw,options:{emailRedirectTo:window.location.origin+'/login.html'}});
+    if (_tab === 'login') {
+      result = await _sb.auth.signInWithPassword({ email, password: pw });
+    } else {
+      result = await _sb.auth.signUp({ email, password: pw, options: { emailRedirectTo: window.location.origin + '/login.html' } });
     }
 
-    if(result.error){
+    if (result.error) {
       showErr(result.error.message);
-    }else if(_tab==='signup'&&!result.data?.session){
-      // メール確認待ち画面 (多言語対応)
+    } else if (_tab === 'signup' && !result.data?.session) {
+      // メール確認待ち画面
       document.getElementById('auth-form-view').innerHTML = `
         <div style="text-align:center;padding:20px 0">
           <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(37,99,235,.2),rgba(6,182,212,.1));border:1px solid rgba(59,130,246,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </div>
-          <h2 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px">${t.check_email_h}</h2>
-          <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px">${t.check_email_p(email)}</p>
+          <h2 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px">${t('check_email_h')}</h2>
+          <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px">${t('check_email_p', email)}</p>
           <div style="background:rgba(37,99,235,.08);border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:14px 16px;margin-bottom:20px;text-align:left">
-            <p style="font-size:12px;color:var(--muted);line-height:1.7">${t.check_email_note}</p>
+            <p style="font-size:12px;color:var(--muted);line-height:1.7">${t('check_email_note')}</p>
           </div>
-          <button onclick="window.location.reload()" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,var(--blue-500),var(--cyan));color:#fff;border:none;cursor:pointer;font-family:var(--font);font-size:15px;font-weight:700;box-shadow:0 4px 20px rgba(37,99,235,.4);">${t.btn_back_login}</button>
+          <button onclick="window.location.reload()" style="width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,var(--blue-500),var(--cyan));color:#fff;border:none;cursor:pointer;font-family:var(--font);font-size:15px;font-weight:700;box-shadow:0 4px 20px rgba(37,99,235,.4);">${t('btn_back_login')}</button>
         </div>`;
-    }else{
-      try{localStorage.setItem('ss_email', result.data.user.email);}catch{}
+    } else {
+      try { localStorage.setItem('ss_email', result.data.user.email); } catch {}
       window.location.href = 'index2.html';
     }
-  }catch(e){
-    showErr('Error: '+e.message);
+  } catch (e) {
+    showErr('Error: ' + e.message);
   }
 
-  btn.disabled=false;
-  btn.innerHTML='<span id="submit-label">'+(_tab==='login' ? t.login_btn : t.signup_btn)+'</span>';
+  btn.disabled = false;
+  btn.innerHTML = `<span id="submit-label">${t(_tab === 'login' ? 'btn_login' : 'btn_signup')}</span>`;
 }
 
-async function doForgot(){
-  const email=document.getElementById('f-email').value.trim();
-  const t = AUTH_TRANSLATIONS[currentLang];
-  if(!email){showErr(currentLang === 'ja' ? '先にメールアドレスを入力してください。' : 'Enter your email address first.');return;}
-  const {error}=await _sb.auth.resetPasswordForEmail(email,{
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 7. パスワードリセット
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function doForgot() {
+  const email = document.getElementById('f-email').value.trim();
+  if (!email) { showErr(t('err_email_first')); return; }
+  const { error } = await _sb.auth.resetPasswordForEmail(email, {
     redirectTo: window.location.origin + '/reset-password.html'
   });
-  if(error)showErr(error.message);
-  else showOk(t.ok_reset_sent);
+  if (error) showErr(error.message);
+  else showOk(t('ok_reset'));
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// 4. 初期化実行
+// 8. 初期化
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-(async()=>{
-  try{
-    applyAuthTranslations(); // 言語適用
-    
-    const params=new URLSearchParams(window.location.search);
-    if(params.get('tab')==='signup') switchTab('signup');
-    else switchTab('login');
-  }catch(e){
-    console.warn('Auth init error:',e);
+(async () => {
+  // OAuthコールバック判定
+  const isOAuthCallback = window.location.hash.includes('access_token');
+  if (isOAuthCallback) {
+    document.getElementById('auth-form-view').innerHTML =
+      '<div style="text-align:center;padding:60px 0;color:var(--muted)">' +
+      '<div class="spinner" style="margin:0 auto 16px;width:28px;height:28px;border-width:3px"></div>' +
+      '<p style="font-size:14px;font-weight:600">Signing you in…</p></div>';
+
+    _sb.auth.onAuthStateChange((event, session) => {
+      if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user) {
+        try { localStorage.setItem('ss_email', session.user.email); } catch {}
+        window.location.href = 'index2.html';
+      }
+    });
+    return;
   }
+
+  // 言語適用
+  updateLangButtons();
+  applyTranslations();
+  document.documentElement.lang = currentLang;
+
+  // タブ初期化
+  const params = new URLSearchParams(window.location.search);
+  switchTab(params.get('tab') === 'signup' ? 'signup' : 'login');
 })();
-
-// OAuthコールバック待機
-const _isOAuthCallback = window.location.hash.includes('access_token');
-if(_isOAuthCallback){
-  document.getElementById('auth-form-view').innerHTML =
-    '<div style="text-align:center;padding:60px 0;color:var(--muted)">' +
-    '<div class="spinner" style="margin:0 auto 16px;width:28px;height:28px;border-width:3px"></div>' +
-    '<p style="font-size:14px;font-weight:600">Signing you in…</p></div>';
-
-  _sb.auth.onAuthStateChange((event, session)=>{
-    if((event==='SIGNED_IN'||event==='TOKEN_REFRESHED') && session?.user){
-      try{localStorage.setItem('ss_email', session.user.email);}catch{}
-      window.location.href = 'index2.html';
-    }
-  });
-}
 </script>
+</body>
+</html>
