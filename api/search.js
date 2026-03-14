@@ -8,18 +8,21 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // フロントエンドから lang も受け取る（デフォルトは 'en'）
-  const { domain, lang = 'en' } = req.body ?? {};
-  if (!domain) return res.status(200).json({ result: null });
+  // url と domain の両方を受け取る
+  const { url, domain, lang = 'en' } = req.body ?? {};
+  if (!domain && !url) return res.status(200).json({ result: null });
 
   // 言語によって検索パラメータを動的に切り替える
   const isJa = lang === 'ja';
   const gl = isJa ? 'jp' : 'us';
   const hl = isJa ? 'ja' : 'en';
   
-  // 日本語の時は日本語のキーワードで検索する
-  const queryRisk = isJa ? `${domain} 詐欺 フィッシング 悪質 危険` : `${domain} scam phishing fraud`;
-  const queryRep  = isJa ? `${domain} 評判 口コミ 安全 レビュー` : `${domain} review legitimate safe`;
+  // 「フルURLの完全一致」または「ドメイン」で検索するように OR 検索を活用
+  // 例: "https://example.com/xyz" OR "example.com" 詐欺
+  const targetRisk = url ? `"${url}" OR "${domain}"` : `"${domain}"`;
+  
+  const queryRisk = isJa ? `${targetRisk} 詐欺 フィッシング 悪質 危険` : `${targetRisk} scam phishing fraud`;
+  const queryRep  = isJa ? `"${domain}" 評判 口コミ 安全 レビュー` : `"${domain}" review legitimate safe`;
 
   try {
     const [r1, r2] = await Promise.all([
