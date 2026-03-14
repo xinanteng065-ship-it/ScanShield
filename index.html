@@ -34,25 +34,6 @@ body{
   padding:24px 18px;
 }
 
-/* ── Lang Toggle ── */
-.lang-toggle{
-  position:fixed;top:16px;right:20px;z-index:1000;
-  display:flex;align-items:center;gap:2px;
-  background:var(--navy-700);border:1px solid var(--glass-bd);
-  border-radius:10px;padding:3px;
-}
-.lang-btn{
-  padding:5px 11px;border-radius:7px;border:none;cursor:pointer;
-  font-family:var(--font);font-size:12px;font-weight:700;
-  letter-spacing:.3px;transition:all .18s;background:transparent;
-  color:var(--muted);
-}
-.lang-btn.active{
-  background:linear-gradient(135deg,var(--blue-500),var(--blue-400));
-  color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.35);
-}
-.lang-btn:hover:not(.active){color:#fff}
-
 /* ── Layout ── */
 .auth-wrap{
   width:100%;max-width:960px;
@@ -231,6 +212,7 @@ body{
 }
 .forgot-link:hover{color:var(--blue-300)}
 
+
 /* ── Password Toggle ── */
 .pw-wrap{position:relative}
 .pw-wrap .form-input{padding-right:48px}
@@ -267,12 +249,6 @@ body{
 </head>
 <body>
 
-<!-- ── Language Toggle ── -->
-<div class="lang-toggle">
-  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-  <button class="lang-btn" id="btn-ja" onclick="setLang('ja')">JA</button>
-</div>
-
 <div class="auth-wrap">
 
   <!-- ── Left: Brand Panel ── -->
@@ -286,49 +262,50 @@ body{
     </div>
 
     <div class="left-body">
-      <h2 data-i18n="hero_title">AI-powered<br/><span data-i18n="hero_title_span">QR Safety</span><br/><span data-i18n="hero_title_end">for everyone.</span></h2>
-      <p data-i18n="hero_desc">Detect phishing, malware, and scam links hidden in QR codes — before you click anything.</p>
+      <h2>AI-powered<br/><span>QR Safety</span><br/>for everyone.</h2>
+      <p>Detect phishing, malware, and scam links hidden in QR codes — before you click anything.</p>
       <div class="feat-list">
         <div class="feat-item">
           <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          <p><strong data-i18n="feat1_strong">Instant verdict</strong> <span data-i18n="feat1_desc">in under 3 seconds</span></p>
+          <p><strong>Instant verdict</strong> in under 3 seconds</p>
         </div>
         <div class="feat-item">
           <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-          <p><strong data-i18n="feat2_strong">AI chat assistant</strong> <span data-i18n="feat2_desc">for follow-up questions</span></p>
+          <p><strong>AI chat assistant</strong> for follow-up questions</p>
         </div>
         <div class="feat-item">
           <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
-          <p><strong data-i18n="feat3_strong">Zero data stored</strong> <span data-i18n="feat3_desc">— your scans stay private</span></p>
+          <p><strong>Zero data stored</strong> — your scans stay private</p>
         </div>
         <div class="feat-item">
           <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-          <p><strong data-i18n="feat4_strong">Camera, upload, or URL</strong> <span data-i18n="feat4_desc">— works any way</span></p>
+          <p><strong>Camera, upload, or URL</strong> — works any way</p>
         </div>
       </div>
     </div>
 
-    <div class="left-footer" data-i18n="footer">© 2025 Scan Shield · AI analysis for informational purposes only.</div>
+    <div class="left-footer">© 2025 Scan Shield · AI analysis for informational purposes only.</div>
   </div>
 
   <!-- ── Right: Auth Panel ── -->
   <div class="auth-right">
     <button class="back-link" onclick="window.location.href='/'">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-      <span data-i18n="back_link">Back to Scan Shield</span>
+      Back to Scan Shield
     </button>
 
     <div id="auth-form-view">
-      <h1 id="form-title" data-i18n="login_title">Welcome back</h1>
-      <p class="sub" id="form-sub"></p>
+      <h1 id="form-title">Welcome back</h1>
+      <p class="sub" id="form-sub">Don't have an account? <button onclick="switchTab('signup')">Sign up free →</button></p>
 
       <div class="tab-row">
-        <button class="auth-tab on" id="tab-login" onclick="switchTab('login')" data-i18n="tab_login">Log In</button>
-        <button class="auth-tab off" id="tab-signup" onclick="switchTab('signup')" data-i18n="tab_signup">Sign Up</button>
+        <button class="auth-tab on" id="tab-login" onclick="switchTab('login')">Log In</button>
+        <button class="auth-tab off" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
       </div>
 
       <!-- ── Google OAuth Button ── -->
       <button class="btn-google" id="google-btn" onclick="doGoogle()">
+        <!-- Official Google "G" logo SVG -->
         <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
           <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -336,220 +313,60 @@ body{
           <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
           <path fill="none" d="M0 0h48v48H0z"/>
         </svg>
-        <span id="google-label" data-i18n="btn_google">Continue with Google</span>
+        <span id="google-label">Continue with Google</span>
       </button>
 
-      <div class="divider"><span data-i18n="divider">or continue with email</span></div>
+      <div class="divider">or continue with email</div>
 
       <div id="err-msg" class="err-msg"></div>
       <div id="ok-msg" class="ok-msg"></div>
 
       <div class="form-group">
-        <label class="form-label" data-i18n="label_email">Email address</label>
-        <input type="email" id="f-email" class="form-input" data-i18n-placeholder="placeholder_email" autocomplete="email" onkeydown="if(event.key==='Enter')doAuth()"/>
+        <label class="form-label">Email address</label>
+        <input type="email" id="f-email" class="form-input" placeholder="you@example.com" autocomplete="email" onkeydown="if(event.key==='Enter')doAuth()"/>
       </div>
       <div class="form-group">
-        <label class="form-label" data-i18n="label_password">Password</label>
+        <label class="form-label">Password</label>
         <div class="pw-wrap">
-          <input type="password" id="f-pw" class="form-input" data-i18n-placeholder="placeholder_password" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()"/>
+          <input type="password" id="f-pw" class="form-input" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()"/>
           <button type="button" class="toggle-pw" onclick="togglePw('f-pw',this)" tabindex="-1" aria-label="Show password">
             <svg id="eye-pw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
       </div>
       <div class="form-group" id="confirm-group" style="display:none">
-        <label class="form-label" data-i18n="label_confirm">Confirm Password</label>
+        <label class="form-label">Confirm Password</label>
         <div class="pw-wrap">
-          <input type="password" id="f-confirm" class="form-input" data-i18n-placeholder="placeholder_confirm" autocomplete="new-password" onkeydown="if(event.key==='Enter')doAuth()"/>
+          <input type="password" id="f-confirm" class="form-input" placeholder="••••••••" autocomplete="new-password" onkeydown="if(event.key==='Enter')doAuth()"/>
           <button type="button" class="toggle-pw" onclick="togglePw('f-confirm',this)" tabindex="-1" aria-label="Show confirm password">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
       </div>
-      <button id="forgot-btn" class="forgot-link" onclick="doForgot()" data-i18n="forgot_password">Forgot password?</button>
+      <button id="forgot-btn" class="forgot-link" onclick="doForgot()">Forgot password?</button>
       <button class="btn-submit" id="submit-btn" onclick="doAuth()">
-        <span id="submit-label" data-i18n="btn_login">Log In</span>
+        <span id="submit-label">Log In</span>
       </button>
-      <p class="terms-note" id="signup-terms" style="display:none"></p>
+      <p class="terms-note" id="signup-terms" style="display:none">By signing up you agree to our <a href="/terms" style="color:var(--blue-300)">Terms</a> and <a href="/privacy" style="color:var(--blue-300)">Privacy Policy</a>.</p>
     </div>
 
   </div>
 </div>
 
 <script>
-// ── i18n strings ──
-const i18n = {
-  en: {
-    hero_title:       'AI-powered',
-    hero_title_span:  'QR Safety',
-    hero_title_end:   'for everyone.',
-    hero_desc:        'Detect phishing, malware, and scam links hidden in QR codes — before you click anything.',
-    feat1_strong:     'Instant verdict',
-    feat1_desc:       'in under 3 seconds',
-    feat2_strong:     'AI chat assistant',
-    feat2_desc:       'for follow-up questions',
-    feat3_strong:     'Zero data stored',
-    feat3_desc:       '— your scans stay private',
-    feat4_strong:     'Camera, upload, or URL',
-    feat4_desc:       '— works any way',
-    footer:           '© 2025 Scan Shield · AI analysis for informational purposes only.',
-    back_link:        'Back to Scan Shield',
-    login_title:      'Welcome back',
-    signup_title:     'Create account',
-    tab_login:        'Log In',
-    tab_signup:       'Sign Up',
-    btn_google:       'Continue with Google',
-    btn_google_loading:'Connecting…',
-    divider:          'or continue with email',
-    label_email:      'Email address',
-    label_password:   'Password',
-    label_confirm:    'Confirm Password',
-    placeholder_email:'you@example.com',
-    placeholder_password:'••••••••',
-    placeholder_confirm:'••••••••',
-    forgot_password:  'Forgot password?',
-    btn_login:        'Log In',
-    btn_signup:       'Create Account',
-    sub_login:        "Don't have an account? <button onclick=\"switchTab('signup')\">Sign up free →</button>",
-    sub_signup:       "Already have an account? <button onclick=\"switchTab('login')\">Log in →</button>",
-    terms_note:       'By signing up you agree to our <a href="/terms" style="color:var(--blue-300)">Terms</a> and <a href="/privacy" style="color:var(--blue-300)">Privacy Policy</a>.',
-    // Validation
-    err_fill:         'Please fill in all fields.',
-    err_short_pw:     'Password must be at least 6 characters.',
-    err_pw_match:     'Passwords do not match.',
-    // Email confirm
-    check_email_title:'Check your email',
-    check_email_body: 'We sent a confirmation link to',
-    check_email_body2:'Click the link in the email to activate your account.',
-    check_email_tip1: '📧 Check your spam folder if the email doesn\'t arrive',
-    check_email_tip2: '⏱ The link expires in',
-    check_email_tip3: '24 hours',
-    check_email_back: 'Back to Login',
-    // Forgot
-    forgot_ok:        'Password reset email sent! Check your inbox.',
-    forgot_err_email: 'Enter your email address first.',
-    // Loading
-    signin_loading:   'Signing you in…',
-    btn_loading:      '',
-  },
-  ja: {
-    hero_title:       'AIで守る、',
-    hero_title_span:  'QRコードの安全',
-    hero_title_end:   'すべての人へ。',
-    hero_desc:        'フィッシング・マルウェア・詐欺サイトへの誘導——QRコードを読む前に、AIが安全かどうか判定します。',
-    feat1_strong:     '3秒で結果がわかる',
-    feat1_desc:       'すぐに判断できます',
-    feat2_strong:     'AIに追加で質問できる',
-    feat2_desc:       '気になることをチャットで確認',
-    feat3_strong:     'スキャン履歴は残さない',
-    feat3_desc:       'プライバシーを守ります',
-    feat4_strong:     'カメラ・画像・URL',
-    feat4_desc:       '使いやすい方法で OK',
-    footer:           '© 2025 Scan Shield · AIの解析結果はあくまで参考情報です。',
-    back_link:        'Scan Shieldへ戻る',
-    login_title:      'おかえりなさい',
-    signup_title:     'アカウント登録',
-    tab_login:        'ログイン',
-    tab_signup:       '新規登録',
-    btn_google:       'Googleアカウントで続ける',
-    btn_google_loading:'接続しています…',
-    divider:          'またはメールアドレスで',
-    label_email:      'メールアドレス',
-    label_password:   'パスワード',
-    label_confirm:    'パスワード（再入力）',
-    placeholder_email:'you@example.com',
-    placeholder_password:'••••••••',
-    placeholder_confirm:'••••••••',
-    forgot_password:  'パスワードをお忘れの方はこちら',
-    btn_login:        'ログイン',
-    btn_signup:       '登録する',
-    sub_login:        "アカウントをお持ちでない方 → <button onclick=\"switchTab('signup')\">無料で登録</button>",
-    sub_signup:       "すでにアカウントをお持ちの方 → <button onclick=\"switchTab('login')\">ログイン</button>",
-    terms_note:       '登録することで、<a href="/terms" style="color:var(--blue-300)">利用規約</a>と<a href="/privacy" style="color:var(--blue-300)">プライバシーポリシー</a>に同意したものとみなされます。',
-    // Validation
-    err_fill:         'メールアドレスとパスワードを入力してください。',
-    err_short_pw:     'パスワードは6文字以上で設定してください。',
-    err_pw_match:     'パスワードが一致していません。確認してください。',
-    // Email confirm
-    check_email_title:'確認メールをお送りしました',
-    check_email_body: '以下のアドレスに確認リンクを送りました：',
-    check_email_body2:'メール内のリンクをクリックして、登録を完了してください。',
-    check_email_tip1: '📧 見当たらない場合は迷惑メールフォルダもご確認ください',
-    check_email_tip2: '⏱ リンクの有効期限は',
-    check_email_tip3: '24時間',
-    check_email_back: 'ログインへ戻る',
-    // Forgot
-    forgot_ok:        'パスワード再設定のメールをお送りしました。受信トレイをご確認ください。',
-    forgot_err_email: '先にメールアドレスを入力してください。',
-    // Loading
-    signin_loading:   'ログイン中…',
-    btn_loading:      '',
-  }
-};
-
 // ── Supabase init ──
 const SUPABASE_URL='https://oktmwoihqlkbcmdpkzre.supabase.co';
 const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9rdG13b2locWxrYmNtZHBrenJlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMjA3OTYsImV4cCI6MjA4Nzg5Njc5Nn0.f-6DLyWGDAqCTzyiJ7HDbQkDZA7K2SLSyrQApA6vOC4';
 const _sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 
 let _tab='login';
-let _lang='en';
-
-// ── Language detection & apply ──
-function detectLang(){
-  // 1. LocalStorage preference
-  const saved = localStorage.getItem('ss_lang');
-  if(saved==='ja'||saved==='en') return saved;
-  // 2. Browser language
-  const bl = (navigator.language||navigator.userLanguage||'').toLowerCase();
-  return bl.startsWith('ja') ? 'ja' : 'en';
-}
-
-function t(key){ return (i18n[_lang]||i18n.en)[key] || key; }
-
-function applyLang(){
-  document.documentElement.lang = _lang;
-  // Update toggle buttons
-  document.getElementById('btn-en').classList.toggle('active', _lang==='en');
-  document.getElementById('btn-ja').classList.toggle('active', _lang==='ja');
-
-  // data-i18n elements
-  document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const key = el.dataset.i18n;
-    if(i18n[_lang][key] !== undefined) el.textContent = i18n[_lang][key];
-  });
-
-  // Placeholders
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
-    const key = el.dataset.i18nPlaceholder;
-    if(i18n[_lang][key] !== undefined) el.placeholder = i18n[_lang][key];
-  });
-
-  // Dynamic sub text
-  document.getElementById('form-sub').innerHTML = _tab==='login' ? t('sub_login') : t('sub_signup');
-
-  // Terms note
-  const termsEl = document.getElementById('signup-terms');
-  if(termsEl) termsEl.innerHTML = t('terms_note');
-
-  // Submit label
-  document.getElementById('submit-label').textContent = _tab==='login' ? t('btn_login') : t('btn_signup');
-
-  // Form title
-  document.getElementById('form-title').textContent = _tab==='login' ? t('login_title') : t('signup_title');
-}
-
-function setLang(lang){
-  _lang = lang;
-  try{ localStorage.setItem('ss_lang', lang); }catch{}
-  applyLang();
-}
 
 // ── Password Toggle ──
 function togglePw(inputId, btn){
   const inp = document.getElementById(inputId);
   const isHidden = inp.type === 'password';
   inp.type = isHidden ? 'text' : 'password';
+  // アイコン切替：表示中はスラッシュ付き目玉
   btn.innerHTML = isHidden
     ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`
     : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`;
@@ -560,12 +377,14 @@ function togglePw(inputId, btn){
 async function doGoogle(){
   const btn=document.getElementById('google-btn');
   btn.disabled=true;
-  btn.innerHTML=`<div class="spinner"></div><span>${t('btn_google_loading')}</span>`;
+  btn.innerHTML='<div class="spinner"></div><span>Connecting…</span>';
   clearMsgs();
 
   const {error}=await _sb.auth.signInWithOAuth({
     provider:'google',
-    options:{ redirectTo: window.location.origin+'/index2.html' }
+    options:{
+      redirectTo: window.location.origin+'/index2.html'
+    }
   });
 
   if(error){
@@ -578,8 +397,9 @@ async function doGoogle(){
         <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
         <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
       </svg>
-      <span id="google-label">${t('btn_google')}</span>`;
+      <span id="google-label">Continue with Google</span>`;
   }
+  // エラーがなければ自動でGoogleのOAuthページへリダイレクト
 }
 
 function switchTab(tab){
@@ -587,9 +407,11 @@ function switchTab(tab){
   const isLogin=tab==='login';
   document.getElementById('tab-login').className='auth-tab '+(isLogin?'on':'off');
   document.getElementById('tab-signup').className='auth-tab '+(!isLogin?'on':'off');
-  document.getElementById('form-title').textContent=isLogin?t('login_title'):t('signup_title');
-  document.getElementById('form-sub').innerHTML=isLogin?t('sub_login'):t('sub_signup');
-  document.getElementById('submit-label').textContent=isLogin?t('btn_login'):t('btn_signup');
+  document.getElementById('form-title').textContent=isLogin?'Welcome back':'Create account';
+  document.getElementById('form-sub').innerHTML=isLogin
+    ?'Don\'t have an account? <button onclick="switchTab(\'signup\')">Sign up free →</button>'
+    :'Already have an account? <button onclick="switchTab(\'login\')">Log in →</button>';
+  document.getElementById('submit-label').textContent=isLogin?'Log In':'Create Account';
   document.getElementById('confirm-group').style.display=isLogin?'none':'block';
   document.getElementById('forgot-btn').style.display=isLogin?'block':'none';
   document.getElementById('signup-terms').style.display=isLogin?'none':'block';
@@ -616,10 +438,10 @@ async function doAuth(){
   const confirm=document.getElementById('f-confirm').value;
   clearMsgs();
 
-  if(!email||!pw){showErr(t('err_fill'));return;}
+  if(!email||!pw){showErr('Please fill in all fields.');return;}
   if(_tab==='signup'){
-    if(pw.length<6){showErr(t('err_short_pw'));return;}
-    if(pw!==confirm){showErr(t('err_pw_match'));return;}
+    if(pw.length<6){showErr('Password must be at least 6 characters.');return;}
+    if(pw!==confirm){showErr('Passwords do not match.');return;}
   }
 
   const btn=document.getElementById('submit-btn');
@@ -637,20 +459,21 @@ async function doAuth(){
     if(result.error){
       showErr(result.error.message);
     }else if(_tab==='signup'&&!result.data?.session){
+      // メール確認待ち画面に切り替え
       document.getElementById('auth-form-view').innerHTML = `
         <div style="text-align:center;padding:20px 0">
           <div style="width:64px;height:64px;border-radius:18px;background:linear-gradient(135deg,rgba(37,99,235,.2),rgba(6,182,212,.1));border:1px solid rgba(59,130,246,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
           </div>
-          <h2 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px">${t('check_email_title')}</h2>
+          <h2 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px">Check your email</h2>
           <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:24px">
-            ${t('check_email_body')} <strong style="color:#fff">${email}</strong><br/>
-            ${t('check_email_body2')}
+            確認メールを <strong style="color:#fff">${email}</strong> に送りました。<br/>
+            メール内のリンクをクリックしてアカウントを有効化してください。
           </p>
           <div style="background:rgba(37,99,235,.08);border:1px solid rgba(59,130,246,.2);border-radius:12px;padding:14px 16px;margin-bottom:20px;text-align:left">
             <p style="font-size:12px;color:var(--muted);line-height:1.7">
-              ${t('check_email_tip1')}<br/>
-              ${t('check_email_tip2')} <strong style="color:var(--blue-300)">${t('check_email_tip3')}</strong> ${_lang==='ja'?'です':''}
+              📧 メールが届かない場合は迷惑メールフォルダを確認してください<br/>
+              ⏱ リンクの有効期限は <strong style="color:var(--blue-300)">24時間</strong> です
             </p>
           </div>
           <button onclick="switchTab('login')" style="
@@ -659,7 +482,7 @@ async function doAuth(){
             color:#fff;border:none;cursor:pointer;
             font-family:var(--font);font-size:15px;font-weight:700;
             box-shadow:0 4px 20px rgba(37,99,235,.4);">
-            ${t('check_email_back')}
+            ログイン画面へ戻る
           </button>
         </div>`;
     }else{
@@ -671,17 +494,17 @@ async function doAuth(){
   }
 
   btn.disabled=false;
-  btn.innerHTML='<span id="submit-label">'+(_tab==='login'?t('btn_login'):t('btn_signup'))+'</span>';
+  btn.innerHTML='<span id="submit-label">'+(_tab==='login'?'Log In':'Create Account')+'</span>';
 }
 
 async function doForgot(){
   const email=document.getElementById('f-email').value.trim();
-  if(!email){showErr(t('forgot_err_email'));return;}
+  if(!email){showErr('Enter your email address first.');return;}
   const {error}=await _sb.auth.resetPasswordForEmail(email,{
     redirectTo: window.location.origin + '/reset-password.html'
   });
   if(error)showErr(error.message);
-  else showOk(t('forgot_ok'));
+  else showOk('Password reset email sent! Check your inbox.');
 }
 
 function toast(msg,type){
@@ -693,10 +516,6 @@ function toast(msg,type){
 // ── Init ──
 (async()=>{
   try{
-    // Detect language
-    _lang = detectLang();
-    applyLang();
-
     // ?tab=signup でサインアップタブを開く
     const params=new URLSearchParams(window.location.search);
     if(params.get('tab')==='signup') switchTab('signup');
@@ -705,14 +524,17 @@ function toast(msg,type){
   }
 })();
 
-// ── OAuth callback ──
+// ── OAuthコールバック：onAuthStateChange で確実に捕捉 ──
+// Googleログイン後はSupabaseがURLに #access_token を付けてリダイレクトしてくる
+// タイミング問題を避けるためイベントリスナーで待ち受ける
 const _isOAuthCallback = window.location.hash.includes('access_token');
 
 if(_isOAuthCallback){
+  // フォームをローディング表示に切り替え
   document.getElementById('auth-form-view').innerHTML =
-    `<div style="text-align:center;padding:60px 0;color:var(--muted)">` +
-    `<div class="spinner" style="margin:0 auto 16px;width:28px;height:28px;border-width:3px"></div>` +
-    `<p style="font-size:14px;font-weight:600">${t('signin_loading')}</p></div>`;
+    '<div style="text-align:center;padding:60px 0;color:var(--muted)">' +
+    '<div class="spinner" style="margin:0 auto 16px;width:28px;height:28px;border-width:3px"></div>' +
+    '<p style="font-size:14px;font-weight:600">Signing you in…</p></div>';
 
   _sb.auth.onAuthStateChange((event, session)=>{
     if((event==='SIGNED_IN'||event==='TOKEN_REFRESHED') && session?.user){

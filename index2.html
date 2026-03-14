@@ -935,12 +935,6 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
               <span data-i18n="url_analyze_btn">Analyze</span>
             </button>
           </div>
-          <div class="url-examples" id="url-examples">
-            <span style="font-size:11px;color:var(--muted);align-self:center" data-i18n="url_examples_label">Try:</span>
-            <button class="url-ex-chip" onclick="setUrlExample('https://google.com')">google.com</button>
-            <button class="url-ex-chip" onclick="setUrlExample('https://amaz0n-secure.xyz')">amaz0n-secure.xyz</button>
-            <button class="url-ex-chip" onclick="setUrlExample('https://bit.ly/3abc123')">bit.ly/…</button>
-          </div>
         </div>
       </div>
     </div>
@@ -1273,7 +1267,7 @@ const TRANSLATIONS = {
     pre_stripe_after:'After payment:',
     pre_stripe_steps:'1. Return to this page<br/>2. Enter the email you used for payment<br/>3. Your plan activates instantly ✅',
     pre_stripe_cta:'Continue to Payment →',
-    share_label:'Share:',share_email:'Email',share_copy:'Copy',share_slack_copied:'Copied! Paste into Slack',clipboard_copied:'Copied to clipboard!',
+    share_label:'Share:',share_email:'Email',share_copy:'Copy',clipboard_copied:'Copied to clipboard!',
     chat_scan_limit:'Chat is available on Pro & Team plans.',
     signout_confirm:'Sign out?',signout_done:'Signed out.',
     url_empty_msg:'Please enter a URL.',url_invalid_msg:'Please enter a valid URL starting with http:// or https://',
@@ -1294,7 +1288,7 @@ const TRANSLATIONS = {
     hero_sub:'QRコードにはフィッシングリンク、マルウェア、詐欺が潜んでいます。Scan ShieldがAIで即座に検証します。',
     hero_cta_main:'無料でスキャンを始める',hero_cta_sec:'プランを見る',
     trust1:'登録不要',trust2:'データ保存なし',trust3:'あらゆる端末で動作',
-    how_label:'使い方',how_title:'3ステップ、10秒以内。',
+    how_label:'使い方',how_title:'3ステップ、10秒以内で出来ます。',
     step1_h:'スキャンまたは貼り付け',step1_p:'カメラ、QR画像のアップロード、またはURLを直接貼り付け。',
     step2_h:'AIが分析',step2_p:'GPT-4oがURL構造、リアルタイム詐欺データベース、ページ内容を同時にチェック。',
     step3_h:'即時判定',step3_p:'✅ 安全 · ⚠️ 注意 · 🚨 危険 — わかりやすい説明とフォローアップチャット付き。',
@@ -1393,7 +1387,7 @@ const TRANSLATIONS = {
     pre_stripe_after:'支払い後の手順：',
     pre_stripe_steps:'1. このページに戻る<br/>2. 支払いに使用したメールアドレスを入力<br/>3. プランが即座に有効化 ✅',
     pre_stripe_cta:'決済に進む →',
-    share_label:'共有：',share_email:'メール',share_copy:'コピー',share_slack_copied:'コピーしました！Slackに貼り付けてください',clipboard_copied:'クリップボードにコピーしました！',
+    share_label:'共有：',share_email:'メール',share_copy:'コピー',clipboard_copied:'クリップボードにコピーしました！',
     chat_scan_limit:'チャットはProおよびTeamプランでご利用いただけます。',
     signout_confirm:'ログアウトしますか？',signout_done:'ログアウトしました。',
     url_empty_msg:'URLを入力してください。',url_invalid_msg:'http:// または https:// で始まる有効なURLを入力してください。',
@@ -1907,12 +1901,31 @@ async function ai(url,sc,sr){
   let p='[URL]\n'+url+'\n\n';if(sc)p+=sc+'\n\n';if(sr)p+=sr+'\n\n';p+='Respond in English only.';
   return callAI(p,[]);
 }
-async function callAI(msg,h){
-  try{
-    const r=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:msg,history:h}),signal:AbortSignal.timeout(28000)});
-    if(!r.ok){const err=await r.json().catch(()=>({}));throw new Error(err.error||('Server error '+r.status));}
-    return(await r.json()).reply||'';
-  }catch(e){return 'Safety:\n⚠️ CAUTION — '+e.message+'\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: Please try again.';}
+async function callAI(msg, h) {
+  try {
+    const r = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        message: msg, 
+        history: h,
+        lang: currentLang // 👈 これを追加して現在の言語を伝える
+      }),
+      signal: AbortSignal.timeout(28000)
+    });
+
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.error || ('Server error ' + r.status));
+    }
+    return (await r.json()).reply || '';
+  } catch (e) {
+    // エラーメッセージも言語によって切り替えると親切です
+    const isJa = currentLang === 'ja';
+    return isJa 
+      ? '安全判定:\n⚠️ 注意 — ' + e.message + '\n\n身元: 不明\n目的: N/A\nアドバイス: もう一度試してください。'
+      : 'Safety:\n⚠️ CAUTION — ' + e.message + '\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: Please try again.';
+  }
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
