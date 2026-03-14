@@ -1422,7 +1422,8 @@ function setLang(lang){
   if(ui)ui.placeholder=t('url_input_placeholder');
 }
 function updateLangButtons(){
-  ['lang-en','lang-ja','lang-en-sb','lang-ja-sb','lang-en-dr','lang-ja-dr'].forEach(id=>{
+  // idリストに '-auth' を追加
+  ['lang-en','lang-ja','lang-en-sb','lang-ja-sb','lang-en-dr','lang-ja-dr','lang-en-auth','lang-ja-auth'].forEach(id=>{
     const el=document.getElementById(id);if(!el)return;
     const isEn=id.includes('-en');
     el.classList.toggle('active',isEn?currentLang==='en':currentLang==='ja');
