@@ -350,13 +350,6 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .url-submit-btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(37,99,235,.45)}
 .url-submit-btn svg{width:15px;height:15px}
 
-/* ── OGP IMAGE ── */
-.ogp-wrap{border-radius:var(--r);overflow:hidden;margin-bottom:12px;border:1px solid var(--glass-bd);background:var(--navy-700);}
-.ogp-img{width:100%;height:160px;object-fit:cover;display:block;}
-.ogp-favicon-fallback{display:flex;align-items:center;justify-content:center;height:80px;gap:10px;background:var(--navy-700);}
-.ogp-favicon-fallback img{width:44px;height:44px;border-radius:10px;object-fit:contain;}
-.ogp-favicon-fallback .ogp-globe{font-size:36px;line-height:1;}
-
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:14px 20px;border-radius:var(--r);font-family:var(--font);font-size:14.5px;font-weight:700;cursor:pointer;transition:all .2s;border:none;letter-spacing:-.1px;width:100%;min-height:50px;}
 .btn-blue{background:linear-gradient(135deg,var(--blue-500),var(--cyan));color:#fff;box-shadow:0 3px 16px rgba(37,99,235,.35);}
@@ -847,7 +840,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
         <ul class="plan-feats">
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_unlimited">Unlimited scans</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_everything_pro">Everything in Pro</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_ogp">Site preview image</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_history">Scan history (by date)</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_share">Share results (Email · LINE · Copy)</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_priority">Priority analysis queue</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_support">Priority email support</span></li>
@@ -1201,7 +1194,7 @@ const TRANSLATIONS = {
     plan_max_desc:'Unlimited scans, site previews, and sharing. The ultimate protection.',plan_max_cta:'Get Max →',
     feat_5scans:'5 scans per day',feat_20scans:'20 scans per day',feat_verdict:'AI safety verdict',
     feat_url:'URL direct analysis',feat_threat:'Live web threat search',feat_chat:'Follow-up AI chat',feat_upload:'Image upload scanning',
-    feat_unlimited:'Unlimited scans',feat_priority:'Priority analysis queue',feat_ogp:'Site preview image',
+    feat_unlimited:'Unlimited scans',feat_priority:'Priority analysis queue',feat_history:'Scan history (by date)',
     feat_share:'Share results (Email · LINE · Copy)',
     feat_everything_pro:'Everything in Pro',feat_support:'Priority email support',
     stripe_note:'Secure payment via Stripe · Cancel anytime · No contracts',
@@ -1291,7 +1284,6 @@ const TRANSLATIONS = {
     url_empty_msg:'Please enter a URL.',url_invalid_msg:'Please enter a valid URL starting with http:// or https://',
     delete_account_confirm:'Delete your account? This cannot be undone.',
     delete_account_done:'Account deleted.',delete_account_err:'Could not delete account. Please contact support.',
-    ogp_preview_label:'Site Preview',
     hist_title:'Scan History',hist_empty:'No scans yet.',hist_empty_sub:'Your scan results will appear here.',
     hist_clear:'Clear History',hist_clear_confirm:'Clear all scan history?',
     hist_today:'Today',hist_yesterday:'Yesterday',
@@ -1327,7 +1319,7 @@ const TRANSLATIONS = {
     plan_max_desc:'無制限スキャン・サイトプレビュー・シェア機能付き。最強の保護。',plan_max_cta:'Maxを始める →',
     feat_5scans:'1日5回スキャン',feat_20scans:'1日20回スキャン',feat_verdict:'AI安全判定',
     feat_url:'URL直接分析',feat_threat:'ライブ脅威検索',feat_chat:'AIフォローアップチャット',feat_upload:'画像アップロードスキャン',
-    feat_unlimited:'無制限スキャン',feat_priority:'優先分析キュー',feat_ogp:'サイトプレビュー画像',
+    feat_unlimited:'無制限スキャン',feat_priority:'優先分析キュー',feat_history:'スキャン履歴（日付別）',
     feat_share:'結果シェア（メール・LINE・コピー）',
     feat_everything_pro:'Proの全機能',feat_support:'優先メールサポート',
     stripe_note:'Stripeによる安全な決済 · いつでもキャンセル · 契約なし',
@@ -1417,7 +1409,6 @@ const TRANSLATIONS = {
     url_empty_msg:'URLを入力してください。',url_invalid_msg:'http:// または https:// で始まる有効なURLを入力してください。',
     delete_account_confirm:'アカウントを削除しますか？この操作は元に戻せません。',
     delete_account_done:'アカウントを削除しました。',delete_account_err:'アカウントの削除に失敗しました。サポートにお問い合わせください。',
-    ogp_preview_label:'サイトプレビュー',
     hist_title:'スキャン履歴',hist_empty:'まだスキャンがありません。',hist_empty_sub:'スキャン結果がここに表示されます。',
     hist_clear:'履歴を削除',hist_clear_confirm:'スキャン履歴をすべて削除しますか？',
     hist_today:'今日',hist_yesterday:'昨日',
@@ -1485,16 +1476,15 @@ const PORTAL_URL='https://billing.stripe.com/p/login/test_00wcN6epm5S0gD3f1M43S0
 // Pro: $2.99/mo — 20 scans/day, all scan modes, chat
 // Max: $9.99/mo — unlimited, all + OGP + share
 const PLAN_CONFIG={
-  free: {limit:5,    upload:false, chat:false, url:false, ogp:false, share:false, history:false, label:'Free'},
-  pro:  {limit:20,   upload:true,  chat:true,  url:true,  ogp:false, share:false, history:false, label:'Pro ⚡'},
-  max:  {limit:99999,upload:true,  chat:true,  url:true,  ogp:true,  share:true,  history:true,  label:'Max 🚀'},
+  free: {limit:5,    upload:false, chat:false, url:false, share:false, history:false, label:'Free'},
+  pro:  {limit:20,   upload:true,  chat:true,  url:true,  share:false, history:false, label:'Pro ⚡'},
+  max:  {limit:99999,upload:true,  chat:true,  url:true,  share:true,  history:true,  label:'Max 🚀'},
 };
 
 function planLimit()    {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).limit;}
 function canUpload()    {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).upload;}
 function canChat()      {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).chat;}
 function canUrl()       {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).url;}
-function canOgp()       {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).ogp;}
 function canShare()     {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).share;}
 function canHistory()   {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).history;}
 function getTodayScans(){try{return parseInt(localStorage.getItem(SCAN_KEY)||'0');}catch{return 0;}}
@@ -1981,41 +1971,6 @@ function procFile(f){
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// OGP IMAGE FETCH (Max plan)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-async function fetchOgpImage(url){
-  if(!canOgp())return null;
-  try{
-    const proxyUrl='https://api.allorigins.win/get?url='+encodeURIComponent(url);
-    const r=await fetch(proxyUrl,{signal:AbortSignal.timeout(6000)});
-    if(!r.ok)return null;
-    const html=(await r.json()).contents||'';
-    const p=new DOMParser().parseFromString(html,'text/html');
-    // Try OGP image first
-    const ogImg=p.querySelector('meta[property="og:image"]')?.getAttribute('content')
-      ||p.querySelector('meta[name="twitter:image"]')?.getAttribute('content');
-    if(ogImg){
-      try{return {type:'ogp',src:new URL(ogImg,url).href};}catch{return {type:'ogp',src:ogImg};}
-    }
-    // Fallback: try to get favicon from HTML
-    const iconEl=p.querySelector('link[rel~="icon"],link[rel~="apple-touch-icon"],link[rel~="shortcut icon"]');
-    const iconHref=iconEl?.getAttribute('href');
-    if(iconHref){
-      try{return {type:'favicon',src:new URL(iconHref,url).href};}catch{}
-    }
-    return null;
-  }catch{return null;}
-}
-
-function getFaviconUrl(url){
-  try{
-    const {origin}=new URL(url);
-    // Google Favicon API as reliable fallback
-    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(origin)}&sz=64`;
-  }catch{return null;}
-}
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ANALYSIS
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 async function analyze(raw){
@@ -2032,12 +1987,9 @@ async function analyze(raw){
     setLoad(t('loading_threat'));
     let sr=null;if(isU)sr=await serp(raw,dom);
     setLoad(t('loading_ai'));
-    // Fetch OGP in parallel for Max plan
-    let ogpImg=null;
-    if(isU&&canOgp())ogpImg=await fetchOgpImage(raw);
     const res=await ai(raw,sc,sr);
-    render(res,raw,dom,isU,ogpImg);
-  }catch(e){render('Analysis error: '+e.message+'\n\nPlease try again.',raw,dom,isU,null);}
+    render(res,raw,dom,isU);
+  }catch(e){render('Analysis error: '+e.message+'\n\nPlease try again.',raw,dom,isU);}
   finally{busy=false;}
 }
 async function scrape(url){
@@ -2107,33 +2059,12 @@ function showArea(raw,dom,isU){
 }
 function setLoad(s){const b=document.getElementById('ab');if(b)b.innerHTML=`<div class="loading-box"><div class="spinner"></div><div class="step-lbl">${s}</div></div>`;}
 
-function render(text,raw,dom,isU,ogpImg){
+function render(text,raw,dom,isU){
   hist.push({role:'assistant',content:text});
   const rm=text.match(/(✅ SAFE|⚠️ CAUTION|🚨 DANGEROUS)/);
   const rl=rm?rm[1]:'';const rc=rl.includes('SAFE')?'rb-safe':rl.includes('CAUTION')?'rb-warn':'rb-danger';
   // Save to scan history (Max plan)
   if(isU&&raw)addHistoryEntry(raw,rl,dom);
-  
-  // OGP image section (Max plan only)
-let ogpHtml='';
-if(canOgp()&&isU){
-  const previewLabel=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:10px 14px 6px">${t('ogp_preview_label')}</div>`;
-  const faviconSrc=getFaviconUrl(raw);
-  
-  const faviconFallback=faviconSrc
-    ?`<div class="ogp-favicon-fallback"><img src="${faviconSrc}" alt="favicon" onerror="this.outerHTML='<span class=\\'ogp-globe\\'>🌐</span>'"/></div>`
-    :`<div class="ogp-favicon-fallback"><span class="ogp-globe">🌐</span></div>`;
-
-  if(ogpImg&&ogpImg.type==='ogp'){
-    // 👇 ここを変更：HTML文字列を安全にエンコードして渡す
-    const safeFallback = encodeURIComponent(faviconFallback);
-    ogpHtml=`<div class="ogp-wrap">${previewLabel}<img class="ogp-img" src="${ogpImg.src}" alt="Site preview" onerror="this.outerHTML=decodeURIComponent('${safeFallback}')" loading="lazy"/></div>`;
-  }else if(ogpImg&&ogpImg.type==='favicon'){
-    ogpHtml=`<div class="ogp-wrap">${previewLabel}<div class="ogp-favicon-fallback"><img src="${ogpImg.src}" alt="favicon" onerror="this.outerHTML='<span class=\\'ogp-globe\\'>🌐</span>'"/></div></div>`;
-  }else{
-    ogpHtml=`<div class="ogp-wrap">${previewLabel}${faviconFallback}</div>`;
-  }
-}
 
   let rows='';
   text.trim().split('\n').filter(l=>l.trim()).forEach(l=>{
@@ -2143,7 +2074,7 @@ if(canOgp()&&isU){
       rows+='<div class="arow"><div class="albl">'+lb+'</div><div class="aval">'+v+'</div></div>';
     }else rows+='<div style="font-size:13px;color:var(--muted);padding:4px 0;line-height:1.6">'+l+'</div>';
   });
-  document.getElementById('ab').innerHTML=ogpHtml+'<div>'+rows+'</div>';
+  document.getElementById('ab').innerHTML='<div>'+rows+'</div>';
   document.getElementById('cw').style.display='block';
 
   const chatOrLock=canChat()
