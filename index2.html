@@ -353,7 +353,9 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 /* ── OGP IMAGE ── */
 .ogp-wrap{border-radius:var(--r);overflow:hidden;margin-bottom:12px;border:1px solid var(--glass-bd);background:var(--navy-700);}
 .ogp-img{width:100%;height:160px;object-fit:cover;display:block;}
-.ogp-domain-fallback{display:flex;align-items:center;justify-content:center;height:80px;gap:8px;font-size:14px;font-weight:700;color:var(--muted);}
+.ogp-favicon-fallback{display:flex;align-items:center;justify-content:center;height:80px;gap:10px;background:var(--navy-700);}
+.ogp-favicon-fallback img{width:44px;height:44px;border-radius:10px;object-fit:contain;}
+.ogp-favicon-fallback .ogp-globe{font-size:36px;line-height:1;}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:14px 20px;border-radius:var(--r);font-family:var(--font);font-size:14.5px;font-weight:700;cursor:pointer;transition:all .2s;border:none;letter-spacing:-.1px;width:100%;min-height:50px;}
@@ -477,6 +479,22 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 /* ── FORM INPUTS ── */
 .finp{width:100%;padding:13px 14px;background:var(--navy-700);border:1.5px solid var(--glass-bd);border-radius:var(--r);color:#fff;font-family:var(--font);font-size:16px;outline:none;transition:border-color .18s;}
 .finp:focus{border-color:rgba(59,130,246,.4);background:var(--navy-600)}
+
+/* ── SCAN HISTORY ── */
+.hist-section{padding:8px 0 20px}
+.hist-date-group{margin-bottom:18px}
+.hist-date-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);padding:0 2px;margin-bottom:8px;font-family:var(--mono);}
+.hist-item{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--glass);border:1px solid var(--glass-bd);border-radius:var(--r);margin-bottom:6px;cursor:pointer;transition:all .15s;}
+.hist-item:hover{background:var(--glass-hover);border-color:rgba(59,130,246,.25);}
+.hist-verdict{font-size:16px;flex-shrink:0;width:24px;text-align:center}
+.hist-info{flex:1;min-width:0}
+.hist-domain{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+.hist-url{font-size:10.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+.hist-time{font-size:10px;color:var(--muted2);flex-shrink:0;font-family:var(--mono);}
+.hist-empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:13px}
+.hist-empty .hist-empty-ico{font-size:36px;margin-bottom:10px}
+.hist-clear-btn{width:100%;padding:11px;border-radius:var(--r);background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.18);color:var(--danger);font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;margin-top:6px;}
+.hist-clear-btn:hover{background:rgba(239,68,68,.15)}
 
 /* ── FOOTER ── */
 footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--glass-bd);padding:24px 16px calc(24px + env(safe-area-inset-bottom));}
@@ -868,6 +886,10 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         <span data-i18n="tab_url">URL</span>
       </button>
+      <button class="tab" id="tab-history" onclick="handleHistoryTab()" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 9 15"/></svg>
+        <span data-i18n="tab_history">History</span>
+      </button>
     </div>
 
     <!-- Camera pane -->
@@ -935,6 +957,11 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- History pane (Max plan) -->
+    <div class="tp" id="tp-history">
+      <div class="hist-section" id="hist-section"></div>
     </div>
 
     <div id="result-area">
@@ -1180,7 +1207,7 @@ const TRANSLATIONS = {
     stripe_note:'Secure payment via Stripe · Cancel anytime · No contracts',
     scan_title:'Scan a QR Code',scan_sub:'Camera, upload, or paste a URL — instant AI verdict.',
     already_subscribed:'Already subscribed?',
-    tab_camera:'Camera',tab_upload:'Upload',tab_url:'URL',
+    tab_camera:'Camera',tab_upload:'Upload',tab_url:'URL',tab_history:'History',
     cam_title:'Real-time QR Scanner',cam_desc:'Point your camera at any QR code for an instant AI safety verdict.',
     cam_enable:'Enable Camera',cam_flip:'Flip',cam_stop:'Stop',
     drop_title:'Drop QR image here',drop_types:'JPG · PNG · WebP · GIF',drop_or:'or',drop_browse:'Tap to Browse',
@@ -1265,6 +1292,10 @@ const TRANSLATIONS = {
     delete_account_confirm:'Delete your account? This cannot be undone.',
     delete_account_done:'Account deleted.',delete_account_err:'Could not delete account. Please contact support.',
     ogp_preview_label:'Site Preview',
+    hist_title:'Scan History',hist_empty:'No scans yet.',hist_empty_sub:'Your scan results will appear here.',
+    hist_clear:'Clear History',hist_clear_confirm:'Clear all scan history?',
+    hist_today:'Today',hist_yesterday:'Yesterday',
+    hist_locked:'📋 <strong style="color:#fff">Scan History</strong> is available on the Max plan.',
   },
   ja: {
     nav_home:'ホーム',nav_scanner:'スキャナー',nav_guide:'安全ガイド',nav_about:'このアプリについて',
@@ -1302,7 +1333,7 @@ const TRANSLATIONS = {
     stripe_note:'Stripeによる安全な決済 · いつでもキャンセル · 契約なし',
     scan_title:'QRコードをスキャン',scan_sub:'カメラ、アップロード、またはURLを貼り付け — AIが即時判定。',
     already_subscribed:'すでに購読済みの方はこちら',
-    tab_camera:'カメラ',tab_upload:'アップロード',tab_url:'URL',
+    tab_camera:'カメラ',tab_upload:'アップロード',tab_url:'URL',tab_history:'履歴',
     cam_title:'リアルタイムQRスキャナー',cam_desc:'QRコードにカメラをかざすだけで、AIが即座に安全判定を行います。',
     cam_enable:'カメラを起動',cam_flip:'反転',cam_stop:'停止',
     drop_title:'QR画像をここにドロップ',drop_types:'JPG · PNG · WebP · GIF',drop_or:'または',drop_browse:'タップしてファイルを選択',
@@ -1387,6 +1418,10 @@ const TRANSLATIONS = {
     delete_account_confirm:'アカウントを削除しますか？この操作は元に戻せません。',
     delete_account_done:'アカウントを削除しました。',delete_account_err:'アカウントの削除に失敗しました。サポートにお問い合わせください。',
     ogp_preview_label:'サイトプレビュー',
+    hist_title:'スキャン履歴',hist_empty:'まだスキャンがありません。',hist_empty_sub:'スキャン結果がここに表示されます。',
+    hist_clear:'履歴を削除',hist_clear_confirm:'スキャン履歴をすべて削除しますか？',
+    hist_today:'今日',hist_yesterday:'昨日',
+    hist_locked:'📋 <strong style="color:#fff">スキャン履歴</strong>はMaxプランでご利用いただけます。',
   }
 };
 
@@ -1450,9 +1485,9 @@ const PORTAL_URL='https://billing.stripe.com/p/login/test_00wcN6epm5S0gD3f1M43S0
 // Pro: $2.99/mo — 20 scans/day, all scan modes, chat
 // Max: $9.99/mo — unlimited, all + OGP + share
 const PLAN_CONFIG={
-  free: {limit:5,    upload:false, chat:false, url:false, ogp:false, share:false, label:'Free'},
-  pro:  {limit:20,   upload:true,  chat:true,  url:true,  ogp:false, share:false, label:'Pro ⚡'},
-  max:  {limit:99999,upload:true,  chat:true,  url:true,  ogp:true,  share:true,  label:'Max 🚀'},
+  free: {limit:5,    upload:false, chat:false, url:false, ogp:false, share:false, history:false, label:'Free'},
+  pro:  {limit:20,   upload:true,  chat:true,  url:true,  ogp:false, share:false, history:false, label:'Pro ⚡'},
+  max:  {limit:99999,upload:true,  chat:true,  url:true,  ogp:true,  share:true,  history:true,  label:'Max 🚀'},
 };
 
 function planLimit()    {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).limit;}
@@ -1461,6 +1496,7 @@ function canChat()      {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).chat
 function canUrl()       {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).url;}
 function canOgp()       {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).ogp;}
 function canShare()     {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).share;}
+function canHistory()   {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).history;}
 function getTodayScans(){try{return parseInt(localStorage.getItem(SCAN_KEY)||'0');}catch{return 0;}}
 function incTodayScans(){try{localStorage.setItem(SCAN_KEY,getTodayScans()+1);}catch{}}
 function canScan()      {return getTodayScans()<planLimit();}
@@ -1489,6 +1525,8 @@ function updatePlanUI(){
 
   const urlTab=document.getElementById('tab-url');
   if(urlTab)urlTab.style.display=canUrl()?'flex':'none';
+  const histTab=document.getElementById('tab-history');
+  if(histTab)histTab.style.display=canHistory()?'flex':'none';
 
   const activateLink=document.getElementById('activate-link');
   if(activateLink){
@@ -1778,6 +1816,81 @@ function handleUploadTab(){
 function handleUrlTab(){
   if(canUrl()){swTab('url');}else{toast(t('url_locked_msg'),'terr');go('home');showSection('pricing');}
 }
+function handleHistoryTab(){
+  if(canHistory()){swTab('history');renderHistory();}
+  else{toast(currentLang==='ja'?'スキャン履歴はMaxプランでご利用いただけます。':'Scan history is available on the Max plan.','terr');go('home');showSection('pricing');}
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// SCAN HISTORY (Max plan)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const HIST_KEY='ss_history';
+const HIST_MAX=50;
+function loadHistory(){try{return JSON.parse(localStorage.getItem(HIST_KEY)||'[]');}catch{return[];}}
+function saveHistory(items){try{localStorage.setItem(HIST_KEY,JSON.stringify(items));}catch{}}
+function addHistoryEntry(url,verdict,dom){
+  if(!canHistory())return;
+  const items=loadHistory();
+  if(items.length>0&&items[0].url===url)items.shift();
+  items.unshift({url,verdict,dom:dom||url,ts:Date.now()});
+  if(items.length>HIST_MAX)items.length=HIST_MAX;
+  saveHistory(items);
+}
+function formatDateLabel(ts){
+  const d=new Date(ts);
+  const today=new Date();today.setHours(0,0,0,0);
+  const yesterday=new Date(today);yesterday.setDate(yesterday.getDate()-1);
+  const dDay=new Date(d);dDay.setHours(0,0,0,0);
+  if(dDay.getTime()===today.getTime())return t('hist_today');
+  if(dDay.getTime()===yesterday.getTime())return t('hist_yesterday');
+  return currentLang==='ja'
+    ?`${d.getMonth()+1}月${d.getDate()}日`
+    :d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+}
+function formatTime(ts){
+  return new Date(ts).toLocaleTimeString(currentLang==='ja'?'ja-JP':'en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
+}
+function verdictIcon(v){
+  if(!v)return'🔍';
+  if(v.includes('SAFE')||v.includes('安全'))return'✅';
+  if(v.includes('DANGEROUS')||v.includes('危険'))return'🚨';
+  return'⚠️';
+}
+function renderHistory(){
+  const sec=document.getElementById('hist-section');if(!sec)return;
+  const items=loadHistory();
+  if(items.length===0){
+    sec.innerHTML=`<div class="hist-empty"><div class="hist-empty-ico">🔍</div><div>${t('hist_empty')}</div><div style="font-size:12px;color:var(--muted2);margin-top:4px">${t('hist_empty_sub')}</div></div>`;
+    return;
+  }
+  const groups={};
+  items.forEach(item=>{
+    const lbl=formatDateLabel(item.ts);
+    if(!groups[lbl])groups[lbl]=[];
+    groups[lbl].push(item);
+  });
+  let html='';
+  Object.entries(groups).forEach(([lbl,entries])=>{
+    html+=`<div class="hist-date-group"><div class="hist-date-label">${lbl}</div>`;
+    entries.forEach(item=>{
+      const icon=verdictIcon(item.verdict);
+      const safe=item.url.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      html+=`<div class="hist-item" onclick="reScan('${safe}')">
+        <div class="hist-verdict">${icon}</div>
+        <div class="hist-info">
+          <div class="hist-domain">${item.dom||item.url}</div>
+          <div class="hist-url">${item.url}</div>
+        </div>
+        <div class="hist-time">${formatTime(item.ts)}</div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  html+=`<button class="hist-clear-btn" onclick="clearHistory()">${t('hist_clear')}</button>`;
+  sec.innerHTML=html;
+}
+function clearHistory(){if(!confirm(t('hist_clear_confirm')))return;saveHistory([]);renderHistory();}
+function reScan(url){swTab('camera');analyze(url);}
 function swTab(tab){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.tp').forEach(p=>p.classList.remove('on'));
@@ -1882,10 +1995,23 @@ async function fetchOgpImage(url){
     const ogImg=p.querySelector('meta[property="og:image"]')?.getAttribute('content')
       ||p.querySelector('meta[name="twitter:image"]')?.getAttribute('content');
     if(ogImg){
-      // Resolve relative URLs
-      try{return new URL(ogImg,url).href;}catch{return ogImg;}
+      try{return {type:'ogp',src:new URL(ogImg,url).href};}catch{return {type:'ogp',src:ogImg};}
+    }
+    // Fallback: try to get favicon from HTML
+    const iconEl=p.querySelector('link[rel~="icon"],link[rel~="apple-touch-icon"],link[rel~="shortcut icon"]');
+    const iconHref=iconEl?.getAttribute('href');
+    if(iconHref){
+      try{return {type:'favicon',src:new URL(iconHref,url).href};}catch{}
     }
     return null;
+  }catch{return null;}
+}
+
+function getFaviconUrl(url){
+  try{
+    const {origin}=new URL(url);
+    // Google Favicon API as reliable fallback
+    return `https://www.google.com/s2/favicons?domain=${encodeURIComponent(origin)}&sz=64`;
   }catch{return null;}
 }
 
@@ -1985,19 +2111,29 @@ function render(text,raw,dom,isU,ogpImg){
   hist.push({role:'assistant',content:text});
   const rm=text.match(/(✅ SAFE|⚠️ CAUTION|🚨 DANGEROUS)/);
   const rl=rm?rm[1]:'';const rc=rl.includes('SAFE')?'rb-safe':rl.includes('CAUTION')?'rb-warn':'rb-danger';
+  // Save to scan history (Max plan)
+  if(isU&&raw)addHistoryEntry(raw,rl,dom);
   
   // OGP image section (Max plan only)
-  let ogpHtml='';
-  if(canOgp()&&isU){
-    if(ogpImg){
-      ogpHtml=`<div class="ogp-wrap">
-        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:10px 14px 6px">${t('ogp_preview_label')}</div>
-        <img class="ogp-img" src="${ogpImg}" alt="Site preview" onerror="this.parentElement.innerHTML='<div class=\\'ogp-domain-fallback\\'>🌐 <span>${dom||'Unknown'}</span></div>'" loading="lazy"/>
-      </div>`;
-    }else if(dom){
-      ogpHtml=`<div class="ogp-wrap"><div class="ogp-domain-fallback">🌐 <span style="font-family:var(--mono)">${dom}</span></div></div>`;
-    }
+let ogpHtml='';
+if(canOgp()&&isU){
+  const previewLabel=`<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:10px 14px 6px">${t('ogp_preview_label')}</div>`;
+  const faviconSrc=getFaviconUrl(raw);
+  
+  const faviconFallback=faviconSrc
+    ?`<div class="ogp-favicon-fallback"><img src="${faviconSrc}" alt="favicon" onerror="this.outerHTML='<span class=\\'ogp-globe\\'>🌐</span>'"/></div>`
+    :`<div class="ogp-favicon-fallback"><span class="ogp-globe">🌐</span></div>`;
+
+  if(ogpImg&&ogpImg.type==='ogp'){
+    // 👇 ここを変更：HTML文字列を安全にエンコードして渡す
+    const safeFallback = encodeURIComponent(faviconFallback);
+    ogpHtml=`<div class="ogp-wrap">${previewLabel}<img class="ogp-img" src="${ogpImg.src}" alt="Site preview" onerror="this.outerHTML=decodeURIComponent('${safeFallback}')" loading="lazy"/></div>`;
+  }else if(ogpImg&&ogpImg.type==='favicon'){
+    ogpHtml=`<div class="ogp-wrap">${previewLabel}<div class="ogp-favicon-fallback"><img src="${ogpImg.src}" alt="favicon" onerror="this.outerHTML='<span class=\\'ogp-globe\\'>🌐</span>'"/></div></div>`;
+  }else{
+    ogpHtml=`<div class="ogp-wrap">${previewLabel}${faviconFallback}</div>`;
   }
+}
 
   let rows='';
   text.trim().split('\n').filter(l=>l.trim()).forEach(l=>{
