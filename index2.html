@@ -620,11 +620,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
       <span data-i18n="nav_manage_sub">Manage Subscription</span>
     </button>
-    <!-- Delete Account button (only shown when logged in) -->
-    <button class="sb-item danger" id="sb-delete-btn" onclick="doDeleteAccount()" style="display:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-      <span data-i18n="nav_delete_account">Delete Account</span>
-    </button>
+  
   </nav>
   <div class="sb-bottom">
     <div class="sb-plan-card">
@@ -737,11 +733,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         <span data-i18n="nav_manage_sub">Manage Subscription</span>
       </button>
-      <!-- Delete Account -->
-      <button class="drawer-item danger" id="dr-delete-btn" onclick="closeDrawer();doDeleteAccount()" style="display:none">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-        <span data-i18n="nav_delete_account">Delete Account</span>
-      </button>
+      
     </nav>
     <div class="drawer-bottom">
       <div class="drawer-plan-card">
@@ -1715,7 +1707,6 @@ function updateNavAuth(){
   const sbBtn=document.getElementById('sb-account-btn');
   const sbLabel=document.getElementById('sb-account-label');
   const sbManage=document.getElementById('sb-manage-sub-btn');
-  const sbDelete=document.getElementById('sb-delete-btn');
   if(sbBtn&&sbLabel){
     if(_authUser){
       sbLabel.textContent=_authUser.email.split('@')[0]+(currentLang==='ja'?' (ログアウト)':' (Sign out)');
@@ -1723,14 +1714,12 @@ function updateNavAuth(){
     }else{sbBtn.style.display='none';}
   }
   if(sbManage)sbManage.style.display=(currentPlan!=='free')?'flex':'none';
-  if(sbDelete)sbDelete.style.display=_authUser?'flex':'none';
   updateDrawerAccount();
 }
 function updateDrawerAccount(){
   const drBtn=document.getElementById('dr-account-btn');
   const drLabel=document.getElementById('dr-account-label');
   const drManage=document.getElementById('dr-manage-sub-btn');
-  const drDelete=document.getElementById('dr-delete-btn');
   if(drBtn&&drLabel){
     if(_authUser){
       drLabel.textContent=_authUser.email.split('@')[0]+(currentLang==='ja'?' (ログアウト)':' (Sign out)');
@@ -1738,7 +1727,6 @@ function updateDrawerAccount(){
     }else{drBtn.style.display='none';}
   }
   if(drManage)drManage.style.display=(currentPlan!=='free')?'flex':'none';
-  if(drDelete)drDelete.style.display=_authUser?'flex':'none';
   const drPlanVal=document.getElementById('dr-plan-val');
   if(drPlanVal){
     if(currentPlan==='free')drPlanVal.textContent=`Free · ${remainingScans()} / 5 ${t('scan_limit_label')}`;
