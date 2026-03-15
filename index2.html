@@ -192,6 +192,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .drawer-item svg{width:16px;height:16px;flex-shrink:0}
 .drawer-item:hover{background:var(--glass);color:#fff}
 .drawer-item.on{background:rgba(37,99,235,.15);color:var(--blue-300);border:1px solid rgba(59,130,246,.18)}
+.drawer-item.danger:hover{background:rgba(239,68,68,.1);color:var(--danger)}
 .drawer-divider{height:1px;background:var(--glass-bd);margin:6px 10px;}
 
 .drawer-bottom{
@@ -240,8 +241,12 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .plan-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.06),transparent);pointer-events:none;}
 .plan-card.featured{border-color:rgba(59,130,246,.4);box-shadow:0 0 0 1px rgba(59,130,246,.1),0 8px 32px rgba(37,99,235,.2);}
 .plan-card.featured::before{background:linear-gradient(135deg,rgba(37,99,235,.1),rgba(6,182,212,.06));}
+.plan-card.max-card{border-color:rgba(168,85,247,.4);box-shadow:0 0 0 1px rgba(168,85,247,.1),0 8px 32px rgba(168,85,247,.15);}
+.plan-card.max-card::before{background:linear-gradient(135deg,rgba(168,85,247,.08),rgba(6,182,212,.06));}
 .plan-badge{position:absolute;top:0;right:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:4px 10px;border-radius:0 0 9px 9px;background:linear-gradient(135deg,var(--blue-500),var(--cyan));color:#fff;}
+.plan-badge.max-badge{background:linear-gradient(135deg,#7c3aed,#a855f7);}
 .plan-name{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--blue-300);margin-bottom:6px}
+.plan-name.max-name{color:#c084fc}
 .plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:4px}
 .plan-price .amt{font-size:34px;font-weight:800;letter-spacing:-1.5px;font-family:var(--mono)}
 .plan-price .per{font-size:12.5px;color:var(--muted)}
@@ -258,6 +263,8 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .plan-cta{width:100%;padding:14px;border-radius:12px;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;border:none;letter-spacing:-.1px;}
 .plan-cta.primary{background:linear-gradient(135deg,var(--blue-500),var(--cyan));color:#fff;box-shadow:0 3px 14px rgba(37,99,235,.35);}
 .plan-cta.primary:hover{transform:translateY(-1px);box-shadow:0 5px 20px rgba(37,99,235,.5)}
+.plan-cta.max-cta{background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;box-shadow:0 3px 14px rgba(124,58,237,.35);}
+.plan-cta.max-cta:hover{transform:translateY(-1px);box-shadow:0 5px 20px rgba(168,85,247,.5)}
 .plan-cta.ghost{background:var(--glass);border:1px solid var(--glass-bd);color:#fff}
 .plan-cta.ghost:hover{background:var(--glass-hover)}
 .stripe-note{display:flex;align-items:center;justify-content:center;gap:7px;font-size:11.5px;color:var(--muted);margin-top:18px}
@@ -272,6 +279,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .plan-badge-ui{display:inline-flex;align-items:center;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:20px;white-space:nowrap;}
 .plan-badge-ui.free{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.25);color:var(--warn);}
 .plan-badge-ui.paid{background:rgba(37,99,235,.15);border:1px solid rgba(59,130,246,.3);color:var(--blue-300);}
+.plan-badge-ui.max{background:rgba(168,85,247,.15);border:1px solid rgba(168,85,247,.3);color:#c084fc;}
 
 /* ── TAB BAR ── */
 .tab-bar{display:flex;gap:5px;background:var(--navy-700);border:1px solid var(--glass-bd);border-radius:var(--r);padding:4px;margin-bottom:16px;}
@@ -341,13 +349,11 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 }
 .url-submit-btn:hover{transform:translateY(-1px);box-shadow:0 5px 18px rgba(37,99,235,.45)}
 .url-submit-btn svg{width:15px;height:15px}
-.url-examples{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center;}
-.url-ex-chip{
-  font-size:11px;color:var(--muted2);font-family:var(--mono);
-  background:var(--glass);border:1px solid var(--glass-bd);
-  border-radius:6px;padding:3px 8px;cursor:pointer;transition:all .15s;
-}
-.url-ex-chip:hover{color:var(--blue-300);border-color:rgba(59,130,246,.3)}
+
+/* ── OGP IMAGE ── */
+.ogp-wrap{border-radius:var(--r);overflow:hidden;margin-bottom:12px;border:1px solid var(--glass-bd);background:var(--navy-700);}
+.ogp-img{width:100%;height:160px;object-fit:cover;display:block;}
+.ogp-domain-fallback{display:flex;align-items:center;justify-content:center;height:80px;gap:8px;font-size:14px;font-weight:700;color:var(--muted);}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:14px 20px;border-radius:var(--r);font-family:var(--font);font-size:14.5px;font-weight:700;cursor:pointer;transition:all .2s;border:none;letter-spacing:-.1px;width:100%;min-height:50px;}
@@ -356,19 +362,21 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .btn-blue:disabled{opacity:.5;cursor:not-allowed;transform:none}
 .btn-ghost{background:var(--glass);border:1.5px solid var(--glass-bd);color:#fff;}
 .btn-ghost:hover{background:var(--glass-hover)}
+.btn-danger{background:rgba(239,68,68,.12);border:1.5px solid rgba(239,68,68,.25);color:var(--danger);}
+.btn-danger:hover{background:rgba(239,68,68,.2)}
 .btn svg{width:16px;height:16px}
 #cam-start-btn{max-width:240px;margin:0 auto}
 
 /* ── RESULT ── */
 #result-area{margin-top:20px;display:none}
-.result-card{background:linear-gradient(145deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-lg);overflow:hidden;animation:rise .4s cubic-bezier(.22,1,.36,1) both;box-shadow:0 8px 32px rgba(0,0,0,.3);}
+.result-card{background:linear-gradient(145deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-lg);overflow:hidden;animation:rise .4s cubic-bezier(.22,1,.36,1) both;box-shadow:0 8px 32px rgba(0,0,0,.3);min-width:0;}
 @keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-.r-top{padding:14px 16px;border-bottom:1px solid var(--glass-bd);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(6,182,212,.04));}
+.r-top{padding:14px 16px;border-bottom:1px solid var(--glass-bd);display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(6,182,212,.04));overflow:hidden;min-width:0;}
 .r-shield{width:40px;height:40px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,var(--blue-500),var(--cyan));display:grid;place-items:center;box-shadow:0 2px 10px rgba(37,99,235,.3);}
 .r-shield svg{width:19px;height:19px}
-.r-meta{flex:1;min-width:0}
-.r-domain{font-size:14px;font-weight:800;letter-spacing:-.3px}
-.r-rawurl{font-size:10.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.r-meta{flex:1;min-width:0;overflow:hidden;}
+.r-domain{font-size:14px;font-weight:800;letter-spacing:-.3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;}
+.r-rawurl{font-size:10.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%;display:block;}
 .r-acts{display:flex;gap:5px;flex-shrink:0}
 .bx{display:inline-flex;align-items:center;gap:4px;padding:7px 10px;border-radius:9px;border:1.5px solid var(--glass-bd);background:var(--glass);color:var(--muted);font-family:var(--font);font-size:11.5px;font-weight:600;cursor:pointer;transition:all .15s;text-decoration:none;white-space:nowrap;}
 .bx:hover{border-color:rgba(59,130,246,.4);color:var(--blue-200);text-decoration:none}
@@ -379,11 +387,11 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .rb-safe{background:var(--safe-bg);border:1.5px solid rgba(34,197,94,.25);color:var(--safe)}
 .rb-warn{background:var(--warn-bg);border:1.5px solid rgba(245,158,11,.25);color:var(--warn)}
 .rb-danger{background:var(--danger-bg);border:1.5px solid rgba(239,68,68,.25);color:var(--danger)}
-.r-body{padding:16px}
-.arow{display:grid;grid-template-columns:72px 1fr;gap:8px;align-items:start;padding:10px 0;border-bottom:1px solid var(--glass-bd)}
+.r-body{padding:16px;overflow:hidden;min-width:0;}
+.arow{display:grid;grid-template-columns:72px 1fr;gap:8px;align-items:start;padding:10px 0;border-bottom:1px solid var(--glass-bd);overflow:hidden;min-width:0;}
 .arow:first-child{padding-top:0}.arow:last-child{border-bottom:none;padding-bottom:0}
 .albl{font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding-top:3px;font-family:var(--mono)}
-.aval{font-size:13.5px;line-height:1.65}
+.aval{font-size:13.5px;line-height:1.65;overflow-wrap:break-word;word-break:break-word;min-width:0;max-width:100%;}
 .loading-box{padding:32px 0;display:flex;flex-direction:column;align-items:center;gap:14px}
 .spinner{width:38px;height:38px;border-radius:50%;border:3px solid rgba(59,130,246,.2);border-top-color:var(--blue-400);animation:sp .7s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg)}}
@@ -400,7 +408,7 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .mav.ai{background:linear-gradient(135deg,var(--blue-500),var(--cyan))}
 .mav.u{background:var(--navy-400);border:1px solid var(--glass-bd)}
 .mav svg{width:12px;height:12px}
-.mb{max-width:84%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.6}
+.mb{max-width:84%;padding:9px 13px;border-radius:14px;font-size:13px;line-height:1.6;overflow-wrap:break-word;word-break:break-word;min-width:0;}
 .msg.ai .mb{background:var(--navy-600);border:1.5px solid var(--glass-bd);border-top-left-radius:3px}
 .msg.u .mb{background:linear-gradient(135deg,var(--blue-600),var(--blue-500));border-top-right-radius:3px}
 .dots{display:flex;gap:3px;padding:2px 0}
@@ -482,7 +490,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
 .f-bot{font-size:11px;color:var(--muted2);border-top:1px solid var(--glass-bd);padding-top:14px}
 
 /* ── TOAST ── */
-.toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:9999;padding:12px 20px;border-radius:12px;font-size:13.5px;font-weight:600;pointer-events:none;animation:ts .28s ease both;white-space:nowrap;max-width:calc(100vw - 32px);text-align:center;}
+.toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);z-index:9999;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:600;pointer-events:none;animation:ts .28s ease both;white-space:normal;word-break:break-all;max-width:calc(100vw - 48px);text-align:center;line-height:1.5;}
 @keyframes ts{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 .tok{background:linear-gradient(135deg,#14532d,#166534);color:#dcfce7;border:1px solid rgba(34,197,94,.3)}
 .terr{background:linear-gradient(135deg,#7f1d1d,#991b1b);color:#fee2e2;border:1px solid rgba(239,68,68,.3)}
@@ -509,9 +517,9 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   .r-top{padding:12px 12px;gap:8px;flex-wrap:wrap;}
   .r-acts{flex-shrink:0;}
   .bx{padding:6px 8px;font-size:11px;}
-  .arow{grid-template-columns:64px 1fr;}
-  .albl{font-size:9px;}
-  .aval{font-size:13px;}
+  .arow{grid-template-columns:58px 1fr;}
+  .albl{font-size:8.5px;}
+  .aval{font-size:12.5px;}
   .chat-inp{padding:8px 10px;gap:6px;}
   .mb{padding:8px 11px;font-size:13px;}
   .url-input-row{flex-direction:column;}
@@ -552,6 +560,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   .sb-item svg{width:15px;height:15px;flex-shrink:0}
   .sb-item:hover{background:var(--glass);color:#fff}
   .sb-item.on{background:rgba(37,99,235,.15);color:var(--blue-300);border:1px solid rgba(59,130,246,.18)}
+  .sb-item.danger:hover{background:rgba(239,68,68,.1);color:var(--danger)}
   .sb-divider{height:1px;background:var(--glass-bd);margin:8px 10px}
   .sb-bottom{padding:14px 10px;border-top:1px solid var(--glass-bd)}
   .sb-plan-card{padding:10px 12px;border-radius:10px;background:rgba(37,99,235,.08);border:1px solid rgba(59,130,246,.15);margin-bottom:10px;}
@@ -559,7 +568,6 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   .sb-plan-val{font-size:12.5px;font-weight:700;color:#fff}
   .sb-scan-btn{width:100%;padding:11px;border-radius:10px;background:linear-gradient(135deg,var(--blue-500),var(--cyan));color:#fff;border:none;cursor:pointer;font-family:var(--font);font-size:13px;font-weight:700;box-shadow:0 2px 10px rgba(37,99,235,.3);transition:all .18s;display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:8px;}
   .sb-scan-btn:hover{box-shadow:0 4px 18px rgba(37,99,235,.5)}
-  /* lang switcher in sidebar */
   .sb-lang-row{padding:0 10px 10px;display:flex;justify-content:flex-start}
   #main-content{margin-left:240px;min-height:100vh}
   .wrap{max-width:700px}
@@ -604,15 +612,18 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       <span data-i18n="nav_pricing">Pricing</span>
     </button>
-    <!-- Account / Sign out -->
     <button class="sb-item" id="sb-account-btn" onclick="handleSbAccount()" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       <span id="sb-account-label">Account</span>
     </button>
-    <!-- Manage Subscription -->
     <button class="sb-item" id="sb-manage-sub-btn" onclick="openPortal()" style="display:none">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
       <span data-i18n="nav_manage_sub">Manage Subscription</span>
+    </button>
+    <!-- Delete Account button (only shown when logged in) -->
+    <button class="sb-item danger" id="sb-delete-btn" onclick="doDeleteAccount()" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+      <span data-i18n="nav_delete_account">Delete Account</span>
     </button>
   </nav>
   <div class="sb-bottom">
@@ -620,7 +631,6 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       <div class="sb-plan-label" data-i18n="label_current_plan">Current Plan</div>
       <div class="sb-plan-val" id="sb-plan-val">Free · 5 scans/day</div>
     </div>
-    <!-- Lang switcher in sidebar -->
     <div class="sb-lang-row">
       <div class="lang-switcher">
         <button class="lang-btn" id="lang-en-sb" onclick="setLang('en')">EN</button>
@@ -636,9 +646,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
 
 <div id="main-content">
 
-<!-- ═══════════════════════════════════════
-     TUTORIAL
-     ═══════════════════════════════════════ -->
+<!-- TUTORIAL -->
 <div id="tutorial">
   <div class="tut-bg-glow"></div>
   <div class="tut-sheet">
@@ -670,9 +678,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     MOBILE HEADER
-     ═══════════════════════════════════════ -->
+<!-- MOBILE HEADER -->
 <header>
   <nav class="nav">
     <div class="logo" onclick="go('home')">
@@ -690,9 +696,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </nav>
 </header>
 
-<!-- ═══════════════════════════════════════
-     MOBILE DRAWER
-     ═══════════════════════════════════════ -->
+<!-- MOBILE DRAWER -->
 <div id="mobile-drawer">
   <div id="drawer-backdrop" onclick="closeDrawer()"></div>
   <div id="drawer-panel">
@@ -703,7 +707,6 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       </div>
       <button class="drawer-close" onclick="closeDrawer()">×</button>
     </div>
-
     <nav class="drawer-nav">
       <button class="drawer-item on" id="dr-home" onclick="closeDrawer();go('home')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -726,25 +729,25 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
         <span data-i18n="nav_pricing">Pricing</span>
       </button>
       <div class="drawer-divider"></div>
-      <!-- Account -->
       <button class="drawer-item" id="dr-account-btn" onclick="closeDrawer();handleDrAccount()" style="display:none">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <span id="dr-account-label">Account</span>
       </button>
-      <!-- Manage Subscription -->
       <button class="drawer-item" id="dr-manage-sub-btn" onclick="closeDrawer();openPortal()" style="display:none">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
         <span data-i18n="nav_manage_sub">Manage Subscription</span>
       </button>
+      <!-- Delete Account -->
+      <button class="drawer-item danger" id="dr-delete-btn" onclick="closeDrawer();doDeleteAccount()" style="display:none">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        <span data-i18n="nav_delete_account">Delete Account</span>
+      </button>
     </nav>
-
     <div class="drawer-bottom">
-      <!-- Plan info -->
       <div class="drawer-plan-card">
         <div class="drawer-plan-label" data-i18n="label_current_plan">Current Plan</div>
         <div class="drawer-plan-val" id="dr-plan-val">Free · 5 scans/day</div>
       </div>
-      <!-- Lang switcher -->
       <div class="drawer-lang-row">
         <span class="drawer-lang-label">Language</span>
         <div class="lang-switcher">
@@ -756,9 +759,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     HOME PAGE
-     ═══════════════════════════════════════ -->
+<!-- HOME PAGE -->
 <div id="page-home" class="page active">
   <section class="hero wrap" id="sec-home">
     <div class="hero-eyebrow"><span class="pulse"></span> <span data-i18n="hero_eyebrow">AI-Powered QR Safety</span></div>
@@ -804,10 +805,10 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
         <ul class="plan-feats">
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_5scans">5 scans per day</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_verdict">AI safety verdict</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_url">URL direct analysis</span></li>
           <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_threat">Live web threat search</span></li>
-          <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_chat">Follow-up AI chat</span></li>
           <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_upload">Image upload scanning</span></li>
+          <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_chat">Follow-up AI chat</span></li>
+          <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_url">URL direct analysis</span></li>
         </ul>
         <button class="plan-cta ghost" onclick="go('scan')" data-i18n="plan_free_cta">Start for Free</button>
       </div>
@@ -815,32 +816,33 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       <div class="plan-card featured">
         <div class="plan-badge" data-i18n="plan_popular">⚡ Most Popular</div>
         <div class="plan-name" data-i18n="plan_pro_name">Pro</div>
-        <div class="plan-price"><span class="amt">$4.99</span><span class="per" data-i18n="plan_per_month">/ month</span></div>
-        <p class="plan-desc" data-i18n="plan_pro_desc">Best for daily users. Full AI power with real-time threat intelligence.</p>
+        <div class="plan-price"><span class="amt">$2.99</span><span class="per" data-i18n="plan_per_month">/ month</span></div>
+        <p class="plan-desc" data-i18n="plan_pro_desc">Full AI power with all scan modes. Best value for daily users.</p>
         <ul class="plan-feats">
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_unlimited">Unlimited scans</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_20scans">20 scans per day</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_verdict">AI safety verdict</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_threat">Live web threat search</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_chat">Follow-up AI chat</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_upload">Image upload scanning</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_priority">Priority analysis queue</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_chat">Follow-up AI chat</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_url">URL direct analysis</span></li>
         </ul>
         <button class="plan-cta primary" onclick="openStripe('pro')" data-i18n="plan_pro_cta">Get Pro →</button>
       </div>
-      <!-- TEAM -->
-      <div class="plan-card">
-        <div class="plan-name" data-i18n="plan_team_name">Team</div>
-        <div class="plan-price"><span class="amt">$7</span><span class="per" data-i18n="plan_per_month">/ month</span></div>
-        <p class="plan-desc" data-i18n="plan_team_desc">For families or small teams who want shared protection.</p>
+      <!-- MAX -->
+      <div class="plan-card max-card">
+        <div class="plan-badge max-badge" data-i18n="plan_max_badge">🚀 Max Power</div>
+        <div class="plan-name max-name" data-i18n="plan_max_name">Max</div>
+        <div class="plan-price"><span class="amt">$9.99</span><span class="per" data-i18n="plan_per_month">/ month</span></div>
+        <p class="plan-desc" data-i18n="plan_max_desc">Unlimited scans, site previews, and sharing. The ultimate protection.</p>
         <ul class="plan-feats">
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_unlimited">Unlimited scans</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_everything_pro">Everything in Pro</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_seats">Up to 5 seats</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_dashboard">Shared scan dashboard</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_alerts">Email alerts for dangers</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_ogp">Site preview image</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_share">Share results (Email · LINE · Copy)</span></li>
+          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_priority">Priority analysis queue</span></li>
           <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_support">Priority email support</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_url_tab">URL direct scan tab</span></li>
         </ul>
-        <button class="plan-cta ghost" onclick="openStripe('team')" data-i18n="plan_team_cta">Get Team →</button>
+        <button class="plan-cta max-cta" onclick="openStripe('max')" data-i18n="plan_max_cta">Get Max →</button>
       </div>
     </div>
     <div class="stripe-note">
@@ -850,9 +852,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </section>
 </div>
 
-<!-- ═══════════════════════════════════════
-     SCAN PAGE
-     ═══════════════════════════════════════ -->
+<!-- SCAN PAGE -->
 <div id="page-scan" class="page">
   <div class="scan-hero wrap">
     <h2 data-i18n="scan_title">Scan a QR Code</h2>
@@ -872,7 +872,6 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         <span data-i18n="tab_upload">Upload</span> <span id="upload-lock" style="font-size:12px;margin-left:1px">🔒</span>
       </button>
-      <!-- URL tab — shown for Pro & Team plans -->
       <button class="tab" id="tab-url" onclick="handleUrlTab()" style="display:none">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         <span data-i18n="tab_url">URL</span>
@@ -889,6 +888,13 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           <span data-i18n="cam_enable">Enable Camera</span>
         </button>
+        <div style="margin:70px 0;text-align:center;">
+          <p style="font-size:12px;color:#7a8aa0;margin-bottom:10px;">Sponsored</p>
+          <a href="https://px.a8.net/svt/ejp?a8mat=4AZGCD+5B45YQ+4R3G+60H7L" rel="nofollow">
+            <img src="https://www26.a8.net/svt/bgt?aid=260315005321&wid=001&eno=01&mid=s00000022174001010000&mc=1" style="max-width:100%;height:auto;border-radius:6px;" alt="Advertisement">
+          </a>
+          <img border="0" width="1" height="1" src="https://www10.a8.net/0.gif?a8mat=4AZGCD+5B45YQ+4R3G+60H7L" alt="">
+        </div>
       </div>
       <div id="cam-live" class="hide">
         <div class="cam-frame"><video id="cv" autoplay playsinline muted></video><canvas id="cc"></canvas><div class="corners"><div class="c2"></div></div><div class="scan-line"></div></div>
@@ -917,7 +923,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       </div>
     </div>
 
-    <!-- URL pane (Team plan) -->
+    <!-- URL pane (Pro & Max plan) -->
     <div class="tp" id="tp-url">
       <div class="url-panel">
         <div class="url-panel-inner">
@@ -946,9 +952,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     GUIDE PAGE
-     ═══════════════════════════════════════ -->
+<!-- GUIDE PAGE -->
 <div id="page-guide" class="page">
   <div class="g-hero wrap">
     <div class="hero-eyebrow" style="margin-bottom:12px">📚 <span data-i18n="guide_eyebrow">Safety Guide</span></div>
@@ -1012,9 +1016,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     ABOUT PAGE
-     ═══════════════════════════════════════ -->
+<!-- ABOUT PAGE -->
 <div id="page-about" class="page">
   <div class="pg-hero wrap">
     <div class="hero-eyebrow" style="margin-bottom:12px">👋 <span data-i18n="about_eyebrow">About</span></div>
@@ -1039,9 +1041,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     PRIVACY PAGE
-     ═══════════════════════════════════════ -->
+<!-- PRIVACY PAGE -->
 <div id="page-privacy" class="page">
   <div class="pg-hero wrap"><h1 data-i18n="privacy_title">🔒 Privacy Policy</h1><p data-i18n="privacy_updated">Last updated: June 2025</p></div>
   <div class="wrap">
@@ -1066,9 +1066,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     TERMS PAGE
-     ═══════════════════════════════════════ -->
+<!-- TERMS PAGE -->
 <div id="page-terms" class="page">
   <div class="pg-hero wrap"><h1 data-i18n="terms_title">⚖️ Terms &amp; Disclaimer</h1><p data-i18n="terms_updated">Last updated: June 2025</p></div>
   <div class="wrap">
@@ -1076,7 +1074,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       <div class="l-h" data-i18n="terms_h1">1. Service</div>
       <p class="l-p" data-i18n="terms_p1">Scan Shield provides AI-powered QR safety analysis for informational purposes only.</p>
       <div class="l-h" data-i18n="terms_h2">2. Subscriptions</div>
-      <p class="l-p" data-i18n="terms_p2">Pro and Team plans are billed via Stripe. Cancel anytime from your account settings.</p>
+      <p class="l-p" data-i18n="terms_p2">Pro and Max plans are billed via Stripe. Cancel anytime from your account settings.</p>
       <div class="l-h" data-i18n="terms_h3">3. Accuracy Disclaimer</div>
       <p class="l-p" data-i18n="terms_p3">AI analysis may produce incorrect results. Scan Shield is not liable for any damages.</p>
       <div class="l-h" data-i18n="terms_h4">4. Governing Law</div>
@@ -1086,22 +1084,19 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     AUTH MODAL
-     ═══════════════════════════════════════ -->
+<!-- AUTH MODAL -->
 <div id="auth-modal" style="display:none;position:fixed;inset:0;z-index:1900;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
   <div style="width:100%;max-width:480px;background:linear-gradient(160deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:28px 20px calc(36px + env(safe-area-inset-bottom));animation:sheet-up .4s cubic-bezier(.22,1,.36,1) both">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
-  <h3 id="auth-title" style="font-size:20px;font-weight:800;letter-spacing:-.5px" data-i18n="auth_login">Log In</h3>
-  
-  <div style="display:flex;align-items:center;gap:10px">
-    <div class="lang-switcher">
-      <button class="lang-btn" id="lang-en-auth" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" id="lang-ja-auth" onclick="setLang('ja')">JA</button>
+      <h3 id="auth-title" style="font-size:20px;font-weight:800;letter-spacing:-.5px" data-i18n="auth_login">Log In</h3>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="lang-switcher">
+          <button class="lang-btn" id="lang-en-auth" onclick="setLang('en')">EN</button>
+          <button class="lang-btn" id="lang-ja-auth" onclick="setLang('ja')">JA</button>
+        </div>
+        <button onclick="closeAuthModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:4px 8px">×</button>
+      </div>
     </div>
-    <button onclick="closeAuthModal()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:24px;line-height:1;padding:4px 8px">×</button>
-  </div>
-</div>
     <div style="display:flex;gap:5px;background:var(--navy-800);border-radius:12px;padding:4px;margin-bottom:20px">
       <button id="auth-tab-login" onclick="switchAuthTab('login')" style="flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;transition:all .18s;background:var(--blue-500);color:#fff" data-i18n="auth_login">Log In</button>
       <button id="auth-tab-signup" onclick="switchAuthTab('signup')" style="flex:1;padding:11px;border-radius:9px;border:none;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer;transition:all .18s;background:transparent;color:var(--muted)" data-i18n="auth_signup">Sign Up</button>
@@ -1128,9 +1123,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     FOOTER
-     ═══════════════════════════════════════ -->
+<!-- FOOTER -->
 <footer>
   <div class="f-in">
     <div class="f-brand">
@@ -1152,9 +1145,7 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
     <div class="f-bot" data-i18n="footer_copy">© 2025 Scan Shield · Independent developer · AI analysis is for informational purposes only.</div>
   </div>
 </footer>
-<!-- admax -->
-<script src="https://adm.shinobi.jp/s/b40da08644613ba6e81bf78c1ccd56b2"></script>
-<!-- admax -->
+
 <script>
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // i18n TRANSLATIONS
@@ -1163,7 +1154,8 @@ const TRANSLATIONS = {
   en: {
     nav_home:'Home',nav_scanner:'Scanner',nav_guide:'Safety Guide',nav_about:'About',
     nav_pricing:'Pricing',nav_login:'Log In',nav_privacy:'Privacy',nav_terms:'Terms',
-    nav_manage_sub:'Manage Subscription',label_current_plan:'Current Plan',btn_scan_now:'Scan Now',
+    nav_manage_sub:'Manage Subscription',nav_delete_account:'Delete Account',
+    label_current_plan:'Current Plan',btn_scan_now:'Scan Now',
     tut0_title:'Welcome to\nScan Shield 👋',
     tut0_body:'The <strong>AI-powered tool</strong> that tells you if a QR code is safe — before you click anything.<br/><br/>Let us show you how it works in <strong>30 seconds</strong>.',
     tut1_title:'Three Ways to Scan',
@@ -1185,14 +1177,14 @@ const TRANSLATIONS = {
     billing_note:'Monthly billing · Cancel anytime',
     plan_free_name:'Free',plan_free_per:'/ forever',plan_free_desc:'Perfect for occasional QR scanning. No credit card required.',plan_free_cta:'Start for Free',
     plan_popular:'⚡ Most Popular',plan_pro_name:'Pro',plan_per_month:'/ month',
-    plan_pro_desc:'Best for daily users. Full AI power with real-time threat intelligence.',plan_pro_cta:'Get Pro →',
-    plan_team_name:'Team',plan_team_desc:'For families or small teams who want shared protection.',plan_team_cta:'Get Team →',
-    feat_5scans:'5 scans per day',feat_verdict:'AI safety verdict',feat_url:'URL direct analysis',
-    feat_threat:'Live web threat search',feat_chat:'Follow-up AI chat',feat_upload:'Image upload scanning',
-    feat_unlimited:'Unlimited scans',feat_priority:'Priority analysis queue',
-    feat_everything_pro:'Everything in Pro',feat_seats:'Up to 5 seats',feat_dashboard:'Shared scan dashboard',
-    feat_alerts:'Email alerts for dangers',feat_support:'Priority email support',
-    feat_url_tab:'URL direct scan tab',
+    plan_pro_desc:'Full AI power with all scan modes. Best value for daily users.',plan_pro_cta:'Get Pro →',
+    plan_max_badge:'🚀 Max Power',plan_max_name:'Max',
+    plan_max_desc:'Unlimited scans, site previews, and sharing. The ultimate protection.',plan_max_cta:'Get Max →',
+    feat_5scans:'5 scans per day',feat_20scans:'20 scans per day',feat_verdict:'AI safety verdict',
+    feat_url:'URL direct analysis',feat_threat:'Live web threat search',feat_chat:'Follow-up AI chat',feat_upload:'Image upload scanning',
+    feat_unlimited:'Unlimited scans',feat_priority:'Priority analysis queue',feat_ogp:'Site preview image',
+    feat_share:'Share results (Email · LINE · Copy)',
+    feat_everything_pro:'Everything in Pro',feat_support:'Priority email support',
     stripe_note:'Secure payment via Stripe · Cancel anytime · No contracts',
     scan_title:'Scan a QR Code',scan_sub:'Camera, upload, or paste a URL — instant AI verdict.',
     already_subscribed:'Already subscribed?',
@@ -1202,9 +1194,7 @@ const TRANSLATIONS = {
     drop_title:'Drop QR image here',drop_types:'JPG · PNG · WebP · GIF',drop_or:'or',drop_browse:'Tap to Browse',
     url_panel_title:'Paste URL Directly',
     url_panel_desc:'Already have the link? Enter it below for an instant AI safety check — no QR code needed.',
-    url_input_placeholder:'https://example.com',
-    url_analyze_btn:'Analyze',
-    url_examples_label:'Try:',
+    url_input_placeholder:'https://example.com',url_analyze_btn:'Analyze',
     guide_eyebrow:'Safety Guide',guide_title:'QR Safety Guide',guide_sub:'Learn how QR code scams work — and how to stay protected.',
     guide_beginner:'Beginner',guide_intermediate:'Intermediate',guide_advanced:'Advanced',
     g1_title:'What Is QR Code Phishing?',
@@ -1248,7 +1238,7 @@ const TRANSLATIONS = {
     priv_stripe:'<strong>Stripe</strong> — Payment processing. <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Policy ↗</a>',
     terms_title:'⚖️ Terms & Disclaimer',terms_updated:'Last updated: June 2025',
     terms_h1:'1. Service',terms_p1:'Scan Shield provides AI-powered QR safety analysis for informational purposes only.',
-    terms_h2:'2. Subscriptions',terms_p2:'Pro and Team plans are billed via Stripe. Cancel anytime from your account settings.',
+    terms_h2:'2. Subscriptions',terms_p2:'Pro and Max plans are billed via Stripe. Cancel anytime from your account settings.',
     terms_h3:'3. Accuracy Disclaimer',terms_p3:'AI analysis may produce incorrect results. Scan Shield is not liable for any damages.',
     terms_h4:'4. Governing Law',terms_p4:'This service is operated in accordance with the laws of Japan.',
     auth_login:'Log In',auth_signup:'Sign Up',auth_forgot:'Forgot password?',
@@ -1256,12 +1246,12 @@ const TRANSLATIONS = {
     footer_desc:'Free AI-powered QR code safety checker. Detect phishing, malware, and scams before you click.',
     footer_copy:'© 2025 Scan Shield · Independent developer · AI analysis is for informational purposes only.',
     scan_limit_label:'left today',plan_unlimited_label:'Unlimited',
-    upgrade_title:'Daily limit reached',upgrade_body:'Free plan: <strong style="color:#fff">5 scans/day</strong>.<br/>Upgrade to Pro for unlimited scans.',
+    upgrade_title:'Daily limit reached',upgrade_body:'Free plan: <strong style="color:#fff">5 scans/day</strong>.<br/>Pro plan: <strong style="color:#fff">20 scans/day</strong>.<br/>Upgrade for more.',
     upgrade_view_plans:'View Plans →',upgrade_activate:'Activate your plan',already_sub_q:'Already subscribed?',
-    chat_locked:'💬 <strong style="color:#fff">Follow-up chat</strong> is available on Pro &amp; Team plans.',
+    chat_locked:'💬 <strong style="color:#fff">Follow-up chat</strong> is available on Pro &amp; Max plans.',
     chat_upgrade_link:'Upgrade →',chat_placeholder:'Ask about this site… (100 chars)',
-    copy_btn:'Copy',open_btn:'Open',upload_locked_msg:'Upload is available on Pro & Team plans.',
-    url_locked_msg:'URL tab is available on Team plan.',
+    copy_btn:'Copy',open_btn:'Open',upload_locked_msg:'Upload is available on Pro & Max plans.',
+    url_locked_msg:'URL tab is available on Pro & Max plans.',
     loading_connecting:'🌐 Connecting to site…',loading_threat:'🔎 Searching threat databases…',loading_ai:'🤖 AI analyzing…',
     toast_qr_detected:'QR detected! Analyzing…',toast_reading_img:'Reading image…',toast_no_qr:'No QR code found. Try a clearer image.',
     toast_copied:'Copied!',toast_cam_err:'Camera error: ',toast_no_file:'No file selected.',
@@ -1271,20 +1261,24 @@ const TRANSLATIONS = {
     activate_title:'Activate Your Plan ⚡',activate_subtitle:'Enter the email you used to purchase.<br/>We\'ll verify your subscription instantly.',
     activate_payment_title:'🎉 Payment Complete!',activate_payment_subtitle:'Enter the email you used on Stripe.<br/>Your plan will activate instantly.',
     verify_btn:'Verify & Activate',verifying_btn:'Verifying...',cancel_btn:'Cancel',
-    pre_stripe_title_pro:'Get Pro',pre_stripe_title_team:'Get Team',
+    pre_stripe_title_pro:'Get Pro',pre_stripe_title_max:'Get Max',
     pre_stripe_sub:'You\'ll complete payment on Stripe\'s secure page.<br/>After paying, come back here to activate.',
     pre_stripe_after:'After payment:',
     pre_stripe_steps:'1. Return to this page<br/>2. Enter the email you used for payment<br/>3. Your plan activates instantly ✅',
     pre_stripe_cta:'Continue to Payment →',
-    share_label:'Share:',share_email:'Email',share_copy:'Copy',clipboard_copied:'Copied to clipboard!',
-    chat_scan_limit:'Chat is available on Pro & Team plans.',
+    share_label:'Share:',share_email:'Email',share_line:'LINE',share_copy:'Copy',clipboard_copied:'Copied to clipboard!',
+    chat_scan_limit:'Chat is available on Pro & Max plans.',
     signout_confirm:'Sign out?',signout_done:'Signed out.',
     url_empty_msg:'Please enter a URL.',url_invalid_msg:'Please enter a valid URL starting with http:// or https://',
+    delete_account_confirm:'Delete your account? This cannot be undone.',
+    delete_account_done:'Account deleted.',delete_account_err:'Could not delete account. Please contact support.',
+    ogp_preview_label:'Site Preview',
   },
   ja: {
     nav_home:'ホーム',nav_scanner:'スキャナー',nav_guide:'安全ガイド',nav_about:'このアプリについて',
     nav_pricing:'料金プラン',nav_login:'ログイン',nav_privacy:'プライバシー',nav_terms:'利用規約',
-    nav_manage_sub:'サブスクリプション管理',label_current_plan:'現在のプラン',btn_scan_now:'今すぐスキャン',
+    nav_manage_sub:'サブスクリプション管理',nav_delete_account:'アカウントを削除',
+    label_current_plan:'現在のプラン',btn_scan_now:'今すぐスキャン',
     tut0_title:'Scan Shieldへ\nようこそ 👋',
     tut0_body:'QRコードが安全かどうかを<strong>AIがリアルタイム</strong>で判定します。<br/><br/><strong>30秒</strong>で使い方をご説明します。',
     tut1_title:'3つのスキャン方法',
@@ -1305,14 +1299,14 @@ const TRANSLATIONS = {
     billing_note:'月額課金 · いつでもキャンセル可能',
     plan_free_name:'無料',plan_free_per:'/ 永久無料',plan_free_desc:'たまにQRをスキャンする方に最適。クレジットカード不要。',plan_free_cta:'無料で始める',
     plan_popular:'⚡ 人気No.1',plan_pro_name:'Pro',plan_per_month:'/ 月',
-    plan_pro_desc:'毎日使う方に最適。リアルタイム脅威情報搭載のフルAIパワー。',plan_pro_cta:'Proを始める →',
-    plan_team_name:'チーム',plan_team_desc:'家族や小規模チームで安全を共有したい方向け。',plan_team_cta:'チームプランを始める →',
-    feat_5scans:'1日5回スキャン',feat_verdict:'AI安全判定',feat_url:'URL直接分析',
-    feat_threat:'ライブ脅威検索',feat_chat:'AIフォローアップチャット',feat_upload:'画像アップロードスキャン',
-    feat_unlimited:'無制限スキャン',feat_priority:'優先分析キュー',
-    feat_everything_pro:'Proの全機能',feat_seats:'最大5席',feat_dashboard:'共有スキャンダッシュボード',
-    feat_alerts:'危険時メールアラート',feat_support:'優先メールサポート',
-    feat_url_tab:'URL直接スキャンタブ',
+    plan_pro_desc:'全スキャンモード対応のフルAI機能。毎日使う方に最適。',plan_pro_cta:'Proを始める →',
+    plan_max_badge:'🚀 最強プラン',plan_max_name:'Max',
+    plan_max_desc:'無制限スキャン・サイトプレビュー・シェア機能付き。最強の保護。',plan_max_cta:'Maxを始める →',
+    feat_5scans:'1日5回スキャン',feat_20scans:'1日20回スキャン',feat_verdict:'AI安全判定',
+    feat_url:'URL直接分析',feat_threat:'ライブ脅威検索',feat_chat:'AIフォローアップチャット',feat_upload:'画像アップロードスキャン',
+    feat_unlimited:'無制限スキャン',feat_priority:'優先分析キュー',feat_ogp:'サイトプレビュー画像',
+    feat_share:'結果シェア（メール・LINE・コピー）',
+    feat_everything_pro:'Proの全機能',feat_support:'優先メールサポート',
     stripe_note:'Stripeによる安全な決済 · いつでもキャンセル · 契約なし',
     scan_title:'QRコードをスキャン',scan_sub:'カメラ、アップロード、またはURLを貼り付け — AIが即時判定。',
     already_subscribed:'すでに購読済みの方はこちら',
@@ -1322,9 +1316,7 @@ const TRANSLATIONS = {
     drop_title:'QR画像をここにドロップ',drop_types:'JPG · PNG · WebP · GIF',drop_or:'または',drop_browse:'タップしてファイルを選択',
     url_panel_title:'URLを直接貼り付け',
     url_panel_desc:'リンクをお持ちの場合は、下に入力するだけでAIが即座に安全判定します。QRコード不要。',
-    url_input_placeholder:'https://example.com',
-    url_analyze_btn:'分析する',
-    url_examples_label:'試す：',
+    url_input_placeholder:'https://example.com',url_analyze_btn:'分析する',
     guide_eyebrow:'安全ガイド',guide_title:'QRコード安全ガイド',guide_sub:'QRコード詐欺の仕組みを学んで、身を守りましょう。',
     guide_beginner:'初級',guide_intermediate:'中級',guide_advanced:'上級',
     g1_title:'QRコードフィッシングとは？',
@@ -1342,7 +1334,7 @@ const TRANSLATIONS = {
     g2_h2:'2. URL短縮サービス',g2_p2:'bit.ly、tinyurlは本当の宛先を隠します。アクセス前に展開・確認しましょう。',
     g2_h3:'3. 即座のログイン要求',g2_p3:'正規サービスがQRコード経由で突然ログインを求めることは稀です。',
     g2_h4:'4. QRコード上のステッカー',g2_p4:'レストランや駐車場のQRを触ってみてください。上にステッカーが貼られていたら攻撃の強いサインです。',
-    g2_h5:'5. 緊急を煽る言葉',g2_p5:'「今すぐ行動 — アカウントが閉鎖されます！」正規企業はQRコードで緊急性を演出しません。',
+    g2_h5:'5. 緊急を煽る言葉',g2_p5:'"今すぐ行動 — アカウントが閉鎖されます！" 正規企業はQRコードで緊急性を演出しません。',
     g3_title:'Scan ShieldのAIが脅威を検出する仕組み',g3_prev:'3層分析エンジンの内部：URL検査、ライブウェブ情報収集、GPT-4oによる推論。',
     g3_h1:'レイヤー1：URL構造',g3_p1:'異常なTLD、文字の置き換え、過剰なサブドメインなど構造的なシグナルをネットワークリクエスト前に分析。',
     g3_h2:'レイヤー2：ライブ脅威インテリジェンス',g3_p2:'ドメインに関する詐欺報告やサイバーセキュリティアラートをリアルタイム検索。',
@@ -1368,7 +1360,7 @@ const TRANSLATIONS = {
     priv_stripe:'<strong>Stripe</strong> — 決済処理。<a href="https://stripe.com/privacy" target="_blank" rel="noopener">ポリシー ↗</a>',
     terms_title:'⚖️ 利用規約・免責事項',terms_updated:'最終更新：2025年6月',
     terms_h1:'1. サービス',terms_p1:'Scan ShieldはAI搭載のQRコード安全分析を情報提供目的でのみ提供します。',
-    terms_h2:'2. サブスクリプション',terms_p2:'ProおよびTeamプランはStripeで課金されます。アカウント設定からいつでもキャンセル可能です。',
+    terms_h2:'2. サブスクリプション',terms_p2:'ProおよびMaxプランはStripeで課金されます。アカウント設定からいつでもキャンセル可能です。',
     terms_h3:'3. 正確性の免責',terms_p3:'AI分析は誤った結果を生成することがあります。Scan Shieldはいかなる損害についても責任を負いません。',
     terms_h4:'4. 準拠法',terms_p4:'このサービスは日本の法律に従って運営されています。',
     auth_login:'ログイン',auth_signup:'新規登録',auth_forgot:'パスワードを忘れた方',
@@ -1376,12 +1368,12 @@ const TRANSLATIONS = {
     footer_desc:'無料のAI搭載QRコード安全チェッカー。クリック前にフィッシング・マルウェア・詐欺を検出。',
     footer_copy:'© 2025 Scan Shield · 個人開発 · AI分析は情報提供目的のみです。',
     scan_limit_label:'残り',plan_unlimited_label:'無制限',
-    upgrade_title:'本日の上限に達しました',upgrade_body:'無料プラン：<strong style="color:#fff">1日5回</strong>まで。<br/>Proにアップグレードして無制限スキャン。',
+    upgrade_title:'本日の上限に達しました',upgrade_body:'無料プラン：<strong style="color:#fff">1日5回</strong>まで。<br/>Proプラン：<strong style="color:#fff">1日20回</strong>まで。<br/>アップグレードしてもっとスキャン。',
     upgrade_view_plans:'プランを見る →',upgrade_activate:'プランを有効化',already_sub_q:'すでに購読済みの方',
-    chat_locked:'💬 <strong style="color:#fff">フォローアップチャット</strong>はProおよびTeamプランでご利用いただけます。',
+    chat_locked:'💬 <strong style="color:#fff">フォローアップチャット</strong>はProおよびMaxプランでご利用いただけます。',
     chat_upgrade_link:'アップグレード →',chat_placeholder:'このサイトについて質問… (100文字)',
-    copy_btn:'コピー',open_btn:'開く',upload_locked_msg:'アップロードはProおよびTeamプランでご利用いただけます。',
-    url_locked_msg:'URLタブはTeamプランでご利用いただけます。',
+    copy_btn:'コピー',open_btn:'開く',upload_locked_msg:'アップロードはProおよびMaxプランでご利用いただけます。',
+    url_locked_msg:'URLタブはProおよびMaxプランでご利用いただけます。',
     loading_connecting:'🌐 サイトに接続中…',loading_threat:'🔎 脅威データベースを検索中…',loading_ai:'🤖 AIが分析中…',
     toast_qr_detected:'QRコードを検出！分析中…',toast_reading_img:'画像を読み込み中…',toast_no_qr:'QRコードが見つかりません。より鮮明な画像をお試しください。',
     toast_copied:'コピーしました！',toast_cam_err:'カメラエラー：',toast_no_file:'ファイルが選択されていません。',
@@ -1391,15 +1383,18 @@ const TRANSLATIONS = {
     activate_title:'プランを有効化 ⚡',activate_subtitle:'ご購入時のメールアドレスを入力してください。<br/>サブスクリプションを即座に確認します。',
     activate_payment_title:'🎉 支払い完了！',activate_payment_subtitle:'Stripeで使用したメールアドレスを入力してください。<br/>プランが即座に有効化されます。',
     verify_btn:'確認して有効化',verifying_btn:'確認中...',cancel_btn:'キャンセル',
-    pre_stripe_title_pro:'Proプランを取得',pre_stripe_title_team:'チームプランを取得',
+    pre_stripe_title_pro:'Proプランを取得',pre_stripe_title_max:'Maxプランを取得',
     pre_stripe_sub:'Stripeのセキュアなページで決済を完了してください。<br/>支払い後、こちらに戻って有効化してください。',
     pre_stripe_after:'支払い後の手順：',
     pre_stripe_steps:'1. このページに戻る<br/>2. 支払いに使用したメールアドレスを入力<br/>3. プランが即座に有効化 ✅',
     pre_stripe_cta:'決済に進む →',
-    share_label:'共有：',share_email:'メール',share_copy:'コピー',clipboard_copied:'クリップボードにコピーしました！',
-    chat_scan_limit:'チャットはProおよびTeamプランでご利用いただけます。',
+    share_label:'共有：',share_email:'メール',share_line:'LINE',share_copy:'コピー',clipboard_copied:'クリップボードにコピーしました！',
+    chat_scan_limit:'チャットはProおよびMaxプランでご利用いただけます。',
     signout_confirm:'ログアウトしますか？',signout_done:'ログアウトしました。',
     url_empty_msg:'URLを入力してください。',url_invalid_msg:'http:// または https:// で始まる有効なURLを入力してください。',
+    delete_account_confirm:'アカウントを削除しますか？この操作は元に戻せません。',
+    delete_account_done:'アカウントを削除しました。',delete_account_err:'アカウントの削除に失敗しました。サポートにお問い合わせください。',
+    ogp_preview_label:'サイトプレビュー',
   }
 };
 
@@ -1419,12 +1414,10 @@ function setLang(lang){
   try{localStorage.setItem('ss_lang',lang);}catch{}
   applyTranslations();updateLangButtons();
   document.documentElement.lang=lang;
-  // Update URL input placeholder manually
   const ui=document.getElementById('url-input');
   if(ui)ui.placeholder=t('url_input_placeholder');
 }
 function updateLangButtons(){
-  // idリストに '-auth' を追加
   ['lang-en','lang-ja','lang-en-sb','lang-ja-sb','lang-en-dr','lang-ja-dr','lang-en-auth','lang-ja-auth'].forEach(id=>{
     const el=document.getElementById(id);if(!el)return;
     const isEn=id.includes('-en');
@@ -1457,20 +1450,25 @@ const SCAN_KEY='ss_scans_'+new Date().toDateString();
 
 const STRIPE_LINKS={
   pro:'https://buy.stripe.com/test_eVq28s0yw6W40E51aW43S01',
-  team:'https://buy.stripe.com/test_dRmdRadli0xG9aB7zk43S02'
+  max:'https://buy.stripe.com/test_dRmdRadli0xG9aB7zk43S02'
 };
 const PORTAL_URL='https://billing.stripe.com/p/login/test_00wcN6epm5S0gD3f1M43S00';
 
+// ── PLAN CONFIG ──
+// Pro: $2.99/mo — 20 scans/day, all scan modes, chat
+// Max: $9.99/mo — unlimited, all + OGP + share
 const PLAN_CONFIG={
-  free: {limit:5,    upload:false,chat:false,url:false, label:'Free'},
-  pro:  {limit:99999,upload:true, chat:true, url:false, label:'Pro ⚡'},
-  team: {limit:99999,upload:true, chat:true, url:true,  label:'Team 👥'},
+  free: {limit:5,    upload:false, chat:false, url:false, ogp:false, share:false, label:'Free'},
+  pro:  {limit:20,   upload:true,  chat:true,  url:true,  ogp:false, share:false, label:'Pro ⚡'},
+  max:  {limit:99999,upload:true,  chat:true,  url:true,  ogp:true,  share:true,  label:'Max 🚀'},
 };
 
 function planLimit()    {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).limit;}
 function canUpload()    {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).upload;}
 function canChat()      {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).chat;}
 function canUrl()       {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).url;}
+function canOgp()       {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).ogp;}
+function canShare()     {return(PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free).share;}
 function getTodayScans(){try{return parseInt(localStorage.getItem(SCAN_KEY)||'0');}catch{return 0;}}
 function incTodayScans(){try{localStorage.setItem(SCAN_KEY,getTodayScans()+1);}catch{}}
 function canScan()      {return getTodayScans()<planLimit();}
@@ -1479,32 +1477,33 @@ function remainingScans(){return Math.max(0,planLimit()-getTodayScans());}
 function updatePlanUI(){
   const isFree=currentPlan==='free';
   const cfg=PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free;
+  const isMax=currentPlan==='max';
+
   const badgeText=isFree
     ?`${remainingScans()} / 5 ${t('scan_limit_label')}`
-    :`${cfg.label} — ${t('plan_unlimited_label')}`;
-  const badgeCls=isFree?'plan-badge-ui free':'plan-badge-ui paid';
+    :currentPlan==='pro'
+      ?`${cfg.label} — ${remainingScans()} / 20 ${t('scan_limit_label')}`
+      :`${cfg.label} — ${t('plan_unlimited_label')}`;
+
+  const badgeCls=isMax?'plan-badge-ui max':isFree?'plan-badge-ui free':'plan-badge-ui paid';
 
   ['plan-badge','scan-plan-badge'].forEach(id=>{
     const el=document.getElementById(id);if(!el)return;
     el.textContent=badgeText;el.className=badgeCls;el.style.display='flex';
   });
 
-  // Upload lock
   const lockEl=document.getElementById('upload-lock');
   if(lockEl)lockEl.textContent=canUpload()?'':'🔒';
 
-  // URL tab visibility (Team only)
   const urlTab=document.getElementById('tab-url');
   if(urlTab)urlTab.style.display=canUrl()?'flex':'none';
 
-  // Activate link
   const activateLink=document.getElementById('activate-link');
   if(activateLink){
     activateLink.textContent=t('already_subscribed');
     activateLink.style.display=isFree?'inline-block':'none';
   }
 
-  // Manage sub button in scan-plan-row
   let manageBtn=document.getElementById('manage-sub-btn');
   if(!isFree){
     if(!manageBtn){
@@ -1531,7 +1530,9 @@ async function checkPlanByEmail(email){
     const r=await fetch('/api/check-plan',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email}),signal:AbortSignal.timeout(8000)});
     if(!r.ok)return 'free';
     const data=await r.json();const plan=data.plan??'free';
-    return['free','pro','team'].includes(plan)?plan:'free';
+    // Support 'team' -> 'max' migration for existing users
+    if(plan==='team')return 'max';
+    return['free','pro','max'].includes(plan)?plan:'free';
   }catch{return 'free';}
 }
 
@@ -1560,12 +1561,12 @@ async function restorePlan(){
 function openStripe(plan){showPreStripeModal(plan);}
 function showPreStripeModal(plan){
   document.getElementById('pre-stripe-modal')?.remove();
-  const titleKey=plan==='pro'?'pre_stripe_title_pro':'pre_stripe_title_team';
+  const titleKey=plan==='pro'?'pre_stripe_title_pro':'pre_stripe_title_max';
   const modal=document.createElement('div');modal.id='pre-stripe-modal';
   modal.style.cssText='position:fixed;inset:0;z-index:1800;background:rgba(2,8,16,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;';
   modal.innerHTML=`<div style="width:100%;max-width:480px;background:linear-gradient(160deg,var(--navy-700),var(--navy-600));border:1px solid var(--glass-bd);border-radius:var(--r-xl) var(--r-xl) 0 0;padding:28px 20px calc(36px + env(safe-area-inset-bottom));animation:sheet-up .4s cubic-bezier(.22,1,.36,1) both">
     <div style="text-align:center;margin-bottom:22px">
-      <div style="font-size:42px;margin-bottom:10px">${plan==='pro'?'⚡':'👥'}</div>
+      <div style="font-size:42px;margin-bottom:10px">${plan==='pro'?'⚡':'🚀'}</div>
       <h3 style="font-size:20px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px">${t(titleKey)}</h3>
       <p style="font-size:13.5px;color:var(--muted);line-height:1.65">${t('pre_stripe_sub')}</p>
     </div>
@@ -1669,44 +1670,52 @@ async function doAuth(){
 }
 async function doForgotPassword(){
   const email=document.getElementById('auth-email').value.trim();
-  // 修正：currentLang === 'ja' の時が日本語
-  if(!email){
-    toast(currentLang==='ja'?'先にメールアドレスを入力してください。':'Enter your email first.','terr');
-    return;
-  }
+  if(!email){toast(currentLang==='ja'?'先にメールアドレスを入力してください。':'Enter your email first.','terr');return;}
   const{error}=await _sb.auth.resetPasswordForEmail(email,{redirectTo:window.location.origin});
-  if(error) {
-    toast('Error: '+error.message,'terr');
-  } else {
-    // 修正：currentLang === 'ja' の時が日本語
-    toast(currentLang==='ja'?'パスワードリセットメールを送信しました！':'Password reset email sent!','tok');
-  }
+  if(error){toast('Error: '+error.message,'terr');}
+  else{toast(currentLang==='ja'?'パスワードリセットメールを送信しました！':'Password reset email sent!','tok');}
 }
 async function doSignOut(){
   await _sb.auth.signOut();
-  _authUser=null;
-  userEmail=null;
-  currentPlan='free';
-  
-  try {
-    localStorage.removeItem('ss_email');
-  } catch(e) {}
-  
-  updatePlanUI();
-  updateNavAuth();
-  
-  toast(t('signout_done'), 'tok');
-
-  // 100ms（0.1秒）だけ待ってからリダイレクト
-  setTimeout(() => {
-    window.location.href = 'https://scan-shield-three.vercel.app/';
-  }, 100);
+  _authUser=null;userEmail=null;currentPlan='free';
+  try{localStorage.removeItem('ss_email');}catch{}
+  updatePlanUI();updateNavAuth();
+  toast(t('signout_done'),'tok');
+  setTimeout(()=>{window.location.href='https://scan-shield-three.vercel.app/';},100);
 }
+
+// ── ACCOUNT DELETE ──
+async function doDeleteAccount(){
+  const confirmed=confirm(t('delete_account_confirm'));
+  if(!confirmed)return;
+  if(!_authUser){toast(t('delete_account_err'),'terr');return;}
+  try{
+    // Delete user via Supabase Admin (requires server-side ideally, but we try client-side delete)
+    const{error}=await _sb.auth.admin?.deleteUser?.(_authUser.id) 
+      ?? await fetch('/api/delete-account',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:_authUser.email,userId:_authUser.id}),signal:AbortSignal.timeout(8000)}).then(r=>r.json());
+    
+    if(error){
+      // Fallback: sign out and clear data even if delete fails server-side
+      console.warn('Delete error:',error);
+    }
+    // Clear local state regardless
+    await _sb.auth.signOut();
+    _authUser=null;userEmail=null;currentPlan='free';
+    try{localStorage.removeItem('ss_email');}catch{}
+    updatePlanUI();updateNavAuth();
+    toast(t('delete_account_done'),'tok');
+    setTimeout(()=>{window.location.reload();},1500);
+  }catch(e){
+    console.error('Delete account error:',e);
+    toast(t('delete_account_err'),'terr');
+  }
+}
+
 function updateNavAuth(){
-  // Sidebar account button
   const sbBtn=document.getElementById('sb-account-btn');
   const sbLabel=document.getElementById('sb-account-label');
   const sbManage=document.getElementById('sb-manage-sub-btn');
+  const sbDelete=document.getElementById('sb-delete-btn');
   if(sbBtn&&sbLabel){
     if(_authUser){
       sbLabel.textContent=_authUser.email.split('@')[0]+(currentLang==='ja'?' (ログアウト)':' (Sign out)');
@@ -1714,12 +1723,14 @@ function updateNavAuth(){
     }else{sbBtn.style.display='none';}
   }
   if(sbManage)sbManage.style.display=(currentPlan!=='free')?'flex':'none';
+  if(sbDelete)sbDelete.style.display=_authUser?'flex':'none';
   updateDrawerAccount();
 }
 function updateDrawerAccount(){
   const drBtn=document.getElementById('dr-account-btn');
   const drLabel=document.getElementById('dr-account-label');
   const drManage=document.getElementById('dr-manage-sub-btn');
+  const drDelete=document.getElementById('dr-delete-btn');
   if(drBtn&&drLabel){
     if(_authUser){
       drLabel.textContent=_authUser.email.split('@')[0]+(currentLang==='ja'?' (ログアウト)':' (Sign out)');
@@ -1727,12 +1738,12 @@ function updateDrawerAccount(){
     }else{drBtn.style.display='none';}
   }
   if(drManage)drManage.style.display=(currentPlan!=='free')?'flex':'none';
-  // Update drawer plan val
+  if(drDelete)drDelete.style.display=_authUser?'flex':'none';
   const drPlanVal=document.getElementById('dr-plan-val');
   if(drPlanVal){
-    const cfg=PLAN_CONFIG[currentPlan]||PLAN_CONFIG.free;
     if(currentPlan==='free')drPlanVal.textContent=`Free · ${remainingScans()} / 5 ${t('scan_limit_label')}`;
-    else drPlanVal.textContent=`${cfg.label} · ${t('plan_unlimited_label')}`;
+    else if(currentPlan==='pro')drPlanVal.textContent=`Pro ⚡ · ${remainingScans()} / 20 ${t('scan_limit_label')}`;
+    else drPlanVal.textContent=`Max 🚀 · ${t('plan_unlimited_label')}`;
   }
 }
 function handleSbAccount(){if(_authUser&&confirm(t('signout_confirm')))doSignOut();}
@@ -1791,15 +1802,11 @@ function swTab(tab){
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // URL DIRECT SUBMIT
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function setUrlExample(url){
-  const inp=document.getElementById('url-input');if(inp){inp.value=url;inp.focus();}
-}
 function submitUrl(){
   const inp=document.getElementById('url-input');
   if(!inp)return;
   const raw=inp.value.trim();
   if(!raw){toast(t('url_empty_msg'),'terr');return;}
-  // auto-prepend https:// if missing
   const url=/^https?:\/\//i.test(raw)?raw:'https://'+raw;
   inp.value=url;
   toast(t('loading_ai'),'tinfo');
@@ -1873,6 +1880,28 @@ function procFile(f){
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// OGP IMAGE FETCH (Max plan)
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+async function fetchOgpImage(url){
+  if(!canOgp())return null;
+  try{
+    const proxyUrl='https://api.allorigins.win/get?url='+encodeURIComponent(url);
+    const r=await fetch(proxyUrl,{signal:AbortSignal.timeout(6000)});
+    if(!r.ok)return null;
+    const html=(await r.json()).contents||'';
+    const p=new DOMParser().parseFromString(html,'text/html');
+    // Try OGP image first
+    const ogImg=p.querySelector('meta[property="og:image"]')?.getAttribute('content')
+      ||p.querySelector('meta[name="twitter:image"]')?.getAttribute('content');
+    if(ogImg){
+      // Resolve relative URLs
+      try{return new URL(ogImg,url).href;}catch{return ogImg;}
+    }
+    return null;
+  }catch{return null;}
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // ANALYSIS
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 async function analyze(raw){
@@ -1887,11 +1916,14 @@ async function analyze(raw){
     setLoad(t('loading_connecting'));
     let sc=null;if(isU)sc=await scrape(raw);
     setLoad(t('loading_threat'));
-    // ⭕️ 修正後（フルURLである raw も渡す）
-    let sr=null;if(isU)sr=await serp(raw, dom);
+    let sr=null;if(isU)sr=await serp(raw,dom);
     setLoad(t('loading_ai'));
-    const res=await ai(raw,sc,sr);render(res);
-  }catch(e){render('Analysis error: '+e.message+'\n\nPlease try again.');}
+    // Fetch OGP in parallel for Max plan
+    let ogpImg=null;
+    if(isU&&canOgp())ogpImg=await fetchOgpImage(raw);
+    const res=await ai(raw,sc,sr);
+    render(res,raw,dom,isU,ogpImg);
+  }catch(e){render('Analysis error: '+e.message+'\n\nPlease try again.',raw,dom,isU,null);}
   finally{busy=false;}
 }
 async function scrape(url){
@@ -1909,14 +1941,12 @@ function parseH(html,url){
   const b=(p.body?.textContent||'').replace(/\s+/g,' ').trim().slice(0,400);
   return `[PAGE]\nURL:${url}\nTitle:${ttl||'N/A'}\nMeta:${m||'N/A'}\nHeadings:${h||'N/A'}\nPW:${pw?'YES':'No'}\nForms:${f}\nBody:${b||'N/A'}`;
 }
-// ⭕️ 修正後（引数に url を追加し、body にも含める）
-async function serp(url, dom){
-  if(!dom && !url)return null;
+async function serp(url,dom){
+  if(!dom&&!url)return null;
   try{
     const r=await fetch('/api/search',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({url: url, domain: dom, lang: currentLang}), // url を追加！
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({url:url,domain:dom,lang:currentLang}),
       signal:AbortSignal.timeout(10000)
     });
     if(!r.ok)return null;return(await r.json()).result??null;
@@ -1926,30 +1956,20 @@ async function ai(url,sc,sr){
   let p='[URL]\n'+url+'\n\n';if(sc)p+=sc+'\n\n';if(sr)p+=sr+'\n\n';p+='Respond in English only.';
   return callAI(p,[]);
 }
-async function callAI(msg, h) {
-  try {
-    const r = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        message: msg, 
-        history: h,
-        lang: currentLang // 👈 これを追加して現在の言語を伝える
-      }),
-      signal: AbortSignal.timeout(28000)
+async function callAI(msg,h){
+  try{
+    const r=await fetch('/api/analyze',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:msg,history:h,lang:currentLang}),
+      signal:AbortSignal.timeout(28000)
     });
-
-    if (!r.ok) {
-      const err = await r.json().catch(() => ({}));
-      throw new Error(err.error || ('Server error ' + r.status));
-    }
-    return (await r.json()).reply || '';
-  } catch (e) {
-    // エラーメッセージも言語によって切り替えると親切です
-    const isJa = currentLang === 'ja';
-    return isJa 
-      ? '安全判定:\n⚠️ 注意 — ' + e.message + '\n\n身元: 不明\n目的: N/A\nアドバイス: もう一度試してください。'
-      : 'Safety:\n⚠️ CAUTION — ' + e.message + '\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: Please try again.';
+    if(!r.ok){const err=await r.json().catch(()=>({}));throw new Error(err.error||('Server error '+r.status));}
+    return(await r.json()).reply||'';
+  }catch(e){
+    const isJa=currentLang==='ja';
+    return isJa
+      ?'安全判定:\n⚠️ 注意 — '+e.message+'\n\n身元: 不明\n目的: N/A\nアドバイス: もう一度試してください。'
+      :'Safety:\n⚠️ CAUTION — '+e.message+'\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: Please try again.';
   }
 }
 
@@ -1972,10 +1992,25 @@ function showArea(raw,dom,isU){
     <div id="cw" class="chat-wrap" style="display:none"></div>`;
 }
 function setLoad(s){const b=document.getElementById('ab');if(b)b.innerHTML=`<div class="loading-box"><div class="spinner"></div><div class="step-lbl">${s}</div></div>`;}
-function render(text){
+
+function render(text,raw,dom,isU,ogpImg){
   hist.push({role:'assistant',content:text});
   const rm=text.match(/(✅ SAFE|⚠️ CAUTION|🚨 DANGEROUS)/);
   const rl=rm?rm[1]:'';const rc=rl.includes('SAFE')?'rb-safe':rl.includes('CAUTION')?'rb-warn':'rb-danger';
+  
+  // OGP image section (Max plan only)
+  let ogpHtml='';
+  if(canOgp()&&isU){
+    if(ogpImg){
+      ogpHtml=`<div class="ogp-wrap">
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);padding:10px 14px 6px">${t('ogp_preview_label')}</div>
+        <img class="ogp-img" src="${ogpImg}" alt="Site preview" onerror="this.parentElement.innerHTML='<div class=\\'ogp-domain-fallback\\'>🌐 <span>${dom||'Unknown'}</span></div>'" loading="lazy"/>
+      </div>`;
+    }else if(dom){
+      ogpHtml=`<div class="ogp-wrap"><div class="ogp-domain-fallback">🌐 <span style="font-family:var(--mono)">${dom}</span></div></div>`;
+    }
+  }
+
   let rows='';
   text.trim().split('\n').filter(l=>l.trim()).forEach(l=>{
     const ci=l.indexOf(':');
@@ -1984,8 +2019,9 @@ function render(text){
       rows+='<div class="arow"><div class="albl">'+lb+'</div><div class="aval">'+v+'</div></div>';
     }else rows+='<div style="font-size:13px;color:var(--muted);padding:4px 0;line-height:1.6">'+l+'</div>';
   });
-  document.getElementById('ab').innerHTML='<div>'+rows+'</div>';
+  document.getElementById('ab').innerHTML=ogpHtml+'<div>'+rows+'</div>';
   document.getElementById('cw').style.display='block';
+
   const chatOrLock=canChat()
     ?`<div id="cm" class="chat-msgs"></div>
        <div class="chat-inp">
@@ -1996,22 +2032,28 @@ function render(text){
          ${t('chat_locked')}
          <button onclick="go('home');showSection('pricing')" style="display:block;margin:8px auto 0;font-size:12.5px;color:var(--blue-300);background:none;border:none;cursor:pointer;font-family:var(--font);text-decoration:underline;padding:4px 0">${t('chat_upgrade_link')}</button>
        </div>`;
-  const shareHtml=currentPlan==='team'?`
-    <div style="padding:12px 14px;border-top:1px solid var(--glass-bd);display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-      <span style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px">${t('share_label')}</span>
-      <button onclick="shareResult('email')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg> ${t('share_email')}</button>
-      <button onclick="shareResult('line')" class="bx">LINE</button>
-      <button onclick="shareResult('copy')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ${t('share_copy')}</button>
-    </div>`:'';
+
+  // Share section (Max plan only)
+  const shareHtml=canShare()
+    ?`<div style="padding:12px 14px;border-top:1px solid var(--glass-bd);display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+        <span style="font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px">${t('share_label')}</span>
+        <button onclick="shareResult('email')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,12 2,6"/></svg> ${t('share_email')}</button>
+        <button onclick="shareResult('line')" class="bx">🟢 ${t('share_line')}</button>
+        <button onclick="shareResult('copy')" class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> ${t('share_copy')}</button>
+      </div>`
+    :'';
+
   document.getElementById('cw').innerHTML=shareHtml+chatOrLock;
 }
+
 function shareResult(platform){
   const text='🔍 Scan Shield Result\n\nScanned: '+curQ+'\n\n'+(hist.find(m=>m.role==='assistant')?.content||'').slice(0,300)+'\n\nCheck it: '+window.location.href;
   const enc=encodeURIComponent(text);
-  if(platform==='copy'||platform==='slack'){navigator.clipboard.writeText(text).then(()=>toast(platform==='slack'?t('share_slack_copied'):t('clipboard_copied'),'tok'));return;}
+  if(platform==='copy'){navigator.clipboard.writeText(text).then(()=>toast(t('clipboard_copied'),'tok'));return;}
   if(platform==='email')window.open('mailto:?subject=Scan+Shield+Result&body='+enc,'_blank');
   if(platform==='line')window.open('https://line.me/R/msg/text/?'+enc,'_blank');
 }
+
 function showUpgradePrompt(){
   const area=document.getElementById('result-area');area.style.display='block';
   document.getElementById('result-card').innerHTML=`
@@ -2080,10 +2122,9 @@ function drActive(page){
 }
 function updateSidebarPlan(){
   const el=document.getElementById('sb-plan-val');if(!el)return;
-  if(currentPlan==='team')el.textContent='Team 👥 · '+t('plan_unlimited_label');
-  else if(currentPlan==='pro')el.textContent='Pro ⚡ · '+t('plan_unlimited_label');
+  if(currentPlan==='max')el.textContent='Max 🚀 · '+t('plan_unlimited_label');
+  else if(currentPlan==='pro')el.textContent='Pro ⚡ · '+remainingScans()+' / 20 '+t('scan_limit_label');
   else el.textContent='Free · '+remainingScans()+' / 5 '+t('scan_limit_label');
-  // Show/hide manage sub in sidebar
   const sbManage=document.getElementById('sb-manage-sub-btn');
   if(sbManage)sbManage.style.display=(currentPlan!=='free')?'flex':'none';
 }
@@ -2093,47 +2134,32 @@ function updateSidebarPlan(){
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 window.addEventListener('DOMContentLoaded',async()=>{
   applyTranslations();updateLangButtons();document.documentElement.lang=currentLang;
-  // Set URL input placeholder
   const ui=document.getElementById('url-input');if(ui)ui.placeholder=t('url_input_placeholder');
 
-  // Tutorial
   try{if(localStorage.getItem('tut_done'))document.getElementById('tutorial').style.display='none';}
   catch{document.getElementById('tutorial').style.display='none';}
 
-  // Supabase
   try{
     const{data:{session}}=await _sb.auth.getSession();
-    
-    // ログインしている場合、グローバル変数にユーザー情報を入れる
-    if(session?.user) {
-      _authUser = session.user;
-      userEmail = session.user.email;
+    if(session?.user){
+      _authUser=session.user;userEmail=session.user.email;
       await applyPlan(session.user.email);
-    } else {
-      await restorePlan();
-    }
-    
-    // UIを最新の状態にする（これでボタンが出ます）
-    updateNavAuth();
-    updatePlanUI();
+    }else{await restorePlan();}
+    updateNavAuth();updatePlanUI();
 
     _sb.auth.onAuthStateChange(async(event,session)=>{
       if(session?.user){
-        _authUser=session.user;
-        userEmail=session.user.email;
+        _authUser=session.user;userEmail=session.user.email;
         await applyPlan(session.user.email);
-        updateNavAuth();
-        updatePlanUI();
-      }
-      else{
-        // ログアウト時の処理
+        updateNavAuth();updatePlanUI();
+      }else{
         _authUser=null;userEmail=null;currentPlan='free';
         try{localStorage.removeItem('ss_email');}catch{}
         updateNavAuth();updatePlanUI();
       }
     });
   }catch(e){console.warn('Supabase auth error:',e);await restorePlan();}
-})
+});
 </script>
 </div>
 </body>
