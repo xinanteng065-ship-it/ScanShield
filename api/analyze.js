@@ -1,3 +1,37 @@
+// api/analyze.js
+// Vercel環境変数: OPENAI_API_KEY
+
+// 著名・信頼できるドメインのリスト（部分一致）
+const TRUSTED_DOMAINS = [
+  'google.com','google.co.jp','googleapis.com','goo.gl','gemini.google.com',
+  'apple.com','icloud.com',
+  'microsoft.com','live.com','outlook.com','azure.com','bing.com',
+  'facebook.com','instagram.com','whatsapp.com','meta.com',
+  'amazon.com','amazon.co.jp','amazonaws.com','amzn.to',
+  'twitter.com','x.com','t.co',
+  'youtube.com','youtu.be',
+  'github.com','githubusercontent.com',
+  'cloudflare.com',
+  'yahoo.co.jp','yahoo.com','rakuten.co.jp','line.me','line.com',
+  'ntt.com','docomo.ne.jp','softbank.jp','au.com','biglobe.ne.jp',
+  'nikkeibp.co.jp','nikkei.com','nhk.or.jp','asahi.com','yomiuri.co.jp',
+  'stripe.com','paypal.com','visa.com','mastercard.com',
+  'netflix.com','spotify.com','slack.com','zoom.us','notion.so',
+  'openai.com','anthropic.com','deepmind.com',
+  'wikipedia.org','wikimedia.org',
+  'mozilla.org','firefox.com',
+];
+
+// 日本向けサイトかどうかを判定するTLD・ドメインリスト
+const JP_PATTERNS = [
+  '.co.jp','.ne.jp','.or.jp','.ac.jp','.go.jp','.ed.jp','.gr.jp','.jp',
+  'rakuten.co.jp','docomo.ne.jp','softbank.jp','nhk.or.jp',
+  'asahi.com','yomiuri.co.jp','nikkei.com','biglobe.ne.jp','ntt.com',
+  'ameba.jp','fc2.com','hatena.ne.jp','cookpad.com',
+  'mercari.com','paypay.ne.jp','jreast.co.jp','jal.co.jp','ana.co.jp',
+  'yahoo.co.jp','line.me','line.com',
+];
+
 // 内部関数: ドメイン・URLの検索を実行
 async function getSearchContext(url, domain, isJa) {
   if (!process.env.SERPER_API_KEY) return "";
