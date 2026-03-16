@@ -3,35 +3,33 @@
 
 // 著名・信頼できるドメインのリスト（部分一致）
 const TRUSTED_DOMAINS = [
-  // Google
   'google.com','google.co.jp','googleapis.com','goo.gl','gemini.google.com',
-  // Apple
   'apple.com','icloud.com',
-  // Microsoft
   'microsoft.com','live.com','outlook.com','azure.com','bing.com',
-  // Meta / Facebook
   'facebook.com','instagram.com','whatsapp.com','meta.com',
-  // Amazon
   'amazon.com','amazon.co.jp','amazonaws.com','amzn.to',
-  // Twitter / X
   'twitter.com','x.com','t.co',
-  // YouTube
   'youtube.com','youtu.be',
-  // GitHub
   'github.com','githubusercontent.com',
-  // Cloudflare
   'cloudflare.com',
-  // Popular JP services
   'yahoo.co.jp','yahoo.com','rakuten.co.jp','line.me','line.com',
   'ntt.com','docomo.ne.jp','softbank.jp','au.com','biglobe.ne.jp',
   'nikkeibp.co.jp','nikkei.com','nhk.or.jp','asahi.com','yomiuri.co.jp',
-  // Payment
   'stripe.com','paypal.com','visa.com','mastercard.com',
-  // Other major tech
   'netflix.com','spotify.com','slack.com','zoom.us','notion.so',
   'openai.com','anthropic.com','deepmind.com',
   'wikipedia.org','wikimedia.org',
   'mozilla.org','firefox.com',
+];
+
+// 日本向けサイトかどうかを判定するTLD・ドメインリスト
+const JP_PATTERNS = [
+  '.co.jp','.ne.jp','.or.jp','.ac.jp','.go.jp','.ed.jp','.gr.jp','.jp',
+  'rakuten.co.jp','docomo.ne.jp','softbank.jp','nhk.or.jp',
+  'asahi.com','yomiuri.co.jp','nikkei.com','biglobe.ne.jp','ntt.com',
+  'ameba.jp','fc2.com','hatena.ne.jp','cookpad.com',
+  'mercari.com','paypay.ne.jp','jreast.co.jp','jal.co.jp','ana.co.jp',
+  'yahoo.co.jp','line.me','line.com',
 ];
 
 function isTrustedDomain(url) {
@@ -43,19 +41,34 @@ function isTrustedDomain(url) {
   }
 }
 
-const getSystemPrompt = (lang, isTrusted) => {
-  const isJa = lang === 'ja';
+function isJapaneseSite(url) {
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    return JP_PATTERNS.some(p => hostname.endsWith(p) || hostname === p.replace(/^\./, ''));
+  } catch {
+    return false;
+  }
+}
+
+const getSystemPrompt = (displayLang, siteIsJp, isTrusted) => {
+  const outputJa = displayLang === 'ja';
+
+  // サイトの地域に応じた分析コンテキスト（表示言語とは独立）
+  const analysisContext = siteIsJp
+    ? 'This may be a Japanese service. Evaluate using Japanese market knowledge and context.'
+    : 'Evaluate using global/English market context and knowledge.';
 
   const trustedHint = isTrusted
-    ? (isJa
-      ? '\n重要: このURLは世界的に著名な正規サービスのドメインです。特別な理由がない限り ✅ 安全 と判定してください。'
-      : '\nIMPORTANT: This URL belongs to a globally recognized, legitimate service. Rate as ✅ SAFE unless there is a clear and specific reason not to.')
+    ? (outputJa
+        ? '\n重要: このURLは世界的に著名な正規サービスです。特別な理由がない限り ✅ 安全 と判定してください。'
+        : '\nIMPORTANT: This URL is a globally recognized legitimate service. Rate ✅ SAFE unless there is a clear specific reason not to.')
     : '';
 
-  if (isJa) {
+  if (outputJa) {
     return `あなたは公平なウェブセキュリティアナリストです。
+${analysisContext}
 ルール: ✅ 安全=有名なブランド/正当なサービス。 ⚠️ 注意=不審なシグナルが複数ある。 🚨 危険=明らかな詐欺/フィッシング。
-重要: 迷ったら必ず ✅ 安全 にしてください。既知の大企業・有名サービスは積極的に ✅ 安全 と判定してください。${trustedHint}
+重要: 迷ったら必ず ✅ 安全 にしてください。既知の大企業・有名サービスは ✅ 安全 と判定してください。${trustedHint}
 フォーマット (150語以内):
 サービス名: [何のサービスか]
 目的: [何をするサイトか]
@@ -64,9 +77,10 @@ const getSystemPrompt = (lang, isTrusted) => {
 必ず日本語で回答してください。`;
   }
 
-  return `You are a balanced web security analyst. Give FAIR assessments.
-RULES: ✅ SAFE=known brand/legit service. ⚠️ CAUTION=multiple suspicious signals present. 🚨 DANGEROUS=clear scam/phishing.
-CRITICAL: When in doubt → ✅ SAFE. Known major brands and services should ALWAYS be rated ✅ SAFE.${trustedHint}
+  return `You are a balanced web security analyst.
+${analysisContext}
+RULES: ✅ SAFE=known brand/legit service. ⚠️ CAUTION=multiple suspicious signals. 🚨 DANGEROUS=clear scam/phishing.
+CRITICAL: When in doubt → ✅ SAFE. Known major brands always rate ✅ SAFE.${trustedHint}
 FORMAT (≤150 words):
 Identity: [what service]
 Purpose: [what it does]
@@ -85,9 +99,11 @@ export default async function handler(req, res) {
   const { message, history = [], lang = 'en' } = req.body ?? {};
   if (!message) return res.status(400).json({ error: 'No message' });
 
-  // URLを抽出して信頼済みドメインか判定
+  // URLを抽出して判定
   const urlMatch = message.match(/https?:\/\/[^\s\n]+/);
-  const trusted = urlMatch ? isTrustedDomain(urlMatch[0]) : false;
+  const targetUrl = urlMatch ? urlMatch[0] : null;
+  const trusted = targetUrl ? isTrustedDomain(targetUrl) : false;
+  const siteIsJp = targetUrl ? isJapaneseSite(targetUrl) : false;
 
   try {
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -97,20 +113,19 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
       },
       body: JSON.stringify({
-        model: 'gpt-4.1-nano',
+        model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: getSystemPrompt(lang, trusted) },
+          { role: 'system', content: getSystemPrompt(lang, siteIsJp, trusted) },
           ...history.slice(-8),
           { role: 'user', content: message },
         ],
         max_tokens: 600,
-        temperature: 0.1, // 0.2→0.1 にして判定をより安定させる
+        temperature: 0.1,
       }),
       signal: AbortSignal.timeout(22000),
     });
 
     if (!r.ok) {
-      const err = await r.text();
       return res.status(502).json({ error: 'OpenAI error: ' + r.status });
     }
 
