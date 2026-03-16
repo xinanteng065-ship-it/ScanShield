@@ -9,32 +9,40 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // analyze.js から渡される lang を受け取る
-  const { url, domain, lang = 'en' } = req.body ?? {};
+  // serviceName（例: "えきねっと", "Amazon"）を新しく受け取るようにします
+  const { url, domain, serviceName, lang = 'en' } = req.body ?? {};
   if (!domain && !url) return res.status(200).json({ result: null });
 
   const isJa = lang === 'ja';
-  
-  // Serper API の地域設定を言語に合わせる
-  // ja の場合は日本(jp/ja)、それ以外は米国(us/en)
   const gl = isJa ? 'jp' : 'us';
   const hl = isJa ? 'ja' : 'en';
 
-  // 検索クエリの構築
-  const targetRisk = url ? `"${url}" OR "${domain}"` : `"${domain}"`;
+  // --- 検索クエリの最適化 ---
   
-  // 日本語の場合は日本のネット上の「怪しい」ワードで検索
+  // 1. 基本的なドメインのリスク検索
+  const target = url ? `"${url}" OR "${domain}"` : `"${domain}"`;
   const queryRisk = isJa
-    ? `${targetRisk} 詐欺 フィッシング 悪質 危険 サイト`
-    : `${targetRisk} scam phishing fraud danger`;
-    
-  const queryRep = isJa
-    ? `"${domain}" 評判 口コミ 安全性 レビュー`
-    : `"${domain}" review legitimate safe reputation`;
+    ? `${target} 詐欺 フィッシング 悪質 危険`
+    : `${target} scam phishing fraud`;
+
+  // 2. サービス名に基づいた「本物かどうか」の比較検索
+  // サービス名がある場合、その「公式サイト」を検索して、今のドメインと比較しやすくします
+  const queryRep = (isJa && serviceName)
+    ? `"${serviceName}" 公式サイト 評判 "${domain}"`
+    : (serviceName)
+      ? `"${serviceName}" official website review "${domain}"`
+      : `"${domain}" review legitimate safe`;
+
+  // 3. 【追加】サービス名 + 詐欺 の複合検索 (偽装サイト発見用)
+  const queryServiceScam = (isJa && serviceName)
+    ? `"${serviceName}" 偽サイト 注意喚起 フィッシング`
+    : (serviceName)
+      ? `"${serviceName}" fake site phishing alert`
+      : null;
 
   try {
-    const [r1, r2] = await Promise.all([
-      // リスクチェック
+    // 検索リクエストの配列を作成
+    const tasks = [
       fetch('https://google.serper.dev/search', {
         method: 'POST',
         headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
@@ -42,24 +50,35 @@ export default async function handler(req, res) {
         signal: AbortSignal.timeout(6000),
       }).then(r => r.json()).catch(() => null),
 
-      // 評判チェック
       fetch('https://google.serper.dev/search', {
         method: 'POST',
         headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
         body: JSON.stringify({ q: queryRep, gl, hl, num: 4 }),
         signal: AbortSignal.timeout(6000),
-      }).then(r => r.json()).catch(() => null),
-    ]);
+      }).then(r => r.json()).catch(() => null)
+    ];
 
-    // AIに渡すための検索結果コンテキストを生成
+    // serviceNameがある場合のみ、追加の検索を実行
+    if (queryServiceScam) {
+      tasks.push(
+        fetch('https://google.serper.dev/search', {
+          method: 'POST',
+          headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ q: queryServiceScam, gl, hl, num: 4 }),
+          signal: AbortSignal.timeout(6000),
+        }).then(r => r.json()).catch(() => null)
+      );
+    }
+
+    const results = await Promise.all(tasks);
+    const labels = ['Risk Info', 'Official/Reputation', 'Service Alerts'];
+
     let ctx = '[SEARCH RESULTS]\n';
-    [[r1, 'Safety/Risk Info'], [r2, 'Reputation/Reviews']].forEach(([r, label]) => {
+    results.forEach((r, i) => {
       if (!r || !r.organic) return;
-      ctx += `\n[${label}]\n`;
+      ctx += `\n[${labels[i]}]\n`;
       r.organic.slice(0, 3).forEach(x => {
-        const title = x.title ?? 'No Title';
-        const snippet = x.snippet ?? '';
-        ctx += `• ${title}: ${snippet.slice(0, 150)}\n`;
+        ctx += `• ${x.title}: ${x.snippet}\n`;
       });
     });
 
