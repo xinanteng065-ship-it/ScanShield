@@ -1987,17 +1987,22 @@ async function analyze(raw){
     setLoad(t('loading_threat'));
     let sr=null;if(isU)sr=await serp(raw,dom);
     setLoad(t('loading_ai'));
+    // AIへの送信
     const res=await ai(raw,sc,sr);
     render(res,raw,dom,isU);
-  }catch(e){render('Analysis error: '+e.message+'\n\nPlease try again.',raw,dom,isU);}
-  finally{busy=false;}
+  }catch(e){
+    const isJa=currentLang==='ja';
+    render(isJa ? '分析エラー: ' + e.message : 'Analysis error: ' + e.message, raw, dom, isU);
+  }finally{busy=false;}
 }
+
 async function scrape(url){
   try{
     const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
     if(!r.ok)return null;return parseH((await r.json()).contents||'',url);
   }catch{return null;}
 }
+
 function parseH(html,url){
   const p=new DOMParser().parseFromString(html,'text/html');
   const ttl=p.querySelector('title')?.textContent.trim()||'';
@@ -2005,8 +2010,9 @@ function parseH(html,url){
   const pw=!!p.querySelector('input[type="password"]');const f=p.querySelectorAll('form').length;
   const h=[...p.querySelectorAll('h1,h2')].map(e=>e.textContent.trim()).slice(0,3).join(' / ');
   const b=(p.body?.textContent||'').replace(/\s+/g,' ').trim().slice(0,400);
-  return `[PAGE]\nURL:${url}\nTitle:${ttl||'N/A'}\nMeta:${m||'N/A'}\nHeadings:${h||'N/A'}\nPW:${pw?'YES':'No'}\nForms:${f}\nBody:${b||'N/A'}`;
+  return `[PAGE_CONTENT]\nURL:${url}\nTitle:${ttl}\nMeta:${m}\nPW_Field:${pw?'YES':'NO'}\nForms:${f}\nBody:${b}`;
 }
+
 async function serp(url,dom){
   if(!dom&&!url)return null;
   try{
@@ -2018,15 +2024,26 @@ async function serp(url,dom){
     if(!r.ok)return null;return(await r.json()).result??null;
   }catch{return null;}
 }
+
 async function ai(url,sc,sr){
-  let p='[URL]\n'+url+'\n\n';if(sc)p+=sc+'\n\n';if(sr)p+=sr+'\n\n';p+='Respond in English only.';
+  // プロンプトの組み立て
+  let p=`[ANALYSIS_TARGET]\nURL: ${url}\n\n`;
+  if(sc) p += `[SCRAPED_DATA]\n${sc}\n\n`;
+  if(sr) p += `[SEARCH_CONTEXT]\n${sr}\n\n`;
+  
+  // 言語指定はサーバー側のシステムプロンプトに任せるため、ここでは言語のヒントだけ送る
   return callAI(p,[]);
 }
+
 async function callAI(msg,h){
   try{
     const r=await fetch('/api/analyze',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:msg,history:h,lang:currentLang}),
+      body:JSON.stringify({
+        message:msg,
+        history:h,
+        lang:currentLang // ここで 'ja' か 'en' が飛ぶ
+      }),
       signal:AbortSignal.timeout(28000)
     });
     if(!r.ok){const err=await r.json().catch(()=>({}));throw new Error(err.error||('Server error '+r.status));}
@@ -2034,8 +2051,8 @@ async function callAI(msg,h){
   }catch(e){
     const isJa=currentLang==='ja';
     return isJa
-      ?'安全判定:\n⚠️ 注意 — '+e.message+'\n\n身元: 不明\n目的: N/A\nアドバイス: もう一度試してください。'
-      :'Safety:\n⚠️ CAUTION — '+e.message+'\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: Please try again.';
+      ?`安全性:\n⚠️ 注意 — 接続エラー\n\nサービス名: 不明\n目的: N/A\nアドバイス: ${e.message}。しばらく待ってから再度お試しください。`
+      :`Safety:\n⚠️ CAUTION — Connection Error\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: ${e.message}. Please try again later.`;
   }
 }
 
