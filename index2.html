@@ -1995,7 +1995,7 @@ function procFile(f){
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// ANALYSIS
+// ANALYSIS の一部と ai 関数の強化
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 async function analyze(raw){
   if(!canScan()){showUpgradePrompt();return;}
@@ -2009,37 +2009,35 @@ async function analyze(raw){
   try{
     setLoad(t('loading_connecting'));
     let sc=null;if(isU)sc=await scrape(raw);
+    
+    // ▼ 確認用：スクレイピング結果をコンソールに出力
+    console.log("--- SCRAPE RESULT ---", sc);
 
     setLoad(t('loading_threat'));
     let sr=null;
-    let svcName=dom; // 初期値としてドメインを入れておく
+    let svcName=dom;
     if(isU){
       svcName=extractServiceName(sc,dom);
+      console.log("--- EXTRACTED SERVICE NAME ---", svcName); // 抽出した名前を確認
       sr=await serp(raw,dom,svcName);
+      console.log("--- SEARCH RESULT ---", sr); // 検索結果を確認
     }
 
     setLoad(t('loading_ai'));
-    const res=await ai(raw,sc,sr);
+    const res=await ai(raw,sc,sr,svcName); // svcName も渡すように変更
 
-    // ─── ▼ 追加：Supabase保存用のデータ抽出と送信 ▼ ───
     if(isU){
-      // 1. AIの回答から「判定バッジ」を抽出
       const verdictMatch = res.match(/(✅ SAFE|⚠️ CAUTION|🚨 DANGEROUS|✅ 安全|⚠️ 注意|🚨 危険)/);
       const finalVerdict = verdictMatch ? verdictMatch[1] : 'UNKNOWN';
-      
-      // 2. AIの回答から「サービス名」があれば抽出、なければ推定したsvcNameを使う
       const nameMatch = res.match(/(?:Service|Identity|サービス名):\s*([^\n]+)/i);
       const finalName = nameMatch ? nameMatch[1].trim() : (svcName || dom);
-
-      // 3. 履歴保存関数を呼び出す（この中でSupabaseに飛ぶ）
       await addHistoryEntry(raw, finalVerdict, finalName);
     }
-    // ─── ▲ ここまで ▲ ───
 
     render(res,raw,dom,isU);
   }catch(e){
     const isJa=currentLang==='ja';
-    render(isJa ? '分析エラー: '+e.message : 'Analysis error: '+e.message+'\n\nPlease try again.',raw,dom,isU);
+    render(isJa ? '分析エラー: '+e.message : 'Analysis error: '+e.message, raw, dom, isU);
   }
   finally{busy=false;}
 }
@@ -2085,13 +2083,29 @@ async function serp(url,dom,serviceName){
   }catch{return null;}
 }
 
-async function ai(url,sc,sr){
-  let p='[URL]\n'+url+'\n\n';
-  if(sc)p+=sc+'\n\n';
-  if(sr)p+='[WEB SEARCH — treat this as high-weight evidence]\n'+sr+'\n\n';
+// ▼ AIへの情報の渡し方（プロンプト）を強化
+async function ai(url, sc, sr, svcName) {
+  let p = `Target URL: ${url}\nEstimated Service Name: ${svcName || 'Unknown'}\n\n`;
   
-  // ※ここで「Respond in English only」を削ったことで、サーバー側の言語設定が反映されるようになります
-  return callAI(p,[]);
+  if (sc) {
+    p += `[SCRAPED PAGE DATA]\n${sc}\n\n`;
+  } else {
+    p += `[SCRAPED PAGE DATA]\nCould not fetch page content (possibly blocked).\n\n`;
+  }
+
+  if (sr) {
+    p += `[WEB SEARCH CONTEXT - CRITICAL EVIDENCE]\n${sr}\n\n`;
+  } else {
+    p += `[WEB SEARCH CONTEXT]\nNo search results obtained.\n\n`;
+  }
+
+  // AIに「提供された情報を信じて推測しろ」と強く指示
+  p += `Instructions:
+1. Identify the service based on the URL, Estimated Service Name, or Scraped Data. Even if incomplete, make your best guess.
+2. Evaluate safety heavily based on [WEB SEARCH CONTEXT]. If the domain doesn't match the official site found in search, flag it as DANGEROUS or CAUTION.
+3. If data is limited, use the domain name itself to infer the purpose. Do NOT output "Unknown" if you can guess from the domain.`;
+
+  return callAI(p, []);
 }
 
 async function callAI(msg,h){
