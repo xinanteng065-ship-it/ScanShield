@@ -1818,13 +1818,37 @@ const HIST_KEY='ss_history';
 const HIST_MAX=50;
 function loadHistory(){try{return JSON.parse(localStorage.getItem(HIST_KEY)||'[]');}catch{return[];}}
 function saveHistory(items){try{localStorage.setItem(HIST_KEY,JSON.stringify(items));}catch{}}
-function addHistoryEntry(url,verdict,dom){
-  if(!canHistory())return;
-  const items=loadHistory();
-  if(items.length>0&&items[0].url===url)items.shift();
-  items.unshift({url,verdict,dom:dom||url,ts:Date.now()});
-  if(items.length>HIST_MAX)items.length=HIST_MAX;
-  saveHistory(items);
+async function addHistoryEntry(url, verdict, dom) {
+  // 1. ローカルストレージへの保存（既存）
+  if (canHistory()) {
+    const items = loadHistory();
+    if (items.length > 0 && items[0].url === url) items.shift();
+    items.unshift({ url, verdict, dom: dom || url, ts: Date.now() });
+    if (items.length > HIST_MAX) items.length = HIST_MAX;
+    saveHistory(items);
+  }
+
+  // 2. Supabaseへの保存（追加）
+  // ログインしている場合のみ実行
+  if (_authUser) {
+    try {
+      const { error } = await _sb
+        .from('scan_history')
+        .insert([
+          { 
+            user_id: _authUser.id, 
+            url: url, 
+            service_name: dom, 
+            verdict: verdict 
+          }
+        ]);
+      
+      if (error) console.error('Supabase save error:', error);
+      else console.log('Saved to Supabase successfully');
+    } catch (e) {
+      console.error('Supabase connection error:', e);
+    }
+  }
 }
 function formatDateLabel(ts){
   const d=new Date(ts);
@@ -1981,28 +2005,52 @@ async function analyze(raw){
   const isU=/^https?:\/\//i.test(raw);
   const dom=isU?getDom(raw):null;
   showArea(raw,dom,isU);
+
   try{
     setLoad(t('loading_connecting'));
     let sc=null;if(isU)sc=await scrape(raw);
+
     setLoad(t('loading_threat'));
-    // scrapeの結果からサービス名を抽出してsearch.jsに渡す
     let sr=null;
+    let svcName=dom; // 初期値としてドメインを入れておく
     if(isU){
-      const svcName=extractServiceName(sc,dom);
+      svcName=extractServiceName(sc,dom);
       sr=await serp(raw,dom,svcName);
     }
+
     setLoad(t('loading_ai'));
     const res=await ai(raw,sc,sr);
+
+    // ─── ▼ 追加：Supabase保存用のデータ抽出と送信 ▼ ───
+    if(isU){
+      // 1. AIの回答から「判定バッジ」を抽出
+      const verdictMatch = res.match(/(✅ SAFE|⚠️ CAUTION|🚨 DANGEROUS|✅ 安全|⚠️ 注意|🚨 危険)/);
+      const finalVerdict = verdictMatch ? verdictMatch[1] : 'UNKNOWN';
+      
+      // 2. AIの回答から「サービス名」があれば抽出、なければ推定したsvcNameを使う
+      const nameMatch = res.match(/(?:Service|Identity|サービス名):\s*([^\n]+)/i);
+      const finalName = nameMatch ? nameMatch[1].trim() : (svcName || dom);
+
+      // 3. 履歴保存関数を呼び出す（この中でSupabaseに飛ぶ）
+      await addHistoryEntry(raw, finalVerdict, finalName);
+    }
+    // ─── ▲ ここまで ▲ ───
+
     render(res,raw,dom,isU);
-  }catch(e){render('Analysis error: '+e.message+'\n\nPlease try again.',raw,dom,isU);}
+  }catch(e){
+    const isJa=currentLang==='ja';
+    render(isJa ? '分析エラー: '+e.message : 'Analysis error: '+e.message+'\n\nPlease try again.',raw,dom,isU);
+  }
   finally{busy=false;}
 }
+
 async function scrape(url){
   try{
     const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
     if(!r.ok)return null;return parseH((await r.json()).contents||'',url);
   }catch{return null;}
 }
+
 function parseH(html,url){
   const p=new DOMParser().parseFromString(html,'text/html');
   const ttl=p.querySelector('title')?.textContent.trim()||'';
@@ -2012,6 +2060,7 @@ function parseH(html,url){
   const b=(p.body?.textContent||'').replace(/\s+/g,' ').trim().slice(0,400);
   return `[PAGE]\nURL:${url}\nTitle:${ttl||'N/A'}\nMeta:${m||'N/A'}\nHeadings:${h||'N/A'}\nPW:${pw?'YES':'No'}\nForms:${f}\nBody:${b||'N/A'}`;
 }
+
 // scrapeした結果からサービス名を推定（titleやh1から）
 function extractServiceName(sc,dom){
   if(!sc)return dom||null;
@@ -2023,6 +2072,7 @@ function extractServiceName(sc,dom){
   }
   return dom||null;
 }
+
 async function serp(url,dom,serviceName){
   if(!dom&&!url)return null;
   try{
@@ -2034,13 +2084,16 @@ async function serp(url,dom,serviceName){
     if(!r.ok)return null;return(await r.json()).result??null;
   }catch{return null;}
 }
+
 async function ai(url,sc,sr){
   let p='[URL]\n'+url+'\n\n';
   if(sc)p+=sc+'\n\n';
   if(sr)p+='[WEB SEARCH — treat this as high-weight evidence]\n'+sr+'\n\n';
-  p+='Analyze the above and provide your verdict. Pay close attention to any scam/phishing evidence in the search results.';
+  
+  // ※ここで「Respond in English only」を削ったことで、サーバー側の言語設定が反映されるようになります
   return callAI(p,[]);
 }
+
 async function callAI(msg,h){
   try{
     const r=await fetch('/api/analyze',{
@@ -2053,8 +2106,8 @@ async function callAI(msg,h){
   }catch(e){
     const isJa=currentLang==='ja';
     return isJa
-      ?'安全判定:\n⚠️ 注意 — '+e.message+'\n\n身元: 不明\n目的: N/A\nアドバイス: もう一度試してください。'
-      :'Safety:\n⚠️ CAUTION — '+e.message+'\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: Please try again.';
+      ?'安全性:\n⚠️ 注意 — 接続エラー: '+e.message+'\n\n身元: 不明\n目的: N/A\nアドバイス: もう一度試してください。'
+      :'Safety:\n⚠️ CAUTION — Connection Error: '+e.message+'\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: Please try again.';
   }
 }
 
