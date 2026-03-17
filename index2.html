@@ -1985,24 +1985,24 @@ async function analyze(raw){
     setLoad(t('loading_connecting'));
     let sc=null;if(isU)sc=await scrape(raw);
     setLoad(t('loading_threat'));
-    let sr=null;if(isU)sr=await serp(raw,dom);
+    // scrapeの結果からサービス名を抽出してsearch.jsに渡す
+    let sr=null;
+    if(isU){
+      const svcName=extractServiceName(sc,dom);
+      sr=await serp(raw,dom,svcName);
+    }
     setLoad(t('loading_ai'));
-    // AIへの送信
     const res=await ai(raw,sc,sr);
     render(res,raw,dom,isU);
-  }catch(e){
-    const isJa=currentLang==='ja';
-    render(isJa ? '分析エラー: ' + e.message : 'Analysis error: ' + e.message, raw, dom, isU);
-  }finally{busy=false;}
+  }catch(e){render('Analysis error: '+e.message+'\n\nPlease try again.',raw,dom,isU);}
+  finally{busy=false;}
 }
-
 async function scrape(url){
   try{
     const r=await fetch('https://api.allorigins.win/get?url='+encodeURIComponent(url),{signal:AbortSignal.timeout(7000)});
     if(!r.ok)return null;return parseH((await r.json()).contents||'',url);
   }catch{return null;}
 }
-
 function parseH(html,url){
   const p=new DOMParser().parseFromString(html,'text/html');
   const ttl=p.querySelector('title')?.textContent.trim()||'';
@@ -2010,52 +2010,42 @@ function parseH(html,url){
   const pw=!!p.querySelector('input[type="password"]');const f=p.querySelectorAll('form').length;
   const h=[...p.querySelectorAll('h1,h2')].map(e=>e.textContent.trim()).slice(0,3).join(' / ');
   const b=(p.body?.textContent||'').replace(/\s+/g,' ').trim().slice(0,400);
-  return `[PAGE_CONTENT]\nURL:${url}\nTitle:${ttl}\nMeta:${m}\nPW_Field:${pw?'YES':'NO'}\nForms:${f}\nBody:${b}`;
+  return `[PAGE]\nURL:${url}\nTitle:${ttl||'N/A'}\nMeta:${m||'N/A'}\nHeadings:${h||'N/A'}\nPW:${pw?'YES':'No'}\nForms:${f}\nBody:${b||'N/A'}`;
 }
-
-// HTML内の serp 関数を修正
-async function serp(url, dom) {
-  if (!dom && !url) return null;
-  
-  // もし解析済みのサービス名があれば、それを変数に。なければ空でOK
-  // ※AI分析の途中で取得する場合は、scrapeの結果から抽出した名前を渡すと効果的です。
-  const serviceName = ""; // 必要に応じて動的にセット
-
-  try {
-    const r = await fetch('/api/search', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ 
-        url: url, 
-        domain: dom, 
-        serviceName: serviceName, // 追加！
-        lang: currentLang 
-      }),
-      signal: AbortSignal.timeout(10000)
+// scrapeした結果からサービス名を推定（titleやh1から）
+function extractServiceName(sc,dom){
+  if(!sc)return dom||null;
+  const titleM=sc.match(/Title:(.+)/);
+  if(titleM){
+    // タイトルの最初の部分（サービス名らしい部分）を取り出す
+    const title=titleM[1].trim().split(/[|\-–—\/]/)[0].trim();
+    if(title&&title!=='N/A'&&title.length>1&&title.length<40)return title;
+  }
+  return dom||null;
+}
+async function serp(url,dom,serviceName){
+  if(!dom&&!url)return null;
+  try{
+    const r=await fetch('/api/search',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({url,domain:dom,serviceName:serviceName||null,lang:currentLang}),
+      signal:AbortSignal.timeout(10000)
     });
     if(!r.ok)return null;return(await r.json()).result??null;
   }catch{return null;}
 }
-
 async function ai(url,sc,sr){
-  // プロンプトの組み立て
-  let p=`[ANALYSIS_TARGET]\nURL: ${url}\n\n`;
-  if(sc) p += `[SCRAPED_DATA]\n${sc}\n\n`;
-  if(sr) p += `[SEARCH_CONTEXT]\n${sr}\n\n`;
-  
-  // 言語指定はサーバー側のシステムプロンプトに任せるため、ここでは言語のヒントだけ送る
+  let p='[URL]\n'+url+'\n\n';
+  if(sc)p+=sc+'\n\n';
+  if(sr)p+='[WEB SEARCH — treat this as high-weight evidence]\n'+sr+'\n\n';
+  p+='Analyze the above and provide your verdict. Pay close attention to any scam/phishing evidence in the search results.';
   return callAI(p,[]);
 }
-
 async function callAI(msg,h){
   try{
     const r=await fetch('/api/analyze',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        message:msg,
-        history:h,
-        lang:currentLang // ここで 'ja' か 'en' が飛ぶ
-      }),
+      body:JSON.stringify({message:msg,history:h,lang:currentLang}),
       signal:AbortSignal.timeout(28000)
     });
     if(!r.ok){const err=await r.json().catch(()=>({}));throw new Error(err.error||('Server error '+r.status));}
@@ -2063,8 +2053,8 @@ async function callAI(msg,h){
   }catch(e){
     const isJa=currentLang==='ja';
     return isJa
-      ?`安全性:\n⚠️ 注意 — 接続エラー\n\nサービス名: 不明\n目的: N/A\nアドバイス: ${e.message}。しばらく待ってから再度お試しください。`
-      :`Safety:\n⚠️ CAUTION — Connection Error\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: ${e.message}. Please try again later.`;
+      ?'安全判定:\n⚠️ 注意 — '+e.message+'\n\n身元: 不明\n目的: N/A\nアドバイス: もう一度試してください。'
+      :'Safety:\n⚠️ CAUTION — '+e.message+'\n\nIdentity: Unknown\nPurpose: N/A\nAdvice: Please try again.';
   }
 }
 
