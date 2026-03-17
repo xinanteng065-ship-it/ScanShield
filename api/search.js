@@ -8,33 +8,29 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { url, domain, serviceName, lang = 'en' } = req.body ?? {};
+  // フロントエンドからlangが来ても、検索自体は英語で固定するため無視気味に扱います
+  const { url, domain, serviceName } = req.body ?? {};
   if (!domain && !url) return res.status(200).json({ result: null });
 
   const target = serviceName || domain;
-  const isJa = lang === 'ja';
-  
-  // ⭐️ ここが最重要！日本語の場合は日本のGoogle(jp/ja)で検索する
-  const gl = isJa ? 'jp' : 'us';
-  const hl = isJa ? 'ja' : 'en';
 
-  // 検索クエリも言語に合わせて変更（日本語サイトを英語で検索すると精度が落ちるため）
-  const queryRisk = isJa ? `"${target}" 詐欺 フィッシング 悪質` : `"${target}" scam phishing`;
-  const queryRep  = isJa ? `"${target}" 公式サイト 評判` : `"${target}" official site`;
+  // ⭐️ 常に英語で、グローバルの脅威情報と公式サイトを狙う
+  const queryRisk = `"${target}" scam OR phishing OR fraud`;
+  const queryRep  = `"${target}" official website OR legitimate`;
 
   try {
     const [r1, r2] = await Promise.all([
       fetch('https://google.serper.dev/search', {
         method: 'POST',
         headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: queryRisk, gl, hl, num: 4 }), // 動的な gl, hl を使用
+        body: JSON.stringify({ q: queryRisk, gl: 'us', hl: 'en', num: 4 }), // 米国・英語固定
         signal: AbortSignal.timeout(6000),
       }).then(r => r.json()).catch(() => null),
 
       fetch('https://google.serper.dev/search', {
         method: 'POST',
         headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: queryRep, gl, hl, num: 4 }), // 動的な gl, hl を使用
+        body: JSON.stringify({ q: queryRep, gl: 'us', hl: 'en', num: 4 }), // 米国・英語固定
         signal: AbortSignal.timeout(6000),
       }).then(r => r.json()).catch(() => null),
     ]);
@@ -44,7 +40,6 @@ export default async function handler(req, res) {
       if (!r?.organic) return;
       ctx += `[${label}]\n`;
       r.organic.slice(0, 3).forEach(x => {
-        // URLもAIに渡すことで、公式ドメインとの不一致を見抜きやすくする
         ctx += `• ${x.title ?? ''}\n  URL: ${x.link ?? ''}\n  Snippet: ${(x.snippet ?? '').slice(0, 120)}\n`;
       });
     });
