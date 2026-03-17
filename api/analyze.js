@@ -1,7 +1,6 @@
 // api/analyze.js
 // Vercel環境変数: OPENAI_API_KEY
 
-// 著名・信頼できるドメインのリスト（部分一致）
 const TRUSTED_DOMAINS = [
   'google.com','google.co.jp','googleapis.com','goo.gl','gemini.google.com',
   'apple.com','icloud.com',
@@ -22,7 +21,6 @@ const TRUSTED_DOMAINS = [
   'mozilla.org','firefox.com',
 ];
 
-// 日本向けサイトかどうかを判定するTLD・ドメインリスト
 const JP_PATTERNS = [
   '.co.jp','.ne.jp','.or.jp','.ac.jp','.go.jp','.ed.jp','.gr.jp','.jp',
   'rakuten.co.jp','docomo.ne.jp','softbank.jp','nhk.or.jp',
@@ -32,79 +30,91 @@ const JP_PATTERNS = [
   'yahoo.co.jp','line.me','line.com',
 ];
 
-// 内部関数: ドメイン・URLの検索を実行
-async function getSearchContext(url, domain, isJa) {
-  if (!process.env.SERPER_API_KEY) return "";
-  
-  const gl = isJa ? 'jp' : 'us';
-  const hl = isJa ? 'ja' : 'en';
-  const target = url ? `"${url}" OR "${domain}"` : `"${domain}"`;
-  
-  const queryRisk = isJa ? `${target} 詐欺 フィッシング 危険` : `${target} scam phishing fraud`;
-  const queryRep = isJa ? `"${domain}" 評判 安全 レビュー` : `"${domain}" review legitimate safe`;
-
+function isTrustedDomain(url) {
   try {
-    const fetchSearch = (q) => fetch('https://google.serper.dev/search', {
-      method: 'POST',
-      headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ q, gl, hl, num: 4 }),
-      signal: AbortSignal.timeout(5000),
-    }).then(res => res.json()).catch(() => null);
-
-    const [r1, r2] = await Promise.all([fetchSearch(queryRisk), fetchSearch(queryRep)]);
-
-    let ctx = "\n--- Web Search Results ---\n";
-    [[r1, 'Risk Check'], [r2, 'Reputation']].forEach(([r, label]) => {
-      if (!r || !r.organic) return;
-      ctx += `[${label}]\n`;
-      r.organic.slice(0, 3).forEach(x => {
-        ctx += `- ${x.title}: ${x.snippet}\n`;
-      });
-    });
-    return ctx;
-  } catch (e) {
-    return "";
-  }
+    const hostname = new URL(url).hostname.replace(/^www\./, '');
+    return TRUSTED_DOMAINS.some(d => hostname === d || hostname.endsWith('.' + d));
+  } catch { return false; }
 }
 
-// 判定関数
-function isTrustedDomain(url) { /* 既存のロジック */ }
-function isJapaneseSite(url) { /* 既存のロジック */ }
+function isJapaneseSite(url) {
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    return JP_PATTERNS.some(p => hostname.endsWith(p) || hostname === p.replace(/^\./, ''));
+  } catch { return false; }
+}
+
+const getSystemPrompt = (displayLang, siteIsJp, isTrusted) => {
+  const outputJa = displayLang === 'ja';
+  const analysisContext = siteIsJp
+    ? 'This may be a Japanese service. Use Japanese market knowledge to evaluate.'
+    : 'Use global/English market knowledge to evaluate.';
+
+  // 信頼済みドメインのみ特別扱い。それ以外は証拠ベースで判定。
+  const trustedHint = isTrusted
+    ? (outputJa
+        ? '\n特記: このドメインは世界的に著名な正規サービスです。ドメイン自体は ✅ 安全 ですが、URLパスに異常がある場合は注意してください。'
+        : '\nNOTE: This domain is a globally recognized legitimate service. The domain itself is ✅ SAFE, but flag if the URL path looks abnormal.')
+    : '';
+
+  if (outputJa) {
+    return `あなたは厳格なウェブセキュリティアナリストです。
+${analysisContext}
+
+判定基準:
+✅ 安全 — 有名な正規サービス、または信頼できる証拠がある
+⚠️ 注意 — 不審なシグナルがある（スペルミス、偽装、奇妙なURL構造など）
+🚨 危険 — フィッシング/詐欺の明確な証拠がある（検索結果での報告、本物サービスの偽装など）
+
+重要なルール:
+- 検索結果に詐欺・フィッシング報告がある → 必ず ⚠️ 注意 以上にしてください
+- 有名サービスを模倣した偽ドメインは → 🚨 危険 にしてください
+- URLが本物のサービスと微妙に異なる（例: amazon-secure.com, paypa1.com）→ 🚨 危険${trustedHint}
+
+フォーマット (150語以内):
+サービス名: [何のサービスか]
+目的: [何をするサイトか]
+安全性: [✅ 安全 / ⚠️ 注意 / 🚨 危険] — [理由を具体的に]
+アドバイス: [具体的なアドバイス1つ]
+必ず日本語で回答してください。`;
+  }
+
+  return `You are a strict web security analyst.
+${analysisContext}
+
+VERDICT CRITERIA:
+✅ SAFE — Well-known legitimate service, or strong positive evidence
+⚠️ CAUTION — Suspicious signals (typos, impersonation attempts, odd URL structure, unverifiable domain)
+🚨 DANGEROUS — Clear evidence of phishing/scam (reported in search results, impersonating known brands, credential harvesting)
+
+CRITICAL RULES:
+- If search results report scam/phishing → rate ⚠️ CAUTION or higher, NOT SAFE
+- If the URL impersonates a known brand with a fake domain → 🚨 DANGEROUS
+- Subtle domain variations (amazon-secure.com, paypa1.com) → 🚨 DANGEROUS
+- Unknown domain with no reputation data → ⚠️ CAUTION by default${trustedHint}
+
+FORMAT (≤150 words):
+Identity: [what service]
+Purpose: [what it does]
+Safety: [✅ SAFE / ⚠️ CAUTION / 🚨 DANGEROUS] — [specific reason]
+Advice: [one concrete action]
+Always respond in English.`;
+};
 
 export default async function handler(req, res) {
-  // CORS設定などは省略（既存通り）
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { message, history = [], lang = 'en' } = req.body ?? {};
   if (!message) return res.status(400).json({ error: 'No message' });
 
   const urlMatch = message.match(/https?:\/\/[^\s\n]+/);
   const targetUrl = urlMatch ? urlMatch[0] : null;
-  let domain = "";
-  try { if(targetUrl) domain = new URL(targetUrl).hostname; } catch(e){}
-
-  const isJa = lang === 'ja';
   const trusted = targetUrl ? isTrustedDomain(targetUrl) : false;
   const siteIsJp = targetUrl ? isJapaneseSite(targetUrl) : false;
-
-  // 1. 検索を実行して外部情報を取得
-  const searchInfo = (targetUrl && !trusted) 
-    ? await getSearchContext(targetUrl, domain, isJa) 
-    : "";
-
-  // 2. AIへの指示を構築
-  const systemPrompt = `あなたは公平なウェブセキュリティアナリストです。
-提供された [Web Search Results] を分析し、URLの安全性を判定してください。
-${siteIsJp ? '日本向けサービスとして評価してください。' : 'Global context.'}
-${trusted ? '重要: これは著名ドメインです。✅ 安全 としてください。' : ''}
-
-ルール: ✅ 安全, ⚠️ 注意, 🚨 危険。
-迷ったら ✅ 安全 を優先してください。ただし、検索結果に強い警告や被害報告がある場合は 🚨 危険 とします。
-
-回答フォーマット:
-サービス名: [名称]
-目的: [概要]
-安全性: [判定] — [理由]
-アドバイス: [1つ]`;
 
   try {
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -116,17 +126,20 @@ ${trusted ? '重要: これは著名ドメインです。✅ 安全 としてく
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: systemPrompt },
-          ...history.slice(-4),
-          { role: 'user', content: `Analyze this URL: ${targetUrl || message}\n${searchInfo}` },
+          { role: 'system', content: getSystemPrompt(lang, siteIsJp, trusted) },
+          ...history.slice(-8),
+          { role: 'user', content: message },
         ],
+        max_tokens: 600,
         temperature: 0.1,
       }),
-      signal: AbortSignal.timeout(25000),
+      signal: AbortSignal.timeout(22000),
     });
 
+    if (!r.ok) return res.status(502).json({ error: 'OpenAI error: ' + r.status });
     const data = await r.json();
-    return res.status(200).json({ reply: data.choices?.[0]?.message?.content });
+    const reply = data.choices?.[0]?.message?.content ?? '';
+    return res.status(200).json({ reply });
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
