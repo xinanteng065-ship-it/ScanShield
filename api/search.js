@@ -1,90 +1,66 @@
 // api/search.js
-// Vercel環境変数: SERPER_API_KEY
-
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // serviceName（例: "えきねっと", "Amazon"）を新しく受け取るようにします
-  const { url, domain, serviceName, lang = 'en' } = req.body ?? {};
-  if (!domain && !url) return res.status(200).json({ result: null });
+  const { domain, serviceName, lang = 'en' } = req.body ?? {};
+  
+  // サービス名がない場合はドメインで代用
+  const queryBase = serviceName || domain;
+  if (!queryBase) return res.status(200).json({ result: null });
 
   const isJa = lang === 'ja';
   const gl = isJa ? 'jp' : 'us';
   const hl = isJa ? 'ja' : 'en';
 
-  // --- 検索クエリの最適化 ---
+  // --- クエリ設計：サービス名に集中 ---
   
-  // 1. 基本的なドメインのリスク検索
-  const target = url ? `"${url}" OR "${domain}"` : `"${domain}"`;
-  const queryRisk = isJa
-    ? `${target} 詐欺 フィッシング 悪質 危険`
-    : `${target} scam phishing fraud`;
+  // 1. 公式サイト特定用（AIに「本物」のURLを教えるため）
+  const qOfficial = isJa 
+    ? `"${queryBase}" 公式サイト` 
+    : `"${queryBase}" official website`;
 
-  // 2. サービス名に基づいた「本物かどうか」の比較検索
-  // サービス名がある場合、その「公式サイト」を検索して、今のドメインと比較しやすくします
-  const queryRep = (isJa && serviceName)
-    ? `"${serviceName}" 公式サイト 評判 "${domain}"`
-    : (serviceName)
-      ? `"${serviceName}" official website review "${domain}"`
-      : `"${domain}" review legitimate safe`;
+  // 2. 詐欺情報の収集（そのサービスを騙った手口を確認するため）
+  const qScam = isJa 
+    ? `"${queryBase}" 詐欺メール フィッシング 偽サイト` 
+    : `"${queryBase}" phishing scam alert`;
 
-  // 3. 【追加】サービス名 + 詐欺 の複合検索 (偽装サイト発見用)
-  const queryServiceScam = (isJa && serviceName)
-    ? `"${serviceName}" 偽サイト 注意喚起 フィッシング`
-    : (serviceName)
-      ? `"${serviceName}" fake site phishing alert`
-      : null;
+  // 3. ドメインそのものの評判（念のため）
+  const qDomain = `"${domain}" 評判 安全性`;
 
   try {
-    // 検索リクエストの配列を作成
     const tasks = [
+      { q: qOfficial, label: 'Official Sources' },
+      { q: qScam, label: 'Scam Alerts' },
+      { q: qDomain, label: 'Domain Reputation' }
+    ].map(task => 
       fetch('https://google.serper.dev/search', {
         method: 'POST',
         headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: queryRisk, gl, hl, num: 4 }),
-        signal: AbortSignal.timeout(6000),
-      }).then(r => r.json()).catch(() => null),
-
-      fetch('https://google.serper.dev/search', {
-        method: 'POST',
-        headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: queryRep, gl, hl, num: 4 }),
+        body: JSON.stringify({ q: task.q, gl, hl, num: 3 }), // 精度重視で件数を絞る
         signal: AbortSignal.timeout(6000),
       }).then(r => r.json()).catch(() => null)
-    ];
-
-    // serviceNameがある場合のみ、追加の検索を実行
-    if (queryServiceScam) {
-      tasks.push(
-        fetch('https://google.serper.dev/search', {
-          method: 'POST',
-          headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ q: queryServiceScam, gl, hl, num: 4 }),
-          signal: AbortSignal.timeout(6000),
-        }).then(r => r.json()).catch(() => null)
-      );
-    }
+    );
 
     const results = await Promise.all(tasks);
-    const labels = ['Risk Info', 'Official/Reputation', 'Service Alerts'];
+    const labels = ['Official Sources', 'Scam Alerts', 'Domain Reputation'];
 
-    let ctx = '[SEARCH RESULTS]\n';
+    let ctx = `[WEB_SEARCH_CONTEXT]\nTarget Service Name: ${queryBase}\nTarget Domain: ${domain}\n`;
+    
     results.forEach((r, i) => {
       if (!r || !r.organic) return;
-      ctx += `\n[${labels[i]}]\n`;
-      r.organic.slice(0, 3).forEach(x => {
-        ctx += `• ${x.title}: ${x.snippet}\n`;
+      ctx += `\n### ${labels[i]}\n`;
+      r.organic.forEach(x => {
+        // AIがドメインを比較しやすいよう、URLを強調して含める
+        ctx += `• Title: ${x.title}\n  URL: ${x.link}\n  Snippet: ${x.snippet}\n`;
       });
     });
 
     return res.status(200).json({ result: ctx });
   } catch (e) {
-    console.error('Search API error:', e);
     return res.status(200).json({ result: null });
   }
 }
