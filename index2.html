@@ -791,36 +791,55 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       <div class="billing-btn on" style="cursor:default" data-i18n="billing_note">Monthly billing · Cancel anytime</div>
     </div>
     <div class="plan-cards">
-      <!-- FREE -->
-      <div class="plan-card">
-        <div class="plan-name" data-i18n="plan_free_name">Free</div>
-        <div class="plan-price"><span class="amt">$0</span><span class="per" data-i18n="plan_free_per">/ forever</span></div>
-        <p class="plan-desc" data-i18n="plan_free_desc">Perfect for occasional QR scanning. No credit card required.</p>
-        <ul class="plan-feats">
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_5scans">5 scans per day</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_verdict">AI safety verdict</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_chat">Follow-up AI chat</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_url">URL direct analysis</span></li>
-        </ul>
-        <button class="plan-cta primary" onclick="openStripe('pro')" data-i18n="plan_pro_cta">Get Pro →</button>
-      </div>
-      <!-- MAX -->
-      <div class="plan-card max-card">
-        <div class="plan-badge max-badge" data-i18n="plan_max_badge">🚀 Max Power</div>
-        <div class="plan-name max-name" data-i18n="plan_max_name">Max</div>
-        <div class="plan-price"><span class="amt">$9.99</span><span class="per" data-i18n="plan_per_month">/ month</span></div>
-        <p class="plan-desc" data-i18n="plan_max_desc">Unlimited scans, site previews, and sharing. The ultimate protection.</p>
-        <ul class="plan-feats">
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_unlimited">Unlimited scans</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_everything_pro">Everything in Pro</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_history">Scan history (by date)</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_share">Share results (Email · LINE · Copy)</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_priority">Priority analysis queue</span></li>
-          <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_support">Priority email support</span></li>
-        </ul>
-        <button class="plan-cta max-cta" onclick="openStripe('max')" data-i18n="plan_max_cta">Get Max →</button>
-      </div>
-    </div>
+
+  <!-- FREE -->
+  <div class="plan-card">
+    <div class="plan-name" data-i18n="plan_free_name">Free</div>
+    <div class="plan-price"><span class="amt">$0</span><span class="per" data-i18n="plan_free_per">/ forever</span></div>
+    <p class="plan-desc" data-i18n="plan_free_desc">Perfect for occasional QR scanning. No credit card required.</p>
+    <ul class="plan-feats">
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_5scans">5 scans per day</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_verdict">AI safety verdict</span></li>
+      <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_chat">Follow-up AI chat</span></li>
+      <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_url">URL direct analysis</span></li>
+    </ul>
+    <button class="plan-cta ghost" onclick="go('scan')" data-i18n="plan_free_cta">Start for Free</button>
+  </div>
+
+  <!-- PRO -->
+  <div class="plan-card featured">
+    <div class="plan-badge" data-i18n="plan_popular">⚡ Most Popular</div>
+    <div class="plan-name" data-i18n="plan_pro_name">Pro</div>
+    <div class="plan-price"><span class="amt">$2.99</span><span class="per" data-i18n="plan_per_month">/ month</span></div>
+    <p class="plan-desc" data-i18n="plan_pro_desc">Full AI power with all scan modes. Best value for daily users.</p>
+    <ul class="plan-feats">
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_20scans">20 scans per day</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_verdict">AI safety verdict</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_chat">Follow-up AI chat</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_url">URL direct analysis</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_threat">Live web threat search</span></li>
+      <li><div class="ck n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-txt" data-i18n="feat_history">Scan history</span></li>
+    </ul>
+    <button class="plan-cta primary" onclick="openStripe('pro')" data-i18n="plan_pro_cta">Get Pro →</button>
+  </div>
+
+  <!-- MAX -->
+  <div class="plan-card max-card">
+    <div class="plan-badge max-badge" data-i18n="plan_max_badge">🚀 Max Power</div>
+    <div class="plan-name max-name" data-i18n="plan_max_name">Max</div>
+    <div class="plan-price"><span class="amt">$9.99</span><span class="per" data-i18n="plan_per_month">/ month</span></div>
+    <p class="plan-desc" data-i18n="plan_max_desc">Unlimited scans, site previews, and sharing. The ultimate protection.</p>
+    <ul class="plan-feats">
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_unlimited">Unlimited scans</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_everything_pro">Everything in Pro</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_history">Scan history (by date)</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_share">Share results (Email · LINE · Copy)</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_priority">Priority analysis queue</span></li>
+      <li class="active"><div class="ck y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span class="feat-txt" data-i18n="feat_support">Priority email support</span></li>
+    </ul>
+    <button class="plan-cta max-cta" onclick="openStripe('max')" data-i18n="plan_max_cta">Get Max →</button>
+  </div>
+      
     <div class="stripe-note">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       <span data-i18n="stripe_note">Secure payment via Stripe · Cancel anytime · No contracts</span>
