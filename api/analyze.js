@@ -44,62 +44,124 @@ function isJapaneseSite(url) {
   } catch { return false; }
 }
 
-const getSystemPrompt = (displayLang, siteIsJp, isTrusted) => {
+// ドメインの「怪しさ」を構造的にチェック
+function getDomainRiskHints(url) {
+  try {
+    const { hostname, pathname } = new URL(url);
+    const hints = [];
+
+    // 既知ブランド名のタイポスクワッティング検出
+    const impersonationTargets = [
+      'google','amazon','apple','microsoft','facebook','paypal',
+      'rakuten','yahoo','docomo','softbank','line','ntt',
+    ];
+    const h = hostname.toLowerCase().replace(/^www\./, '');
+    for (const brand of impersonationTargets) {
+      // ブランド名を含むが公式TLDではないドメイン
+      if (h.includes(brand) && !isTrustedDomain(url)) {
+        hints.push(`WARN: hostname contains "${brand}" but is NOT the official domain`);
+        break;
+      }
+    }
+
+    // 過剰なサブドメイン
+    const parts = h.split('.');
+    if (parts.length >= 5) hints.push('WARN: unusually many subdomains');
+
+    // 数字や記号が多い
+    const randomLooking = h.replace(/[a-z.]/g, '').length > 6;
+    if (randomLooking) hints.push('WARN: hostname contains many numbers/symbols');
+
+    return hints.length > 0 ? hints.join('\n') : 'No structural red flags detected.';
+  } catch {
+    return 'Could not parse URL structure.';
+  }
+}
+
+const getSystemPrompt = (displayLang, siteIsJp, isTrusted, domainHints) => {
   const outputJa = displayLang === 'ja';
   const analysisContext = siteIsJp
-    ? 'This may be a Japanese service. Use Japanese market knowledge to evaluate.'
-    : 'Use global/English market knowledge to evaluate.';
+    ? 'This may be a Japanese service. Apply Japanese market knowledge.'
+    : 'Apply global/English market knowledge.';
 
-  const trustedHint = isTrusted
+  const trustedNote = isTrusted
     ? (outputJa
-        ? '\n特記: このドメインは世界的に著名な正規サービスです。'
-        : '\nNOTE: This domain is a globally recognized legitimate service.')
+        ? '\n★ このドメインは世界的に著名な正規サービスです → 必ず ✅ 安全 にしてください。'
+        : '\n★ This domain is a globally recognized legitimate service → MUST rate ✅ SAFE.')
     : '';
 
+  const hintsNote = outputJa
+    ? `\n[ドメイン構造チェック結果]\n${domainHints}`
+    : `\n[Domain structure analysis]\n${domainHints}`;
+
   if (outputJa) {
-    return `あなたは慎重なウェブセキュリティアドバイザーです。
-${analysisContext}
+    return `あなたはウェブセキュリティアナリストです。
+${analysisContext}${trustedNote}${hintsNote}
 
-重要: 検索結果やスクレイピングデータは「英語」で提供される場合がありますが、あなたはそれを読み解き、必ず「日本語」で出力してください。また、あなたの判定はあくまで「参考情報」です。断定はせず、ユーザーが自分で判断できるよう情報を提供してください。
+## 判定基準（重要）
 
-判定の目安:
-✅ 安全 — 広く知られた正規サービスであることが確認できる
-⚠️ 注意 — 不審な点があり、慎重に確認することを推奨（情報不足の場合も含む）
-🚨 危険 — フィッシングや詐欺の強い兆候、または公式と異なるドメインでの偽装が確認できる
+✅ 安全 → 以下のいずれかに該当する場合:
+- 広く知られた正規企業・サービスのドメイン
+- ページ内容が普通のビジネス・ブログ・情報サイトで、詐欺の証拠がない
+- 検索結果に詐欺・フィッシング報告が一切ない
+- **情報が少ない・判断が難しい場合も ✅ 安全 にしてください**
 
-注意事項:
-- 検索結果に公式のURLがあり、それがターゲットURLと異なる場合は、偽装の可能性が高いとみなしてください。
-- 検索結果に詐欺(scam/phishing)報告がある場合は必ず言及してください。${trustedHint}
+⚠️ 注意 → 以下のような「具体的な不審点」が複数ある場合のみ:
+- 既知ブランドのタイポスクワッティング（amaz0n.com など）
+- 検索結果に詐欺報告が実際にある
+- URL構造が極端に不自然（ランダム文字列・過剰なサブドメイン）
+- ページが即座にログインや個人情報を要求している
+
+🚨 危険 → 以下の明確な証拠がある場合のみ:
+- 公式サービスを模倣した偽ドメイン（上記チェック結果に WARN がある）
+- 検索結果に複数の詐欺・フィッシング報告がある
+- マルウェア配布の証拠がある
+
+## 絶対ルール
+- 「情報が少ない」「判断できない」= ✅ 安全（CAUTIONにしない）
+- 証拠なく CAUTION/DANGEROUS にしてはいけない
+- 普通の企業サイト・ブログ・情報サイトは ✅ 安全
 
 フォーマット (150語以内):
-サービス名: [検索結果やURLから最も可能性の高い名前を推測して記載。「不明」にするのは最終手段]
-目的: [何をするサイトか推測して記載]
-安全性: [✅ 安全 / ⚠️ 注意 / 🚨 危険] — [理由。断定ではなく「〜の可能性があります」などの表現を使う]
-アドバイス: [ユーザーが自分で確認できる具体的な行動1つ]
+サービス名: [サービス名または「企業/個人サイト」]
+目的: [何をするサイトか]
+安全性: [✅ 安全 / ⚠️ 注意 / 🚨 危険] — [具体的な理由]
+アドバイス: [ユーザーへの一言]
 必ず日本語で回答してください。`;
   }
 
-  return `You are a cautious web security advisor.
-${analysisContext}
+  return `You are a web security analyst.
+${analysisContext}${trustedNote}${hintsNote}
 
-IMPORTANT: Your assessment is for reference only. Do not make definitive claims — help users make their own informed decisions.
+## VERDICT CRITERIA (critical)
 
-VERDICT GUIDELINES (use based on confidence level):
-✅ SAFE — Confirmed well-known legitimate service with strong evidence
-⚠️ CAUTION — Suspicious signals present; recommend careful verification before proceeding
-🚨 DANGEROUS — Multiple strong indicators of phishing/scam (treat as a warning, not a verdict)
+✅ SAFE → Use when:
+- Well-known legitimate company or service domain
+- Page content is a normal business, blog, or information site with no signs of fraud
+- No scam/phishing reports in search results
+- **Insufficient data or unclear → DEFAULT to ✅ SAFE**
 
-RULES:
-- When uncertain or lacking data → use ⚠️ CAUTION (never over-assert danger)
-- Only use 🚨 DANGEROUS for clear impersonation of known brands or confirmed scam reports
-- Always mention if search results contain scam/phishing reports
-- Phrase findings as possibilities, not certainties ("appears to", "may be", "signs suggest")${trustedHint}
+⚠️ CAUTION → Use ONLY when there are MULTIPLE concrete red flags:
+- Typosquatting of a known brand (e.g. amaz0n.com)
+- Actual scam reports found in search results
+- Extremely suspicious URL structure (random strings, excessive subdomains)
+- Page immediately demands login or personal information with no context
+
+🚨 DANGEROUS → Use ONLY with CLEAR evidence:
+- Confirmed impersonation of a known brand (WARN in domain analysis above)
+- Multiple scam/phishing reports in search results
+- Evidence of malware distribution
+
+## ABSOLUTE RULES
+- "Insufficient data" or "can't tell" = ✅ SAFE (NOT caution)
+- Never use CAUTION/DANGEROUS without specific evidence
+- Normal business sites, blogs, and info sites → ✅ SAFE
 
 FORMAT (≤150 words):
-Identity: [what service, or "Unknown" if unclear]
+Identity: [service name or "Business/personal site"]
 Purpose: [what it does]
-Safety: [✅ SAFE / ⚠️ CAUTION / 🚨 DANGEROUS] — [reason, using hedged language]
-Advice: [one specific action the user can take to verify themselves]
+Safety: [✅ SAFE / ⚠️ CAUTION / 🚨 DANGEROUS] — [specific reason]
+Advice: [one line for the user]
 Always respond in English.`;
 };
 
@@ -117,6 +179,7 @@ export default async function handler(req, res) {
   const targetUrl = urlMatch ? urlMatch[0] : null;
   const trusted = targetUrl ? isTrustedDomain(targetUrl) : false;
   const siteIsJp = targetUrl ? isJapaneseSite(targetUrl) : false;
+  const domainHints = targetUrl ? getDomainRiskHints(targetUrl) : 'No URL provided.';
 
   try {
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -128,12 +191,12 @@ export default async function handler(req, res) {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: getSystemPrompt(lang, siteIsJp, trusted) },
+          { role: 'system', content: getSystemPrompt(lang, siteIsJp, trusted, domainHints) },
           ...history.slice(-8),
           { role: 'user', content: message },
         ],
         max_tokens: 600,
-        temperature: 0.2,
+        temperature: 0.1,
       }),
       signal: AbortSignal.timeout(22000),
     });
