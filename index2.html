@@ -305,7 +305,6 @@ header{position:sticky;top:0;z-index:100;background:rgba(5,13,26,.85);backdrop-f
 .cam-init h3{font-size:17px;font-weight:700;margin-bottom:7px;letter-spacing:-.3px}
 .cam-init p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.65}
 
-.or-line{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.2);font-size:12px;margin:10px 0}
 .or-line::before,.or-line::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.08)}
 
 /* ── URL INPUT PANEL ── */
@@ -889,12 +888,6 @@ footer{margin-top:36px;background:var(--navy-900);border-top:1px solid var(--gla
       </div>
     </div>
 
-        <h3 data-i18n="drop_title">Drop QR image here</h3>
-        <p data-i18n="drop_types">JPG · PNG · WebP · GIF</p>
-        <div class="or-line" data-i18n="drop_or">or</div>
-        <p style="color:var(--blue-300);font-size:14px;font-weight:700" data-i18n="drop_browse">Tap to Browse</p>
-      </div>
-    </div>
 
     <!-- URL pane (Pro & Max plan) -->
     <div class="tp" id="tp-url">
@@ -1169,7 +1162,6 @@ const TRANSLATIONS = {
     tab_camera:'Camera',tab_upload:'Upload',tab_url:'URL',tab_history:'History',
     cam_title:'Real-time QR Scanner',cam_desc:'Point your camera at any QR code for an instant AI safety verdict.',
     cam_enable:'Enable Camera',cam_flip:'Flip',cam_stop:'Stop',
-    drop_title:'Drop QR image here',drop_types:'JPG · PNG · WebP · GIF',drop_or:'or',drop_browse:'Tap to Browse',
     url_panel_title:'Paste URL Directly',
     url_panel_desc:'Already have the link? Enter it below for an instant AI safety check — no QR code needed.',
     url_input_placeholder:'https://example.com',url_analyze_btn:'Analyze',
@@ -1294,7 +1286,6 @@ const TRANSLATIONS = {
     tab_camera:'カメラ',tab_upload:'アップロード',tab_url:'URL',tab_history:'履歴',
     cam_title:'リアルタイムQRスキャナー',cam_desc:'QRコードにカメラをかざすだけで、AIが即座に安全判定を行います。',
     cam_enable:'カメラを起動',cam_flip:'反転',cam_stop:'停止',
-    drop_title:'QR画像をここにドロップ',drop_types:'JPG · PNG · WebP · GIF',drop_or:'または',drop_browse:'タップしてファイルを選択',
     url_panel_title:'URLを直接貼り付け',
     url_panel_desc:'リンクをお持ちの場合は、下に入力するだけでAIが即座に安全判定します。QRコード不要。',
     url_input_placeholder:'https://example.com',url_analyze_btn:'分析する',
