@@ -8,45 +8,96 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // フロントエンドからlangが来ても、検索自体は英語で固定するため無視気味に扱います
-  const { url, domain, serviceName } = req.body ?? {};
+  const { url, domain, serviceName, lang = 'en' } = req.body ?? {};
   if (!domain && !url) return res.status(200).json({ result: null });
 
-  const target = serviceName || domain;
+  if (!process.env.SERPER_API_KEY) {
+    console.error('[search] SERPER_API_KEY is not set');
+    return res.status(200).json({ result: null });
+  }
 
-  // ⭐️ 常に英語で、グローバルの脅威情報と公式サイトを狙う
-  const queryRisk = `"${target}" scam OR phishing OR fraud`;
-  const queryRep  = `"${target}" official website OR legitimate`;
+  const isJa = lang === 'ja';
+  const gl = isJa ? 'jp' : 'us';
+  const hl = isJa ? 'ja' : 'en';
+
+  // 検索ターゲット：URLが短ければフルURL、長ければドメインのみ
+  const useFullUrl = url && url.length <= 80;
+  const riskTarget = useFullUrl ? `"${url}" OR "${domain}"` : `"${domain}"`;
+
+  // サービス名がある場合はそれも検索クエリに使う（「不明なサービス」の精度改善）
+  const repTarget = serviceName && serviceName !== domain
+    ? `"${serviceName}" OR "${domain}"`
+    : `"${domain}"`;
+
+  const queryRisk = isJa
+    ? `${riskTarget} 詐欺 フィッシング`
+    : `${riskTarget} scam phishing`;
+  const queryRep = isJa
+    ? `${repTarget} 評判 安全 サービス`
+    : `${repTarget} review legitimate service`;
+
+  const fetchSerper = async (q) => {
+    const r = await fetch('https://google.serper.dev/search', {
+      method: 'POST',
+      headers: {
+        'X-API-KEY': process.env.SERPER_API_KEY,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ q, gl, hl, num: 5 }),
+      signal: AbortSignal.timeout(9000),
+    });
+    if (!r.ok) {
+      console.error(`[search] Serper HTTP ${r.status} for query: ${q.slice(0, 80)}`);
+      return null;
+    }
+    return r.json().catch(() => null);
+  };
 
   try {
-    const [r1, r2] = await Promise.all([
-      fetch('https://google.serper.dev/search', {
-        method: 'POST',
-        headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: queryRisk, gl: 'us', hl: 'en', num: 4 }), // 米国・英語固定
-        signal: AbortSignal.timeout(6000),
-      }).then(r => r.json()).catch(() => null),
-
-      fetch('https://google.serper.dev/search', {
-        method: 'POST',
-        headers: { 'X-API-KEY': process.env.SERPER_API_KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ q: queryRep, gl: 'us', hl: 'en', num: 4 }), // 米国・英語固定
-        signal: AbortSignal.timeout(6000),
-      }).then(r => r.json()).catch(() => null),
+    const [r1, r2] = await Promise.allSettled([
+      fetchSerper(queryRisk),
+      fetchSerper(queryRep),
     ]);
 
-    let ctx = '[SEARCH]\n';
-    [[r1, 'Risk'], [r2, 'Official']].forEach(([r, label]) => {
-      if (!r?.organic) return;
-      ctx += `[${label}]\n`;
-      r.organic.slice(0, 3).forEach(x => {
-        ctx += `• ${x.title ?? ''}\n  URL: ${x.link ?? ''}\n  Snippet: ${(x.snippet ?? '').slice(0, 120)}\n`;
-      });
-    });
+    const res1 = r1.status === 'fulfilled' ? r1.value : null;
+    const res2 = r2.status === 'fulfilled' ? r2.value : null;
+
+    if (!res1 && !res2) {
+      console.error('[search] Both Serper queries failed');
+      return res.status(200).json({ result: null });
+    }
+
+    let ctx = '[WEB SEARCH RESULTS]\n';
+
+    if (res1) {
+      const hits = res1.organic ?? [];
+      ctx += '[Scam/Threat search]\n';
+      if (hits.length > 0) {
+        hits.slice(0, 4).forEach(x =>
+          ctx += `• ${x.title ?? ''}: ${(x.snippet ?? '').slice(0, 150)}\n`
+        );
+      } else {
+        // 0件も明示 → AIが「詐欺報告なし＝安全の根拠」として使える
+        ctx += '(No scam or phishing reports found)\n';
+      }
+    }
+
+    if (res2) {
+      const hits = res2.organic ?? [];
+      ctx += '[Reputation search]\n';
+      if (hits.length > 0) {
+        hits.slice(0, 4).forEach(x =>
+          ctx += `• ${x.title ?? ''}: ${(x.snippet ?? '').slice(0, 150)}\n`
+        );
+      } else {
+        ctx += '(No reputation results found)\n';
+      }
+    }
 
     return res.status(200).json({ result: ctx });
+
   } catch (e) {
-    console.error('search error:', e);
+    console.error('[search] Unexpected error:', e.message);
     return res.status(200).json({ result: null });
   }
 }
