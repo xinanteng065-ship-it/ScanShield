@@ -9,16 +9,14 @@ const TRUSTED_DOMAINS = [
   'amazon.com','amazon.co.jp','amazonaws.com','amzn.to',
   'twitter.com','x.com','t.co',
   'youtube.com','youtu.be',
-  'github.com','githubusercontent.com',
-  'cloudflare.com',
+  'github.com','githubusercontent.com','cloudflare.com',
   'yahoo.co.jp','yahoo.com','rakuten.co.jp','line.me','line.com',
   'ntt.com','docomo.ne.jp','softbank.jp','au.com','biglobe.ne.jp',
   'nikkeibp.co.jp','nikkei.com','nhk.or.jp','asahi.com','yomiuri.co.jp',
   'stripe.com','paypal.com','visa.com','mastercard.com',
   'netflix.com','spotify.com','slack.com','zoom.us','notion.so',
   'openai.com','anthropic.com','deepmind.com',
-  'wikipedia.org','wikimedia.org',
-  'mozilla.org','firefox.com',
+  'wikipedia.org','wikimedia.org','mozilla.org','firefox.com',
 ];
 
 const JP_PATTERNS = [
@@ -44,38 +42,22 @@ function isJapaneseSite(url) {
   } catch { return false; }
 }
 
-// ドメインの「怪しさ」を構造的にチェック
 function getDomainRiskHints(url) {
   try {
-    const { hostname, pathname } = new URL(url);
+    const { hostname } = new URL(url);
     const hints = [];
-
-    // 既知ブランド名のタイポスクワッティング検出
-    const impersonationTargets = [
-      'google','amazon','apple','microsoft','facebook','paypal',
-      'rakuten','yahoo','docomo','softbank','line','ntt',
-    ];
     const h = hostname.toLowerCase().replace(/^www\./, '');
-    for (const brand of impersonationTargets) {
-      // ブランド名を含むが公式TLDではないドメイン
+    const brands = ['google','amazon','apple','microsoft','facebook','paypal','rakuten','yahoo','docomo','softbank','line','ntt'];
+    for (const brand of brands) {
       if (h.includes(brand) && !isTrustedDomain(url)) {
-        hints.push(`WARN: hostname contains "${brand}" but is NOT the official domain`);
+        hints.push(`WARN: contains "${brand}" but is NOT the official domain — possible impersonation`);
         break;
       }
     }
-
-    // 過剰なサブドメイン
-    const parts = h.split('.');
-    if (parts.length >= 5) hints.push('WARN: unusually many subdomains');
-
-    // 数字や記号が多い
-    const randomLooking = h.replace(/[a-z.]/g, '').length > 6;
-    if (randomLooking) hints.push('WARN: hostname contains many numbers/symbols');
-
-    return hints.length > 0 ? hints.join('\n') : 'No structural red flags detected.';
-  } catch {
-    return 'Could not parse URL structure.';
-  }
+    if (h.split('.').length >= 5) hints.push('WARN: unusually many subdomains');
+    if (h.replace(/[a-z.-]/g, '').length > 5) hints.push('WARN: many numbers/symbols in hostname');
+    return hints.length > 0 ? hints.join('\n') : 'No structural red flags.';
+  } catch { return 'Could not parse URL.'; }
 }
 
 const getSystemPrompt = (displayLang, siteIsJp, isTrusted, domainHints) => {
@@ -87,81 +69,79 @@ const getSystemPrompt = (displayLang, siteIsJp, isTrusted, domainHints) => {
   const trustedNote = isTrusted
     ? (outputJa
         ? '\n★ このドメインは世界的に著名な正規サービスです → 必ず ✅ 安全 にしてください。'
-        : '\n★ This domain is a globally recognized legitimate service → MUST rate ✅ SAFE.')
+        : '\n★ Globally recognized legitimate service → MUST rate ✅ SAFE.')
     : '';
 
-  const hintsNote = outputJa
-    ? `\n[ドメイン構造チェック結果]\n${domainHints}`
-    : `\n[Domain structure analysis]\n${domainHints}`;
+  const hintsBlock = outputJa
+    ? `[ドメイン構造チェック]\n${domainHints}`
+    : `[Domain structure check]\n${domainHints}`;
 
   if (outputJa) {
     return `あなたはウェブセキュリティアナリストです。
-${analysisContext}${trustedNote}${hintsNote}
+${analysisContext}${trustedNote}
 
-## 判定基準（重要）
+${hintsBlock}
 
-✅ 安全 → 以下のいずれかに該当する場合:
-- 広く知られた正規企業・サービスのドメイン
-- ページ内容が普通のビジネス・ブログ・情報サイトで、詐欺の証拠がない
-- 検索結果に詐欺・フィッシング報告が一切ない
-- **情報が少ない・判断が難しい場合も ✅ 安全 にしてください**
+## 判定基準
 
-⚠️ 注意 → 以下のような「具体的な不審点」が複数ある場合のみ:
-- 既知ブランドのタイポスクワッティング（amaz0n.com など）
-- 検索結果に詐欺報告が実際にある
-- URL構造が極端に不自然（ランダム文字列・過剰なサブドメイン）
-- ページが即座にログインや個人情報を要求している
+✅ 安全 — 以下のいずれか:
+- 検索結果にサイトの説明・ページ・評判が存在し、普通のサービス・企業・ブログと確認できる
+- 詐欺・フィッシング報告がない
+- インデックスされていない・情報が少ない（＝危険の証拠がない）→ ✅ 安全
 
-🚨 危険 → 以下の明確な証拠がある場合のみ:
-- 公式サービスを模倣した偽ドメイン（上記チェック結果に WARN がある）
-- 検索結果に複数の詐欺・フィッシング報告がある
-- マルウェア配布の証拠がある
+⚠️ 注意 — 以下が複数ある場合のみ:
+- 有名ブランドのタイポスクワッティング（上記チェックでWARN）
+- 検索結果に実際の詐欺報告がある
+- ページが即座にログインや個人情報を要求
+
+🚨 危険 — 以下の明確な証拠がある場合のみ:
+- 上記チェックでWARN + 詐欺報告あり
+- 複数の明確なフィッシング証拠
 
 ## 絶対ルール
-- 「情報が少ない」「判断できない」= ✅ 安全（CAUTIONにしない）
-- 証拠なく CAUTION/DANGEROUS にしてはいけない
-- 普通の企業サイト・ブログ・情報サイトは ✅ 安全
+- 情報が少ない・不明 → ✅ 安全（CAUTIONにしない）
+- 証拠なしに CAUTION/DANGEROUS にしない
+- [SITE INFO]に正常なページやサービス説明があれば → ✅ 安全
 
-フォーマット (150語以内):
-サービス名: [サービス名または「企業/個人サイト」]
-目的: [何をするサイトか]
-安全性: [✅ 安全 / ⚠️ 注意 / 🚨 危険] — [具体的な理由]
-アドバイス: [ユーザーへの一言]
+フォーマット(150語以内):
+サービス名: [検索結果から特定したサービス名。不明なら「企業/個人サイト」]
+目的: [何をするサイトか。検索結果から推測]
+安全性: [✅ 安全 / ⚠️ 注意 / 🚨 危険] — [理由]
+アドバイス: [一言]
 必ず日本語で回答してください。`;
   }
 
   return `You are a web security analyst.
-${analysisContext}${trustedNote}${hintsNote}
+${analysisContext}${trustedNote}
 
-## VERDICT CRITERIA (critical)
+${hintsBlock}
 
-✅ SAFE → Use when:
-- Well-known legitimate company or service domain
-- Page content is a normal business, blog, or information site with no signs of fraud
-- No scam/phishing reports in search results
-- **Insufficient data or unclear → DEFAULT to ✅ SAFE**
+## VERDICT CRITERIA
 
-⚠️ CAUTION → Use ONLY when there are MULTIPLE concrete red flags:
-- Typosquatting of a known brand (e.g. amaz0n.com)
-- Actual scam reports found in search results
-- Extremely suspicious URL structure (random strings, excessive subdomains)
-- Page immediately demands login or personal information with no context
+✅ SAFE — Use when:
+- Search results show normal pages, service info, or reputation for this domain
+- No scam/phishing reports found
+- Little or no indexed info (absence of evidence is NOT evidence of danger) → ✅ SAFE
 
-🚨 DANGEROUS → Use ONLY with CLEAR evidence:
-- Confirmed impersonation of a known brand (WARN in domain analysis above)
-- Multiple scam/phishing reports in search results
-- Evidence of malware distribution
+⚠️ CAUTION — ONLY when multiple concrete red flags:
+- WARN in domain check above (brand impersonation)
+- Actual scam reports in search results
+- Page immediately demands login/personal info with no context
+
+🚨 DANGEROUS — ONLY with clear evidence:
+- WARN in domain check + scam reports present
+- Multiple confirmed phishing indicators
 
 ## ABSOLUTE RULES
-- "Insufficient data" or "can't tell" = ✅ SAFE (NOT caution)
-- Never use CAUTION/DANGEROUS without specific evidence
-- Normal business sites, blogs, and info sites → ✅ SAFE
+- Insufficient data / unknown → ✅ SAFE (never default to CAUTION)
+- No evidence = no CAUTION/DANGEROUS
+- If [SITE INFO] shows normal pages or service description → ✅ SAFE
 
 FORMAT (≤150 words):
-Identity: [service name or "Business/personal site"]
-Purpose: [what it does]
+Identity: [service name from search results; "Business/personal site" if unclear]
+Purpose: [what it does, inferred from search results]
 Safety: [✅ SAFE / ⚠️ CAUTION / 🚨 DANGEROUS] — [specific reason]
-Advice: [one line for the user]
+Advice: [one line]
 Always respond in English.`;
 };
 
@@ -179,7 +159,7 @@ export default async function handler(req, res) {
   const targetUrl = urlMatch ? urlMatch[0] : null;
   const trusted = targetUrl ? isTrustedDomain(targetUrl) : false;
   const siteIsJp = targetUrl ? isJapaneseSite(targetUrl) : false;
-  const domainHints = targetUrl ? getDomainRiskHints(targetUrl) : 'No URL provided.';
+  const domainHints = targetUrl ? getDomainRiskHints(targetUrl) : 'No URL.';
 
   try {
     const r = await fetch('https://api.openai.com/v1/chat/completions', {
