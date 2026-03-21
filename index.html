@@ -8,465 +8,317 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-/* ─── RESET & TOKENS ─── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --blue:#1d4ed8;--blue-dk:#1338a8;--blue-lt:#eff3ff;
   --ink:#0a0a0a;--mid:#555;--muted:#999;--border:#e8e8e8;
   --bg:#fff;--bg2:#f9f9f9;
-  --grn:#15803d;--red:#dc2626;
-  --sans:'Inter',system-ui,sans-serif;
-  --head:'Inter',system-ui,sans-serif;
+  --grn:#15803d;--grn-lt:#f0fdf4;--grn-bd:#bbf7d0;
+  --red:#dc2626;
+  --f:'Inter',system-ui,sans-serif;
 }
-html{font-size:16px;scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.6;overflow-x:hidden}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--ink);font-family:var(--f);line-height:1.65;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-button{cursor:pointer;font-family:var(--sans);border:none;background:none}
-img{display:block;max-width:100%}
-::selection{background:#c7d7ff;color:#0a0a0a}
+button{cursor:pointer;font-family:var(--f);border:none;background:none}
+::selection{background:#c7d7ff}
 
-/* ─── LAYOUT ─── */
+/* layout */
 .wrap{max-width:1040px;margin:0 auto;padding:0 24px}
-.wrap--md{max-width:720px}
-.wrap--sm{max-width:560px}
+.wrap-md{max-width:680px;margin:0 auto;padding:0 24px}
 
-/* ─── NAV ─── */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:200;
-  height:60px;background:rgba(255,255,255,.9);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-}
-.nav-in{
-  max-width:1040px;margin:0 auto;height:100%;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 24px;
-}
-.logo{display:flex;align-items:center;gap:8px;font-family:var(--head);font-weight:800;font-size:16px;letter-spacing:-.2px;cursor:pointer}
-.logo-icon{width:30px;height:30px;border-radius:8px;background:var(--blue);display:grid;place-items:center;flex-shrink:0}
-.logo-icon svg{width:13px;height:13px}
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:300;height:60px;background:rgba(255,255,255,.92);border-bottom:1px solid var(--border);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.nav-in{max-width:1040px;margin:0 auto;height:100%;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:16px;cursor:pointer;letter-spacing:-.2px}
+.logo-gem{width:30px;height:30px;border-radius:8px;background:var(--blue);display:grid;place-items:center;flex-shrink:0}
+.logo-gem svg{width:13px;height:13px}
 .logo em{font-style:normal;color:var(--blue)}
-
-/* desktop links */
-.nav-links{display:flex;align-items:center;gap:1px}
-.nav-link{padding:7px 12px;border-radius:7px;font-size:13.5px;font-weight:500;color:var(--mid);transition:color .12s,background .12s}
-.nav-link:hover,.nav-link.on{color:var(--ink);background:var(--bg2)}
-.nav-link.on{font-weight:600}
-.nav-cta{
-  margin-left:8px;padding:8px 18px;border-radius:8px;
-  font-size:13.5px;font-weight:600;
-  background:var(--blue);color:#fff;
-  transition:background .15s,transform .15s;
-}
+.nav-links{display:flex;align-items:center;gap:0}
+.nl{padding:7px 12px;border-radius:7px;font-size:13.5px;font-weight:500;color:var(--mid);transition:color .12s,background .12s}
+.nl:hover,.nl.on{color:var(--ink);background:var(--bg2)}
+.nl.on{font-weight:600}
+/* lang toggle */
+.lang-toggle{display:flex;align-items:center;gap:2px;margin-left:6px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:3px}
+.lang-btn{padding:4px 10px;border-radius:5px;font-size:12px;font-weight:600;color:var(--muted);transition:all .12s}
+.lang-btn.on{background:var(--blue);color:#fff}
+.lang-btn:hover:not(.on){color:var(--ink)}
+/* cta */
+.nav-cta{margin-left:10px;padding:8px 18px;border-radius:8px;font-size:13.5px;font-weight:600;background:var(--blue);color:#fff;transition:background .15s,transform .15s;display:inline-flex;align-items:center;gap:6px}
 .nav-cta:hover{background:var(--blue-dk);transform:translateY(-1px)}
-
+.nav-cta svg{width:13px;height:13px}
 /* hamburger */
-.ham{
-  display:none;flex-direction:column;justify-content:center;align-items:center;
-  width:38px;height:38px;border-radius:8px;border:1px solid var(--border);
-  gap:5px;padding:0;transition:border-color .15s;
-}
+.ham{display:none;flex-direction:column;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;border:1px solid var(--border);gap:5px;transition:border-color .12s}
 .ham:hover{border-color:var(--muted)}
 .hbar{width:16px;height:1.5px;background:var(--ink);border-radius:2px;transition:transform .25s,opacity .2s}
 .ham.open .hbar:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .ham.open .hbar:nth-child(2){opacity:0}
 .ham.open .hbar:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 
-/* mobile drawer */
-.drawer{
-  position:fixed;inset:0;z-index:190;pointer-events:none;
-}
-.drawer-bg{position:absolute;inset:0;background:rgba(0,0,0,.35);opacity:0;transition:opacity .25s}
-.drawer-panel{
-  position:absolute;right:0;top:0;bottom:0;
-  width:min(300px,85vw);background:var(--bg);
-  border-left:1px solid var(--border);
-  transform:translateX(100%);
-  transition:transform .3s cubic-bezier(.16,1,.3,1);
-  display:flex;flex-direction:column;
-}
+/* ── DRAWER ── */
+.drawer{position:fixed;inset:0;z-index:200;pointer-events:none}
+.dr-bg{position:absolute;inset:0;background:rgba(0,0,0,.3);opacity:0;transition:opacity .25s}
+.dr-panel{position:absolute;right:0;top:0;bottom:0;width:min(300px,85vw);background:var(--bg);border-left:1px solid var(--border);transform:translateX(100%);transition:transform .3s cubic-bezier(.16,1,.3,1);display:flex;flex-direction:column}
 .drawer.open{pointer-events:all}
-.drawer.open .drawer-bg{opacity:1}
-.drawer.open .drawer-panel{transform:translateX(0)}
-.drawer-head{
-  height:60px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 20px;border-bottom:1px solid var(--border);flex-shrink:0;
-}
-.drawer-x{
-  width:32px;height:32px;border-radius:7px;border:1px solid var(--border);
-  display:grid;place-items:center;font-size:18px;color:var(--mid);transition:background .12s;
-}
-.drawer-x:hover{background:var(--bg2)}
-.drawer-nav{flex:1;padding:10px 12px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
-.drawer-link{
-  display:flex;align-items:center;gap:10px;padding:12px 14px;
-  border-radius:9px;font-size:15px;font-weight:500;color:var(--mid);
-  transition:background .12s,color .12s;text-align:left;width:100%;
-}
-.drawer-link svg{width:16px;height:16px;flex-shrink:0;opacity:.5}
-.drawer-link:hover,.drawer-link.on{background:var(--bg2);color:var(--ink)}
-.drawer-link.on{font-weight:600}
-.drawer-div{height:1px;background:var(--border);margin:6px 0}
-.drawer-foot{padding:16px 12px calc(16px + env(safe-area-inset-bottom));border-top:1px solid var(--border);flex-shrink:0}
-.drawer-cta{
-  display:block;width:100%;padding:13px;border-radius:9px;
-  background:var(--blue);color:#fff;font-size:15px;font-weight:600;
-  text-align:center;transition:background .15s;
-}
-.drawer-cta:hover{background:var(--blue-dk)}
+.drawer.open .dr-bg{opacity:1}
+.drawer.open .dr-panel{transform:translateX(0)}
+.dr-head{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--border);flex-shrink:0}
+.dr-x{width:32px;height:32px;border-radius:7px;border:1px solid var(--border);display:grid;place-items:center;font-size:18px;color:var(--mid);transition:background .12s}
+.dr-x:hover{background:var(--bg2)}
+.dr-nav{flex:1;padding:10px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto}
+.dr-link{display:flex;align-items:center;gap:10px;padding:12px 12px;border-radius:8px;font-size:14.5px;font-weight:500;color:var(--mid);transition:background .12s,color .12s;text-align:left;width:100%}
+.dr-link svg{width:15px;height:15px;opacity:.45;flex-shrink:0}
+.dr-link:hover,.dr-link.on{background:var(--bg2);color:var(--ink)}
+.dr-link.on{font-weight:600}
+.dr-div{height:1px;background:var(--border);margin:6px 0}
+.dr-lang{display:flex;align-items:center;gap:6px;padding:8px 12px;font-size:13px;color:var(--muted)}
+.dr-lang span{font-weight:500}
+.dr-foot{padding:14px 10px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--border);flex-shrink:0}
+.dr-cta{display:block;width:100%;padding:13px;border-radius:9px;background:var(--blue);color:#fff;font-size:14.5px;font-weight:600;text-align:center;transition:background .15s}
+.dr-cta:hover{background:var(--blue-dk)}
 
-/* ─── PAGES ─── */
+/* ── PAGES ── */
 .page{display:none;padding-top:60px;min-height:100vh}
 .page.active{display:block}
 
-/* ─── SHARED SECTION ATOMS ─── */
-.section{padding:88px 0}
-.section--alt{background:var(--bg2)}
-.section--dark{background:var(--ink);color:#fff}
-.eyebrow{
-  display:inline-block;font-size:11px;font-weight:600;
-  letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);
-  margin-bottom:14px;
-}
-.section--dark .eyebrow{color:#93b4ff}
-.h1{font-family:var(--head);font-size:clamp(40px,6.5vw,72px);font-weight:800;letter-spacing:-1.5px;line-height:1.05;color:var(--ink)}
-.h2{font-family:var(--head);font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-1px;line-height:1.1;color:var(--ink)}
-.h3{font-family:var(--head);font-size:clamp(20px,2.8vw,30px);font-weight:700;letter-spacing:-.5px;line-height:1.15;color:var(--ink)}
-.section--dark .h2,.section--dark .h3{color:#fff}
-.lead{font-size:clamp(16px,2vw,19px);color:var(--mid);line-height:1.65;max-width:480px}
-.section--dark .lead{color:rgba(255,255,255,.5)}
+/* ── SHARED ATOMS ── */
+.section{padding:80px 0}
+.section-alt{background:var(--bg2)}
+.section-dark{background:var(--ink);color:#fff}
+.eyebrow{font-size:11.5px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);display:block;margin-bottom:12px}
+.section-dark .eyebrow{color:#93b4ff}
+.h1{font-size:clamp(36px,6vw,64px);font-weight:800;letter-spacing:-1.2px;line-height:1.08;color:var(--ink)}
+.h2{font-size:clamp(26px,4vw,44px);font-weight:800;letter-spacing:-.8px;line-height:1.1;color:var(--ink)}
+.h3{font-size:clamp(20px,2.8vw,28px);font-weight:700;letter-spacing:-.4px;line-height:1.15;color:var(--ink)}
+.section-dark .h2,.section-dark .h3{color:#fff}
+.lead{font-size:clamp(15px,1.8vw,18px);color:var(--mid);line-height:1.7;max-width:520px}
+.section-dark .lead{color:rgba(255,255,255,.5)}
 .blue{color:var(--blue)}
-.section--dark .blue{color:#93b4ff}
-
-/* ─── BUTTONS ─── */
-.btn{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:14px 26px;border-radius:10px;font-size:15px;font-weight:600;
-  transition:all .18s;cursor:pointer;font-family:var(--sans);
-}
-.btn-blue{background:var(--blue);color:#fff;box-shadow:0 2px 12px rgba(29,78,216,.25)}
-.btn-blue:hover{background:var(--blue-dk);transform:translateY(-1px);box-shadow:0 4px 20px rgba(29,78,216,.35)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:9px;font-size:14.5px;font-weight:600;transition:all .18s;cursor:pointer;font-family:var(--f)}
+.btn-blue{background:var(--blue);color:#fff;box-shadow:0 2px 10px rgba(29,78,216,.2)}
+.btn-blue:hover{background:var(--blue-dk);transform:translateY(-1px);box-shadow:0 4px 18px rgba(29,78,216,.3)}
 .btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--border)}
 .btn-outline:hover{border-color:var(--muted);background:var(--bg2)}
 .btn-outline-wh{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.25)}
 .btn-outline-wh:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.5)}
-.btn svg{width:15px;height:15px}
-
-/* ─── FADE REVEAL ─── */
-.fade{opacity:0;transform:translateY(20px);transition:opacity .55s ease,transform .55s ease}
+.btn svg{width:14px;height:14px}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.fade{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
 .fade.in{opacity:1;transform:none}
 
-/* ═══════════════════════════
-   PAGE: HOME
-═══════════════════════════ */
-.hero{
-  padding:100px 0 80px;
-  border-bottom:1px solid var(--border);
-}
+/* ── HOME ── */
+.hero{padding:88px 0 72px;border-bottom:1px solid var(--border)}
 .hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.hero-text{}
-.hero-text .h1{margin-bottom:20px}
-.hero-text .lead{margin-bottom:36px}
-.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
-.hero-trust{display:flex;flex-direction:column;gap:8px;margin-top:28px}
-.trust-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
-.trust-item svg{color:var(--blue);flex-shrink:0;width:14px;height:14px}
+.hero-text .h1{margin-bottom:18px}
+.hero-text .lead{margin-bottom:32px}
+.hero-trust{margin-top:24px;display:flex;flex-direction:column;gap:7px}
+.trust-it{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted)}
+.trust-it svg{width:13px;height:13px;color:var(--blue);flex-shrink:0}
+/* result card */
+.rc{background:var(--bg2);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.rc-bar{background:var(--bg);border-bottom:1px solid var(--border);padding:10px 14px;display:flex;align-items:center;gap:8px}
+.rc-dots{display:flex;gap:4px}
+.rc-dot{width:10px;height:10px;border-radius:50%}
+.rc-dot:nth-child(1){background:#ff5f57}
+.rc-dot:nth-child(2){background:#febc2e}
+.rc-dot:nth-child(3){background:#28c840}
+.rc-url{font-size:11px;font-family:ui-monospace,monospace;color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rc-body{padding:18px}
+.rc-verdict{display:flex;align-items:flex-start;gap:10px;padding:13px 14px;background:var(--grn-lt);border:1px solid var(--grn-bd);border-radius:9px;margin-bottom:12px}
+.rc-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:100px;background:var(--grn);color:#fff;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.rc-vtxt{font-size:13px;color:var(--grn);font-weight:500;line-height:1.4}
+.rc-rows{display:flex;flex-direction:column;gap:2px}
+.rc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg);border-radius:7px;font-size:13px}
+.rc-lbl{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px;font-weight:500}
+.rc-val{font-weight:600}
+.rc-val.ok{color:var(--grn)}
 
-/* hero right — verdict card */
-.hero-card{
-  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
-  overflow:hidden;
-}
-.hc-bar{
-  background:var(--bg);border-bottom:1px solid var(--border);
-  padding:11px 16px;display:flex;align-items:center;gap:10px;
-}
-.hc-dots{display:flex;gap:5px}
-.hc-dot{width:10px;height:10px;border-radius:50%}
-.hc-dot:nth-child(1){background:#ff5f57}
-.hc-dot:nth-child(2){background:#febc2e}
-.hc-dot:nth-child(3){background:#28c840}
-.hc-url{font-size:11.5px;font-family:ui-monospace,'SFMono-Regular',monospace;color:var(--muted)}
-.hc-body{padding:20px}
-.hc-verdict{
-  display:flex;align-items:flex-start;gap:12px;padding:14px 16px;
-  background:#f0fdf4;border:1px solid var(--grn-bd);border-radius:10px;margin-bottom:14px;
-}
-.hc-badge{
-  font-size:11px;font-weight:600;letter-spacing:.5px;
-  padding:3px 9px;border-radius:100px;
-  background:var(--grn);color:#fff;white-space:nowrap;flex-shrink:0;margin-top:2px;
-}
-.hc-verdict-txt{font-size:13.5px;color:var(--grn);font-weight:500;line-height:1.45}
-.hc-rows{display:flex;flex-direction:column;gap:1px}
-.hc-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:9px 12px;background:var(--bg);border-radius:7px;font-size:13px;
-}
-.hc-row:not(:last-child){margin-bottom:2px}
-.hc-label{color:var(--muted);font-size:11px;font-weight:500;letter-spacing:.3px;text-transform:uppercase}
-.hc-val{font-weight:600;color:var(--ink)}
-.hc-val.ok{color:var(--grn)}
-
-/* home scroll sections */
-.home-steps{padding:80px 0;border-bottom:1px solid var(--border)}
-.step-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:48px}
-.step-num{
-  font-family:var(--head);font-size:13px;font-weight:700;
-  color:var(--blue);letter-spacing:.5px;margin-bottom:10px;
-}
-.step-title{font-family:var(--head);font-size:18px;font-weight:700;letter-spacing:-.2px;margin-bottom:8px}
+.how-strip{padding:72px 0;border-bottom:1px solid var(--border)}
+.step-row{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:44px}
+.step-n{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:.5px;margin-bottom:8px}
+.step-title{font-size:17px;font-weight:700;letter-spacing:-.2px;margin-bottom:8px}
 .step-body{font-size:14px;color:var(--mid);line-height:1.65}
 
-.home-cta{padding:80px 0;text-align:center;background:var(--ink);color:#fff}
-.home-cta .h2{color:#fff;margin-bottom:14px}
-.home-cta p{color:rgba(255,255,255,.5);font-size:17px;margin-bottom:32px}
-.home-cta .hero-btns{justify-content:center}
+.home-cta{padding:80px 0;text-align:center;background:var(--ink)}
+.home-cta .h2{color:#fff;margin-bottom:12px}
+.home-cta p{color:rgba(255,255,255,.45);font-size:16px;margin-bottom:28px}
+.home-cta .btns{justify-content:center}
 
-/* ═══════════════════════════
-   PAGE: HOW IT WORKS
-═══════════════════════════ */
-.how-hero{padding:72px 0 56px;border-bottom:1px solid var(--border);text-align:center}
-.how-hero .h2{margin-bottom:14px}
+/* ── HOW IT WORKS ── */
+.how-hero{padding:64px 0 52px;border-bottom:1px solid var(--border);text-align:center}
 .how-hero .lead{margin:0 auto}
-
-.how-layers{padding:72px 0;border-bottom:1px solid var(--border)}
-.layer-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:48px}
-.layer-grid.rev{direction:rtl}
-.layer-grid.rev>*{direction:ltr}
-.layer-num{font-family:var(--head);font-size:72px;font-weight:800;color:var(--border);letter-spacing:-2px;line-height:1;margin-bottom:8px}
-.layer-h{font-family:var(--head);font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:10px}
-.layer-p{font-size:15px;color:var(--mid);line-height:1.7}
-.layer-vis{
-  background:var(--bg2);border:1px solid var(--border);border-radius:14px;
-  padding:24px;font-size:13px;color:var(--mid);
-}
-.layer-tag{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:11.5px;font-weight:600;letter-spacing:.3px;
-  padding:5px 12px;border-radius:100px;
-  border:1.5px solid;margin-bottom:12px;
-}
-.tag-blue{border-color:var(--blue);color:var(--blue);background:var(--blue-lt)}
-.tag-grn{border-color:var(--grn-bd);color:var(--grn);background:var(--grn-lt)}
-.layer-vis-rows{display:flex;flex-direction:column;gap:6px}
-.lv-row{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:var(--bg);border-radius:7px;font-size:12.5px}
-.lv-key{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
-.lv-val{font-weight:600;color:var(--ink)}
-.lv-val.ok{color:var(--grn)}
-.lv-val.no{color:var(--red)}
-
-.how-modes{padding:72px 0;background:var(--bg2)}
-.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
-.mode-card{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color .18s}
+.layers-sec{padding:72px 0;border-bottom:1px solid var(--border)}
+.layer{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;margin-bottom:64px}
+.layer:last-child{margin-bottom:0}
+.layer.rev{direction:rtl}
+.layer.rev>*{direction:ltr}
+.layer-n{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.layer-h{font-size:22px;font-weight:700;letter-spacing:-.4px;margin-bottom:10px}
+.layer-p{font-size:14.5px;color:var(--mid);line-height:1.7}
+.layer-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:20px}
+.lc-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.3px;padding:4px 11px;border-radius:100px;background:var(--blue-lt);color:var(--blue);border:1px solid #c7d7ff;margin-bottom:12px}
+.lc-rows{display:flex;flex-direction:column;gap:2px}
+.lc-row{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--bg);border-radius:6px;font-size:12.5px}
+.lc-k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
+.lc-v{font-weight:600}
+.lc-v.bad{color:var(--red)}
+.lc-v.ok{color:var(--grn)}
+.modes-sec{padding:72px 0;background:var(--bg2)}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+.mode-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:26px;transition:border-color .18s}
 .mode-card:hover{border-color:var(--muted)}
-.mode-icon{font-size:28px;margin-bottom:14px}
-.mode-h{font-family:var(--head);font-size:17px;font-weight:700;letter-spacing:-.2px;margin-bottom:8px}
-.mode-p{font-size:14px;color:var(--mid);line-height:1.6}
-.mode-tag{display:inline-block;margin-top:12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;padding:3px 9px;border-radius:100px;background:var(--blue-lt);color:var(--blue)}
-.mode-tag.pro{background:#faf5ff;color:#7c3aed;border:1px solid #e9d5ff}
+.mode-ico{font-size:26px;margin-bottom:12px}
+.mode-h{font-size:16px;font-weight:700;letter-spacing:-.2px;margin-bottom:7px}
+.mode-p{font-size:13.5px;color:var(--mid);line-height:1.6}
+.mode-tag{display:inline-block;margin-top:11px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;padding:3px 9px;border-radius:100px;background:var(--blue-lt);color:var(--blue)}
+.mode-tag.pro{background:#faf5ff;color:#7c3aed}
 
-/* ═══════════════════════════
-   PAGE: THREATS
-═══════════════════════════ */
-.threats-hero{padding:72px 0 56px;border-bottom:1px solid var(--border);text-align:center}
-.threats-hero .lead{margin:0 auto}
-
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-top:48px}
-.stat-cell{padding:36px 28px;background:var(--bg);text-align:center}
-.stat-n{font-family:var(--head);font-size:clamp(40px,6vw,64px);font-weight:800;letter-spacing:-1px;line-height:1;color:var(--blue);margin-bottom:6px}
-.stat-l{font-size:13px;color:var(--muted)}
-
-.threats-grid-sec{padding:72px 0}
-.threats-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:48px}
-.tcard{border:1px solid var(--border);border-radius:14px;padding:28px;transition:border-color .18s,box-shadow .18s}
-.tcard:hover{border-color:var(--muted);box-shadow:0 4px 24px rgba(0,0,0,.06)}
-.tcard-ico{font-size:26px;margin-bottom:14px}
-.tcard-h{font-family:var(--head);font-size:17px;font-weight:700;letter-spacing:-.2px;margin-bottom:8px}
-.tcard-p{font-size:14px;color:var(--mid);line-height:1.65}
-.risk{display:inline-block;margin-top:14px;font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 10px;border-radius:100px}
+/* ── THREATS ── */
+.thr-hero{padding:64px 0 52px;border-bottom:1px solid var(--border);text-align:center}
+.thr-hero .lead{margin:0 auto}
+.thr-grid-sec{padding:72px 0;border-bottom:1px solid var(--border)}
+.thr-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:44px}
+.thr-card{border:1px solid var(--border);border-radius:12px;padding:26px;transition:border-color .18s,box-shadow .18s}
+.thr-card:hover{border-color:var(--muted);box-shadow:0 3px 16px rgba(0,0,0,.06)}
+.thr-ico{font-size:24px;margin-bottom:12px}
+.thr-h{font-size:16px;font-weight:700;letter-spacing:-.2px;margin-bottom:7px}
+.thr-p{font-size:13.5px;color:var(--mid);line-height:1.65}
+.risk{display:inline-block;margin-top:12px;font-size:10.5px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;padding:3px 9px;border-radius:100px}
 .risk-hi{background:#fef2f2;color:var(--red);border:1px solid #fecaca}
-.risk-md{background:#fffbeb;color:var(--amb);border:1px solid #fde68a}
+.risk-md{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
 .risk-em{background:var(--blue-lt);color:var(--blue);border:1px solid #c7d7ff}
-
-.threats-tip{padding:72px 0;background:var(--ink);color:#fff}
-.tip-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;margin-top:0}
-.tip-list{display:flex;flex-direction:column;gap:0;margin-top:32px}
-.tip-item{display:flex;gap:16px;padding:18px 0;border-bottom:1px solid rgba(255,255,255,.08)}
+.thr-tips{padding:72px 0;background:var(--ink)}
+.tips-inner{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
+.tips-h{font-size:clamp(22px,3.5vw,36px);font-weight:800;letter-spacing:-.8px;line-height:1.15;color:#fff;margin-bottom:12px}
+.tips-sub{font-size:15px;color:rgba(255,255,255,.45);margin-bottom:28px}
+.tip-list{display:flex;flex-direction:column;gap:0}
+.tip-item{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid rgba(255,255,255,.08)}
 .tip-item:last-child{border-bottom:none}
-.tip-n{font-family:var(--head);font-size:13px;font-weight:800;color:rgba(255,255,255,.25);flex-shrink:0;padding-top:2px}
-.tip-item h4{font-family:var(--head);font-size:16px;font-weight:700;color:#fff;margin-bottom:4px}
-.tip-item p{font-size:13.5px;color:rgba(255,255,255,.45);line-height:1.6}
-.tip-cta{font-family:var(--head);font-size:clamp(24px,4vw,40px);font-weight:800;letter-spacing:-.8px;color:#fff;line-height:1.15}
-.tip-cta span{color:#93b4ff}
-.tip-cta-sub{font-size:15px;color:rgba(255,255,255,.45);margin:14px 0 28px}
+.tip-num{font-size:11px;font-weight:700;color:rgba(255,255,255,.25);letter-spacing:.5px;flex-shrink:0;padding-top:2px;width:20px}
+.tip-item h4{font-size:14.5px;font-weight:700;color:#fff;margin-bottom:3px}
+.tip-item p{font-size:13px;color:rgba(255,255,255,.42);line-height:1.6}
 
-/* ═══════════════════════════
-   PAGE: PRICING
-═══════════════════════════ */
-.pricing-hero{padding:72px 0 56px;border-bottom:1px solid var(--border);text-align:center}
-.pricing-hero .lead{margin:0 auto}
-
-.plan-sec{padding:72px 0}
-.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.plan{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:30px;position:relative;transition:border-color .18s}
+/* ── PRICING ── */
+.pri-hero{padding:64px 0 52px;border-bottom:1px solid var(--border);text-align:center}
+.pri-hero .lead{margin:0 auto}
+.plans-sec{padding:72px 0}
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.plan{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:28px;position:relative;transition:border-color .18s}
 .plan:hover{border-color:var(--muted)}
 .plan.feat{background:var(--blue);border-color:var(--blue);color:#fff}
-.plan.feat:hover{border-color:var(--blue-dk)}
-.plan-pop{
-  position:absolute;top:-1px;right:24px;
-  font-size:11px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;
-  background:var(--ink);color:#fff;padding:4px 12px;border-radius:0 0 8px 8px;
-}
+.plan-pop{position:absolute;top:0;right:22px;font-size:10.5px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;background:var(--ink);color:#fff;padding:4px 11px;border-radius:0 0 8px 8px}
 .plan.feat .plan-pop{background:#fff;color:var(--blue)}
-.plan-tier{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;color:var(--muted)}
+.plan-tier{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
 .plan.feat .plan-tier{color:rgba(255,255,255,.6)}
 .plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:6px}
-.plan-amt{font-family:var(--head);font-size:52px;font-weight:800;letter-spacing:-1.5px;line-height:1;color:var(--ink)}
+.plan-amt{font-size:48px;font-weight:800;letter-spacing:-1.5px;line-height:1;color:var(--ink)}
 .plan.feat .plan-amt{color:#fff}
 .plan-per{font-size:13px;color:var(--muted)}
 .plan.feat .plan-per{color:rgba(255,255,255,.55)}
-.plan-desc{font-size:13.5px;color:var(--mid);margin-bottom:24px;line-height:1.55}
+.plan-desc{font-size:13.5px;color:var(--mid);margin-bottom:22px;line-height:1.5}
 .plan.feat .plan-desc{color:rgba(255,255,255,.7)}
-.plan-feats{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:26px}
-.plan-feats li{display:flex;align-items:flex-start;gap:8px;font-size:14px;line-height:1.4}
+.plan-feats{list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.plan-feats li{display:flex;align-items:flex-start;gap:8px;font-size:13.5px;line-height:1.4}
 .plan.feat .plan-feats li{color:rgba(255,255,255,.9)}
-.feat-y,.feat-n{width:17px;height:17px;border-radius:5px;display:grid;place-items:center;flex-shrink:0;margin-top:1px}
-.feat-y{background:rgba(21,128,61,.15);border:1px solid rgba(21,128,61,.3)}
-.feat-y svg{color:var(--grn);width:9px;height:9px}
-.plan.feat .feat-y{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3)}
-.plan.feat .feat-y svg{color:#fff}
-.feat-n{background:var(--bg);border:1px solid var(--border)}
-.feat-n svg{color:var(--border);width:9px;height:9px}
-.plan.feat .feat-n{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
-.feat-dim{color:var(--muted)}
-.plan.feat .feat-dim{color:rgba(255,255,255,.4)}
-.plan-btn{
-  width:100%;padding:13px;border-radius:10px;font-size:14px;font-weight:600;
-  font-family:var(--sans);transition:all .18s;
-}
-.plan-btn.dark{background:var(--ink);color:#fff}
-.plan-btn.dark:hover{background:#222}
-.plan-btn.white{background:#fff;color:var(--blue)}
-.plan-btn.white:hover{background:rgba(255,255,255,.9)}
-.plan-btn.ghost{background:var(--bg);border:1.5px solid var(--border);color:var(--ink)}
-.plan-btn.ghost:hover{border-color:var(--muted);background:var(--bg2)}
-.plan-btn.purple{background:#7c3aed;color:#fff}
-.plan-btn.purple:hover{background:#6d28d9}
-.price-note{text-align:center;font-size:13px;color:var(--muted);margin-top:24px;display:flex;align-items:center;justify-content:center;gap:7px}
-.price-note svg{width:13px;height:13px;opacity:.4}
+.fy{width:17px;height:17px;border-radius:5px;display:grid;place-items:center;flex-shrink:0;margin-top:1px;background:rgba(21,128,61,.12);border:1px solid rgba(21,128,61,.25)}
+.fy svg{width:9px;height:9px;color:var(--grn)}
+.plan.feat .fy{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.3)}
+.plan.feat .fy svg{color:#fff}
+.fn{width:17px;height:17px;border-radius:5px;display:grid;place-items:center;flex-shrink:0;margin-top:1px;background:var(--bg);border:1px solid var(--border)}
+.fn svg{width:9px;height:9px;color:var(--border)}
+.plan.feat .fn{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.15)}
+.fdim{color:var(--muted)}
+.plan.feat .fdim{color:rgba(255,255,255,.4)}
+.pbtn{width:100%;padding:13px;border-radius:9px;font-size:14px;font-weight:600;font-family:var(--f);transition:all .18s}
+.pbtn.dark{background:var(--ink);color:#fff}
+.pbtn.dark:hover{background:#222}
+.pbtn.wh{background:#fff;color:var(--blue)}
+.pbtn.wh:hover{background:rgba(255,255,255,.9)}
+.pbtn.ghost{background:var(--bg);border:1.5px solid var(--border);color:var(--ink)}
+.pbtn.ghost:hover{border-color:var(--muted);background:var(--bg2)}
+.pbtn.pur{background:#7c3aed;color:#fff}
+.pbtn.pur:hover{background:#6d28d9}
+.pri-note{text-align:center;font-size:13px;color:var(--muted);margin-top:22px;display:flex;align-items:center;justify-content:center;gap:6px}
+.pri-note svg{width:13px;height:13px;opacity:.4}
+.cmp-sec{padding:72px 0;background:var(--bg2);border-top:1px solid var(--border)}
+.cmp-table{width:100%;border-collapse:collapse;margin-top:44px;font-size:14px}
+.cmp-table th{text-align:left;padding:11px 14px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border)}
+.cmp-table th:not(:first-child){text-align:center}
+.cmp-table td{padding:13px 14px;border-bottom:1px solid var(--border);color:var(--ink)}
+.cmp-table td:not(:first-child){text-align:center;font-weight:500}
+.cmp-table tbody tr:last-child td{border-bottom:none}
+.cmp-table tbody tr:hover td{background:rgba(0,0,0,.015)}
+.ct-y{color:var(--grn);font-size:15px}
+.ct-n{color:var(--border);font-size:15px}
+.ct-feat{color:var(--mid);font-weight:400}
+.ct-name{font-weight:800;font-size:14px;letter-spacing:-.2px}
 
-.compare-sec{padding:72px 0;background:var(--bg2);border-top:1px solid var(--border)}
-.compare-table{width:100%;border-collapse:collapse;margin-top:48px}
-.compare-table th{text-align:left;padding:12px 16px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:2px solid var(--border)}
-.compare-table th:not(:first-child){text-align:center}
-.compare-table td{padding:14px 16px;border-bottom:1px solid var(--border);font-size:14px}
-.compare-table td:not(:first-child){text-align:center}
-.compare-table tr:last-child td{border-bottom:none}
-.compare-table tbody tr:hover td{background:rgba(0,0,0,.02)}
-.ct-feat{color:var(--mid)}
-.ct-y{color:var(--grn);font-weight:600;font-size:16px}
-.ct-n{color:var(--border);font-size:16px}
-.ct-plan{font-family:var(--head);font-weight:800;font-size:15px;letter-spacing:-.3px}
-
-/* ═══════════════════════════
-   PAGE: FAQ
-═══════════════════════════ */
-.faq-hero{padding:72px 0 56px;border-bottom:1px solid var(--border);text-align:center}
+/* ── FAQ ── */
+.faq-hero{padding:64px 0 52px;border-bottom:1px solid var(--border);text-align:center}
 .faq-hero .lead{margin:0 auto}
-
 .faq-sec{padding:72px 0}
-.faq-layout{display:grid;grid-template-columns:280px 1fr;gap:64px;align-items:start}
-.faq-cats{display:flex;flex-direction:column;gap:2px;position:sticky;top:80px}
-.faq-cat{
-  padding:9px 13px;border-radius:8px;font-size:14px;font-weight:500;
-  color:var(--mid);text-align:left;transition:color .12s,background .12s;
-}
+.faq-layout{display:grid;grid-template-columns:220px 1fr;gap:56px;align-items:start}
+.faq-cats{display:flex;flex-direction:column;gap:2px;position:sticky;top:78px}
+.faq-cat-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);padding:4px 10px;margin-bottom:4px}
+.faq-cat{padding:9px 12px;border-radius:8px;font-size:14px;font-weight:500;color:var(--mid);text-align:left;transition:color .12s,background .12s}
 .faq-cat:hover,.faq-cat.on{color:var(--ink);background:var(--bg2);font-weight:600}
-.faq-groups{display:flex;flex-direction:column;gap:48px}
-.faq-group-h{font-family:var(--head);font-size:16px;font-weight:700;letter-spacing:-.3px;margin-bottom:16px;color:var(--muted)}
-.faq-list{display:flex;flex-direction:column;gap:1px;border:1px solid var(--border);border-radius:12px;overflow:hidden}
-.fq{
-  width:100%;padding:17px 20px;text-align:left;
-  background:var(--bg);font-family:var(--sans);font-size:14.5px;font-weight:500;
-  display:flex;align-items:center;justify-content:space-between;gap:12px;
-  border-bottom:1px solid var(--border);transition:background .12s;line-height:1.4;
-}
-.fq:last-of-type{border-bottom:none}
+.faq-groups{display:flex;flex-direction:column;gap:44px}
+.faq-gh{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:14px}
+.fq-list{border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;gap:1px;background:var(--border)}
+.fq{width:100%;padding:16px 18px;text-align:left;background:var(--bg);font-family:var(--f);font-size:14.5px;font-weight:500;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:background .12s;line-height:1.4}
 .fq:hover{background:var(--bg2)}
 .fq.open{background:var(--blue-lt);color:var(--blue)}
-.fq-icon{
-  width:20px;height:20px;border-radius:5px;background:var(--bg2);
-  border:1px solid var(--border);display:grid;place-items:center;flex-shrink:0;
-  transition:background .2s,transform .25s;
-}
-.fq-icon svg{width:10px;height:10px;color:var(--muted);transition:color .2s}
-.fq.open .fq-icon{background:var(--blue);border-color:var(--blue);transform:rotate(45deg)}
-.fq.open .fq-icon svg{color:#fff}
-.fa{
-  background:var(--bg);padding:0 20px;
-  max-height:0;overflow:hidden;
-  font-size:14px;color:var(--mid);line-height:1.7;
-  transition:max-height .3s ease,padding .3s ease;
-  border-bottom:1px solid var(--border);
-}
-.fa:last-child{border-bottom:none}
-.fa.open{max-height:320px;padding:14px 20px 20px}
+.fq-ic{width:20px;height:20px;border-radius:5px;background:var(--bg2);border:1px solid var(--border);display:grid;place-items:center;flex-shrink:0;transition:background .2s,transform .25s}
+.fq-ic svg{width:10px;height:10px;color:var(--muted);transition:color .2s}
+.fq.open .fq-ic{background:var(--blue);border-color:var(--blue);transform:rotate(45deg)}
+.fq.open .fq-ic svg{color:#fff}
+.fa{background:var(--bg);padding:0 18px;max-height:0;overflow:hidden;font-size:14px;color:var(--mid);line-height:1.7;transition:max-height .3s ease,padding .3s ease}
+.fa.open{max-height:300px;padding:14px 18px 18px}
 .fa a{color:var(--blue);text-decoration:underline}
+.faq-cta-sec{padding:72px 0;background:var(--bg2);border-top:1px solid var(--border);text-align:center}
+.faq-cta-sec .h3{margin-bottom:10px}
+.faq-cta-sec p{color:var(--mid);font-size:15px;margin-bottom:24px}
+.faq-cta-sec .btns{justify-content:center}
 
-.faq-cta{padding:72px 0;background:var(--bg2);border-top:1px solid var(--border);text-align:center}
-.faq-cta .h3{margin-bottom:10px}
-.faq-cta p{color:var(--mid);font-size:16px;margin-bottom:28px}
-
-/* ─── FOOTER ─── */
-footer{
-  background:var(--ink);color:#fff;
-  padding:52px 24px 36px;
-}
+/* ── FOOTER ── */
+footer{background:var(--ink);color:#fff;padding:52px 24px 36px}
 .ft-in{max-width:1040px;margin:0 auto}
-.ft-top{display:grid;grid-template-columns:220px 1fr;gap:48px;margin-bottom:40px}
-.ft-brand p{font-size:13px;color:rgba(255,255,255,.35);line-height:1.65;margin-top:9px;max-width:200px}
+.ft-top{display:grid;grid-template-columns:200px 1fr;gap:48px;margin-bottom:40px}
+.ft-brand p{font-size:13px;color:rgba(255,255,255,.3);line-height:1.65;margin-top:9px;max-width:200px}
 .ft-cols{display:flex;gap:40px}
-.fcol h4{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.3);margin-bottom:12px}
+.fcol h4{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,.28);margin-bottom:12px}
 .fcol ul{list-style:none;display:flex;flex-direction:column;gap:7px}
-.fcol li a,.fcol li button{font-size:13.5px;color:rgba(255,255,255,.45);transition:color .12s;padding:0;text-align:left}
+.fcol li a,.fcol li button{font-size:13.5px;color:rgba(255,255,255,.42);transition:color .12s;padding:0;text-align:left}
 .fcol li a:hover,.fcol li button:hover{color:#fff}
-.ft-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12px;color:rgba(255,255,255,.25)}
+.ft-bot{border-top:1px solid rgba(255,255,255,.08);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;font-size:12px;color:rgba(255,255,255,.22)}
 .ft-bot a{color:rgba(255,255,255,.3);text-decoration:underline}
 
-/* ─── RESPONSIVE ─── */
+/* ── RESPONSIVE ── */
 @media(max-width:768px){
   .nav-links{display:none}
   .ham{display:flex}
-  .wrap{padding:0 18px}
+  .wrap,.wrap-md{padding:0 18px}
   .nav-in{padding:0 18px}
-  .section{padding:60px 0}
-  /* home */
-  .hero{padding:60px 0 52px}
-  .hero-inner{grid-template-columns:1fr;gap:36px}
-  .hero-card{display:none}
-  .step-grid{grid-template-columns:1fr;gap:28px}
-  /* how */
-  .layer-grid,.layer-grid.rev{grid-template-columns:1fr;direction:ltr;gap:28px}
+  .section,.layers-sec,.modes-sec,.thr-grid-sec,.thr-tips,.plans-sec,.cmp-sec,.faq-sec,.faq-cta-sec,.how-strip{padding:56px 0}
+  .hero{padding:56px 0 48px}
+  .hero-inner{grid-template-columns:1fr;gap:32px}
+  .rc{display:none}
+  .step-row{grid-template-columns:1fr;gap:24px}
+  .layer{grid-template-columns:1fr;direction:ltr!important;gap:24px;margin-bottom:40px}
+  .layer.rev>*{direction:ltr}
   .mode-grid{grid-template-columns:1fr}
-  /* threats */
-  .stat-row{grid-template-columns:1fr}
-  .threats-cards{grid-template-columns:1fr}
-  .tip-grid{grid-template-columns:1fr}
-  /* pricing */
-  .plan-grid{grid-template-columns:1fr;max-width:380px;margin:0 auto}
-  .compare-table{font-size:13px}
-  .compare-table th,.compare-table td{padding:10px}
-  /* faq */
+  .thr-grid{grid-template-columns:1fr}
+  .tips-inner{grid-template-columns:1fr;gap:40px}
+  .plan-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}
+  .cmp-table th,.cmp-table td{padding:10px 10px;font-size:13px}
   .faq-layout{grid-template-columns:1fr}
   .faq-cats{display:none}
-  /* footer */
   .ft-top{grid-template-columns:1fr;gap:28px}
   .ft-cols{flex-wrap:wrap;gap:28px}
-  .how-hero,.threats-hero,.pricing-hero,.faq-hero{padding:52px 0 40px}
+  .how-hero,.thr-hero,.pri-hero,.faq-hero{padding:52px 0 40px}
 }
 @media(max-width:480px){
-  .hero-btns{flex-direction:column}
+  .btns{flex-direction:column}
   .btn{justify-content:center}
   .ft-bot{flex-direction:column;text-align:center}
 }
@@ -475,21 +327,25 @@ footer{
 <body>
 
 <!-- ═══ NAV ═══ -->
-<nav class="nav" id="nav">
+<nav class="nav">
   <div class="nav-in">
-    <div class="logo" onclick="gotoPage('home')">
-      <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+    <div class="logo" onclick="nav('home')">
+      <div class="logo-gem"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <span><em>Scan</em>Shield</span>
     </div>
     <div class="nav-links" id="nav-links">
-      <button class="nav-link" data-page="home"    onclick="gotoPage('home')">Home</button>
-      <button class="nav-link" data-page="how"     onclick="gotoPage('how')">How it works</button>
-      <button class="nav-link" data-page="threats" onclick="gotoPage('threats')">Threats</button>
-      <button class="nav-link" data-page="pricing" onclick="gotoPage('pricing')">Pricing</button>
-      <button class="nav-link" data-page="faq"     onclick="gotoPage('faq')">FAQ</button>
+      <button class="nl" data-page="home"    onclick="nav('home')"    data-i18n="nav_home">Home</button>
+      <button class="nl" data-page="how"     onclick="nav('how')"     data-i18n="nav_how">How it works</button>
+      <button class="nl" data-page="threats" onclick="nav('threats')" data-i18n="nav_threats">Threats</button>
+      <button class="nl" data-page="pricing" onclick="nav('pricing')" data-i18n="nav_pricing">Pricing</button>
+      <button class="nl" data-page="faq"     onclick="nav('faq')"     data-i18n="nav_faq">FAQ</button>
+      <div class="lang-toggle">
+        <button class="lang-btn on" id="lb-en" onclick="setLang('en')">EN</button>
+        <button class="lang-btn"    id="lb-ja" onclick="setLang('ja')">JA</button>
+      </div>
       <a href="login.html" class="nav-cta">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
-        Scan now
+        <span data-i18n="nav_cta">Scan now</span>
       </a>
     </div>
     <button class="ham" id="ham" onclick="toggleDrawer()" aria-label="Menu" aria-expanded="false">
@@ -500,88 +356,92 @@ footer{
 
 <!-- ═══ MOBILE DRAWER ═══ -->
 <div class="drawer" id="drawer" aria-hidden="true">
-  <div class="drawer-bg" onclick="closeDrawer()"></div>
-  <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Navigation">
-    <div class="drawer-head">
-      <div class="logo" onclick="closeDrawer();gotoPage('home')" style="font-size:15px">
-        <div class="logo-icon" style="width:28px;height:28px;border-radius:7px"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+  <div class="dr-bg" onclick="closeDrawer()"></div>
+  <div class="dr-panel" role="dialog" aria-modal="true">
+    <div class="dr-head">
+      <div class="logo" onclick="closeDrawer();nav('home')" style="font-size:15px">
+        <div class="logo-gem" style="width:28px;height:28px;border-radius:7px"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
         <span><em>Scan</em>Shield</span>
       </div>
-      <button class="drawer-x" onclick="closeDrawer()" aria-label="Close">×</button>
+      <button class="dr-x" onclick="closeDrawer()" aria-label="Close">×</button>
     </div>
-    <nav class="drawer-nav">
-      <button class="drawer-link" data-page="home"    onclick="closeDrawer();gotoPage('home')">
+    <nav class="dr-nav">
+      <button class="dr-link" data-page="home"    onclick="closeDrawer();nav('home')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Home
+        <span data-i18n="nav_home">Home</span>
       </button>
-      <button class="drawer-link" data-page="how"     onclick="closeDrawer();gotoPage('how')">
+      <button class="dr-link" data-page="how"     onclick="closeDrawer();nav('how')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        How it works
+        <span data-i18n="nav_how">How it works</span>
       </button>
-      <button class="drawer-link" data-page="threats" onclick="closeDrawer();gotoPage('threats')">
+      <button class="dr-link" data-page="threats" onclick="closeDrawer();nav('threats')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-        Threats
+        <span data-i18n="nav_threats">Threats</span>
       </button>
-      <button class="drawer-link" data-page="pricing" onclick="closeDrawer();gotoPage('pricing')">
+      <button class="dr-link" data-page="pricing" onclick="closeDrawer();nav('pricing')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-        Pricing
+        <span data-i18n="nav_pricing">Pricing</span>
       </button>
-      <button class="drawer-link" data-page="faq"     onclick="closeDrawer();gotoPage('faq')">
+      <button class="dr-link" data-page="faq"     onclick="closeDrawer();nav('faq')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        FAQ
+        <span data-i18n="nav_faq">FAQ</span>
       </button>
-      <div class="drawer-div"></div>
-      <a class="drawer-link" href="index.html" onclick="closeDrawer()">
+      <div class="dr-div"></div>
+      <div class="dr-lang">
+        <span data-i18n="lang_label">Language:</span>
+        <button class="lang-btn on" id="lb-en-dr" onclick="setLang('en')" style="border:1px solid var(--border)">EN</button>
+        <button class="lang-btn"    id="lb-ja-dr" onclick="setLang('ja')" style="border:1px solid var(--border)">JA</button>
+      </div>
+      <a class="dr-link" href="login.html" onclick="closeDrawer()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
-        Open scanner app →
+        <span data-i18n="dr_open_app">Open scanner app →</span>
       </a>
     </nav>
-    <div class="drawer-foot">
-      <a href="login.html" class="drawer-cta" onclick="closeDrawer()">Start scanning — free</a>
+    <div class="dr-foot">
+      <a href="login.html" class="dr-cta" onclick="closeDrawer()" data-i18n="cta_free">Start scanning — free</a>
     </div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
+<!-- ══════════════════════════════════
      PAGE: HOME
-════════════════════════════════════════ -->
+══════════════════════════════════ -->
 <div class="page active" id="page-home">
-
   <section class="hero">
     <div class="wrap">
       <div class="hero-inner">
         <div class="hero-text fade">
-          <div class="eyebrow">AI-Powered QR Safety</div>
-          <h1 class="h1">Know before<br/>you <span class="blue">click.</span></h1>
-          <p class="lead">QR codes can hide anything. Scan Shield checks every link with live AI — detecting phishing, malware, and scams in under 3 seconds.</p>
-          <div class="hero-btns">
-            <a href="index.html" class="btn btn-blue">
+          <div class="eyebrow" data-i18n="home_eyebrow">AI-Powered QR Safety</div>
+          <h1 class="h1" data-i18n-html="home_h1">Know before<br/>you <span class="blue">click.</span></h1>
+          <p class="lead" data-i18n="home_lead">QR codes can hide anything. Scan Shield checks every link with live AI — detecting phishing, malware, and scams in under 3 seconds.</p>
+          <div class="btns">
+            <a href="login.html" class="btn btn-blue">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg>
-              Start scanning — free
+              <span data-i18n="cta_free">Start scanning — free</span>
             </a>
-            <button class="btn btn-outline" onclick="gotoPage('how')">How it works</button>
+            <button class="btn btn-outline" onclick="nav('how')" data-i18n="home_how_btn">How it works</button>
           </div>
           <div class="hero-trust">
-            <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>No sign-up · No data stored</div>
-            <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Camera never leaves your device</div>
-            <div class="trust-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Free forever · No credit card</div>
+            <div class="trust-it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="trust1">No sign-up · No data stored</span></div>
+            <div class="trust-it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="trust2">Camera stays on your device</span></div>
+            <div class="trust-it"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="trust3">Free forever · No credit card</span></div>
           </div>
         </div>
-        <div class="hero-card fade">
-          <div class="hc-bar">
-            <div class="hc-dots"><div class="hc-dot"></div><div class="hc-dot"></div><div class="hc-dot"></div></div>
-            <span class="hc-url">scan-shield · analyzing qr code…</span>
+        <div class="rc fade" aria-hidden="true">
+          <div class="rc-bar">
+            <div class="rc-dots"><div class="rc-dot"></div><div class="rc-dot"></div><div class="rc-dot"></div></div>
+            <span class="rc-url">scan-shield · analyzing…</span>
           </div>
-          <div class="hc-body">
-            <div class="hc-verdict">
-              <span class="hc-badge">✅ SAFE</span>
-              <div class="hc-verdict-txt">Verified domain. No phishing signals detected. Safe to open.</div>
+          <div class="rc-body">
+            <div class="rc-verdict">
+              <span class="rc-badge">✅ SAFE</span>
+              <div class="rc-vtxt" data-i18n="rc_verdict_txt">Verified domain. No phishing signals. Safe to open.</div>
             </div>
-            <div class="hc-rows">
-              <div class="hc-row"><span class="hc-label">Domain</span><span class="hc-val">google.com</span></div>
-              <div class="hc-row"><span class="hc-label">Phishing risk</span><span class="hc-val ok">None detected</span></div>
-              <div class="hc-row"><span class="hc-label">Malware</span><span class="hc-val ok">Clean</span></div>
-              <div class="hc-row"><span class="hc-label">Analyzed in</span><span class="hc-val">2.1s</span></div>
+            <div class="rc-rows">
+              <div class="rc-row"><span class="rc-lbl" data-i18n="rc_domain">Domain</span><span class="rc-val">google.com</span></div>
+              <div class="rc-row"><span class="rc-lbl" data-i18n="rc_phishing">Phishing risk</span><span class="rc-val ok" data-i18n="rc_none">None detected</span></div>
+              <div class="rc-row"><span class="rc-lbl" data-i18n="rc_malware">Malware</span><span class="rc-val ok" data-i18n="rc_clean">Clean</span></div>
+              <div class="rc-row"><span class="rc-lbl" data-i18n="rc_time">Analyzed in</span><span class="rc-val">2.1s</span></div>
             </div>
           </div>
         </div>
@@ -589,339 +449,315 @@ footer{
     </div>
   </section>
 
-  <section class="home-steps">
+  <section class="how-strip">
     <div class="wrap">
-      <div class="eyebrow fade">How it works</div>
-      <h2 class="h2 fade">Three steps.<br/>Under 10 seconds.</h2>
-      <div class="step-grid">
+      <div class="eyebrow fade" data-i18n="how_eyebrow">How it works</div>
+      <h2 class="h2 fade" data-i18n="how_h2">Three steps. Under 10 seconds.</h2>
+      <div class="step-row">
         <div class="fade">
-          <div class="step-num">01</div>
-          <div class="step-title">Scan, upload, or paste</div>
-          <p class="step-body">Point your camera, upload a QR screenshot, or paste a URL directly. All three modes work on every device.</p>
+          <div class="step-n">01</div>
+          <div class="step-title" data-i18n="step1_title">Scan, upload, or paste</div>
+          <p class="step-body" data-i18n="step1_body">Camera, image upload, or direct URL — all three modes work on every device, no app needed.</p>
         </div>
         <div class="fade">
-          <div class="step-num">02</div>
-          <div class="step-title">AI runs in parallel</div>
-          <p class="step-body">URL structure, live threat databases, and GPT-4o page reasoning all run at the same time — results in seconds.</p>
+          <div class="step-n">02</div>
+          <div class="step-title" data-i18n="step2_title">AI runs in parallel</div>
+          <p class="step-body" data-i18n="step2_body">URL structure check, live threat database search, and GPT-4o page reasoning — all at the same time.</p>
         </div>
         <div class="fade">
-          <div class="step-num">03</div>
-          <div class="step-title">Instant verdict</div>
-          <p class="step-body">✅ Safe · ⚠️ Caution · 🚨 Dangerous — with a plain-English explanation and AI chat for follow-up questions.</p>
+          <div class="step-n">03</div>
+          <div class="step-title" data-i18n="step3_title">Instant verdict</div>
+          <p class="step-body" data-i18n="step3_body">✅ Safe · ⚠️ Caution · 🚨 Dangerous — with a clear explanation and AI chat for follow-up questions.</p>
         </div>
       </div>
     </div>
   </section>
 
   <section class="home-cta">
-    <div class="wrap" style="text-align:center">
-      <h2 class="h2 fade">Check before you click.</h2>
-      <p class="fade">Free. Private. No install required.</p>
-      <div class="hero-btns fade" style="justify-content:center">
-        <a href="index.html" class="btn btn-blue">Start scanning — free</a>
-        <button class="btn btn-outline-wh" onclick="gotoPage('pricing')">View plans</button>
+    <div class="wrap">
+      <h2 class="h2 fade" data-i18n="home_cta_h">Check before you click.</h2>
+      <p class="fade" data-i18n="home_cta_p">Free. Private. No install required.</p>
+      <div class="btns fade">
+        <a href="login.html" class="btn btn-blue" data-i18n="cta_free">Start scanning — free</a>
+        <button class="btn btn-outline-wh" onclick="nav('pricing')" data-i18n="cta_plans">View plans</button>
       </div>
     </div>
   </section>
-
 </div>
 
-<!-- ════════════════════════════════════════
+<!-- ══════════════════════════════════
      PAGE: HOW IT WORKS
-════════════════════════════════════════ -->
+══════════════════════════════════ -->
 <div class="page" id="page-how">
-
   <section class="how-hero">
-    <div class="wrap wrap--md">
-      <div class="eyebrow fade">How it works</div>
-      <h2 class="h2 fade">Three-layer AI analysis</h2>
-      <p class="lead fade">Every scan runs three checks in parallel — catching threats that blocklists miss entirely.</p>
+    <div class="wrap-md">
+      <div class="eyebrow fade" data-i18n="nav_how">How it works</div>
+      <h2 class="h2 fade" data-i18n="how_page_h">Three-layer AI analysis</h2>
+      <p class="lead fade" data-i18n="how_page_lead">Every scan runs three checks in parallel — catching threats that blocklists miss entirely.</p>
     </div>
   </section>
 
-  <section class="how-layers">
+  <section class="layers-sec">
     <div class="wrap">
-
-      <div class="layer-grid fade">
+      <div class="layer fade">
         <div>
-          <div class="layer-num">01</div>
-          <div class="layer-h">URL Structure</div>
-          <p class="layer-p">Before any network request, we inspect the URL itself. Unusual TLDs, character substitutions (paypa1 vs paypal), excessive subdomains, and known redirect patterns — all flagged instantly.</p>
+          <div class="layer-n" data-i18n="layer1_n">Layer 01</div>
+          <div class="layer-h" data-i18n="layer1_h">URL Structure</div>
+          <p class="layer-p" data-i18n="layer1_p">Before any network request, we inspect the URL itself. Unusual TLDs, character substitutions, excessive subdomains, and known redirect patterns are flagged instantly.</p>
         </div>
-        <div class="layer-vis">
-          <div class="layer-tag tag-blue">Layer 1 · Structural</div>
-          <div class="layer-vis-rows">
-            <div class="lv-row"><span class="lv-key">Domain age</span><span class="lv-val">2 hours</span></div>
-            <div class="lv-row"><span class="lv-key">TLD risk</span><span class="lv-val no">.xyz · High risk</span></div>
-            <div class="lv-row"><span class="lv-key">Typosquat check</span><span class="lv-val no">paypa1.xyz ≠ paypal.com</span></div>
-            <div class="lv-row"><span class="lv-key">Subdomain count</span><span class="lv-val no">7 subdomains</span></div>
+        <div class="layer-card">
+          <div class="lc-tag" data-i18n="layer1_tag">Structural analysis</div>
+          <div class="lc-rows">
+            <div class="lc-row"><span class="lc-k" data-i18n="lc_age">Domain age</span><span class="lc-v bad">2 hours</span></div>
+            <div class="lc-row"><span class="lc-k" data-i18n="lc_tld">TLD risk</span><span class="lc-v bad">.xyz — High</span></div>
+            <div class="lc-row"><span class="lc-k" data-i18n="lc_typo">Typosquat</span><span class="lc-v bad">paypa1.xyz</span></div>
           </div>
         </div>
       </div>
 
-      <div style="height:64px;border-left:1px dashed var(--border);margin-left:28px"></div>
-
-      <div class="layer-grid rev fade">
+      <div class="layer rev fade">
         <div>
-          <div class="layer-num">02</div>
-          <div class="layer-h">Live Threat Intelligence</div>
-          <p class="layer-p">We search the web in real time for scam reports, cybersecurity alerts, and community warnings about the domain. Most phishing sites live under 72 hours — static blocklists can't keep up. We can.</p>
+          <div class="layer-n" data-i18n="layer2_n">Layer 02</div>
+          <div class="layer-h" data-i18n="layer2_h">Live Threat Intelligence</div>
+          <p class="layer-p" data-i18n="layer2_p">We search the web in real time for scam reports, security alerts, and community warnings about the domain. Most phishing sites live under 72 hours — too fast for static blocklists. We catch them live.</p>
         </div>
-        <div class="layer-vis">
-          <div class="layer-tag tag-blue">Layer 2 · Live Search</div>
-          <div class="layer-vis-rows">
-            <div class="lv-row"><span class="lv-key">Scam reports</span><span class="lv-val no">3 found (last 24h)</span></div>
-            <div class="lv-row"><span class="lv-key">Security alerts</span><span class="lv-val no">Flagged on Reddit</span></div>
-            <div class="lv-row"><span class="lv-key">Domain reputation</span><span class="lv-val no">Unknown · No history</span></div>
-            <div class="lv-row"><span class="lv-key">Blocklist hits</span><span class="lv-val no">2 databases</span></div>
+        <div class="layer-card">
+          <div class="lc-tag" data-i18n="layer2_tag">Live search</div>
+          <div class="lc-rows">
+            <div class="lc-row"><span class="lc-k" data-i18n="lc_reports">Scam reports</span><span class="lc-v bad" data-i18n="lc_found">3 found (24h)</span></div>
+            <div class="lc-row"><span class="lc-k" data-i18n="lc_alerts">Security alerts</span><span class="lc-v bad" data-i18n="lc_flagged">Flagged online</span></div>
+            <div class="lc-row"><span class="lc-k" data-i18n="lc_rep">Reputation</span><span class="lc-v bad" data-i18n="lc_unknown">Unknown</span></div>
           </div>
         </div>
       </div>
 
-      <div style="height:64px;border-left:1px dashed var(--border);margin-left:28px"></div>
-
-      <div class="layer-grid fade">
+      <div class="layer fade">
         <div>
-          <div class="layer-num">03</div>
-          <div class="layer-h">GPT-4o Synthesis</div>
-          <p class="layer-p">All signals go into GPT-4o, which reasons about the full picture — URL, page content, threat data, and context together. Conservative by design: only flags danger when multiple clear signals align.</p>
+          <div class="layer-n" data-i18n="layer3_n">Layer 03</div>
+          <div class="layer-h" data-i18n="layer3_h">GPT-4o Synthesis</div>
+          <p class="layer-p" data-i18n="layer3_p">All signals go into GPT-4o, which reasons about the full picture — URL, page content, threat data, and context together. Conservative by design: only flags danger when multiple clear signals align.</p>
         </div>
-        <div class="layer-vis">
-          <div class="layer-tag tag-blue">Layer 3 · AI Verdict</div>
-          <div class="layer-vis-rows">
-            <div class="lv-row"><span class="lv-key">Structural risk</span><span class="lv-val no">High</span></div>
-            <div class="lv-row"><span class="lv-key">Live threat data</span><span class="lv-val no">Confirmed reports</span></div>
-            <div class="lv-row"><span class="lv-key">GPT-4o verdict</span><span class="lv-val no">🚨 DANGEROUS</span></div>
-            <div class="lv-row"><span class="lv-key">Confidence</span><span class="lv-val">94%</span></div>
+        <div class="layer-card">
+          <div class="lc-tag" data-i18n="layer3_tag">AI verdict</div>
+          <div class="lc-rows">
+            <div class="lc-row"><span class="lc-k" data-i18n="lc_struct">Structural</span><span class="lc-v bad" data-i18n="lc_high">High risk</span></div>
+            <div class="lc-row"><span class="lc-k" data-i18n="lc_live">Live data</span><span class="lc-v bad" data-i18n="lc_confirmed">Confirmed</span></div>
+            <div class="lc-row"><span class="lc-k" data-i18n="lc_verdict">Verdict</span><span class="lc-v bad">🚨 DANGEROUS</span></div>
           </div>
         </div>
       </div>
-
     </div>
   </section>
 
-  <section class="how-modes section--alt">
+  <section class="modes-sec">
     <div class="wrap">
-      <div class="eyebrow fade">Three ways to scan</div>
-      <h2 class="h2 fade">Works however you need it</h2>
+      <div class="eyebrow fade" data-i18n="modes_eyebrow">Scan methods</div>
+      <h2 class="h2 fade" data-i18n="modes_h">Three ways to scan</h2>
       <div class="mode-grid">
         <div class="mode-card fade">
-          <div class="mode-icon">📷</div>
-          <div class="mode-h">Camera</div>
-          <p class="mode-p">Point your phone at any QR code for real-time detection. Works in every modern browser — no app download needed.</p>
-          <div class="mode-tag">Free</div>
+          <div class="mode-ico">📷</div>
+          <div class="mode-h" data-i18n="mode1_h">Camera</div>
+          <p class="mode-p" data-i18n="mode1_p">Point your phone at any QR code for real-time detection. Works in every modern browser.</p>
+          <div class="mode-tag" data-i18n="tag_free">Free</div>
         </div>
         <div class="mode-card fade">
-          <div class="mode-icon">🖼️</div>
-          <div class="mode-h">Upload</div>
-          <p class="mode-p">Have a screenshot? Upload the image and we'll extract the QR code and analyze the link instantly.</p>
-          <div class="mode-tag">Free</div>
+          <div class="mode-ico">🖼️</div>
+          <div class="mode-h" data-i18n="mode2_h">Upload</div>
+          <p class="mode-p" data-i18n="mode2_p">Have a screenshot? Upload the image and we'll extract the QR code and analyze the link instantly.</p>
+          <div class="mode-tag" data-i18n="tag_free">Free</div>
         </div>
         <div class="mode-card fade">
-          <div class="mode-icon">🔗</div>
-          <div class="mode-h">Paste URL</div>
-          <p class="mode-p">Already have the link? Paste it directly for an instant AI safety check — no QR code required.</p>
-          <div class="mode-tag pro">Pro &amp; Max</div>
+          <div class="mode-ico">🔗</div>
+          <div class="mode-h" data-i18n="mode3_h">Paste URL</div>
+          <p class="mode-p" data-i18n="mode3_p">Already have the link? Paste it directly for an instant AI safety check — no QR code needed.</p>
+          <div class="mode-tag pro" data-i18n="tag_pro">Pro &amp; Max</div>
         </div>
       </div>
     </div>
   </section>
-
 </div>
 
-<!-- ════════════════════════════════════════
+<!-- ══════════════════════════════════
      PAGE: THREATS
-════════════════════════════════════════ -->
+══════════════════════════════════ -->
 <div class="page" id="page-threats">
-
-  <section class="threats-hero">
-    <div class="wrap wrap--md">
-      <div class="eyebrow fade">The threat landscape</div>
-      <h2 class="h2 fade">QR scams are rising fast</h2>
-      <p class="lead fade">QR phishing — or "quishing" — became the #1 method for bypassing corporate email security in 2024.</p>
-      <div class="stat-row fade">
-        <div class="stat-cell"><div class="stat-n">600%</div><div class="stat-l">Rise in QR phishing attacks, H2 2023</div></div>
-        <div class="stat-cell"><div class="stat-n">#1</div><div class="stat-l">Method bypassing email security filters</div></div>
-        <div class="stat-cell"><div class="stat-n">24h</div><div class="stat-l">Average phishing domain lifespan</div></div>
-      </div>
+  <section class="thr-hero">
+    <div class="wrap-md">
+      <div class="eyebrow fade" data-i18n="thr_eyebrow">The threat landscape</div>
+      <h2 class="h2 fade" data-i18n="thr_h">QR scams are on the rise</h2>
+      <p class="lead fade" data-i18n="thr_lead">QR phishing — or "quishing" — is now one of the fastest-growing cybersecurity attack methods worldwide.</p>
     </div>
   </section>
 
-  <section class="threats-grid-sec">
+  <section class="thr-grid-sec">
     <div class="wrap">
-      <div class="eyebrow fade">Attack types</div>
-      <h2 class="h2 fade">What attackers do</h2>
-      <div class="threats-cards">
-        <div class="tcard fade">
-          <div class="tcard-ico">🎣</div>
-          <div class="tcard-h">QR Phishing</div>
-          <p class="tcard-p">Fake QR codes that redirect to credential-harvesting sites designed to mimic banks, carriers, and delivery services. Often spread via email or printed flyers.</p>
-          <div class="risk risk-hi">High risk</div>
+      <div class="eyebrow fade" data-i18n="thr_types_eyebrow">Attack types</div>
+      <h2 class="h2 fade" data-i18n="thr_types_h">What attackers do</h2>
+      <div class="thr-grid">
+        <div class="thr-card fade">
+          <div class="thr-ico">🎣</div>
+          <div class="thr-h" data-i18n="thr1_h">QR Phishing</div>
+          <p class="thr-p" data-i18n="thr1_p">Fake QR codes that redirect to credential-harvesting sites designed to look like banks, carriers, and delivery services.</p>
+          <div class="risk risk-hi" data-i18n="risk_hi">High risk</div>
         </div>
-        <div class="tcard fade">
-          <div class="tcard-ico">💳</div>
-          <div class="tcard-h">Payment Fraud</div>
-          <p class="tcard-p">Sticker QR codes placed over legitimate ones on parking meters, restaurant tables, and charity boxes — redirecting payments directly to fraudsters.</p>
-          <div class="risk risk-hi">High risk</div>
+        <div class="thr-card fade">
+          <div class="thr-ico">💳</div>
+          <div class="thr-h" data-i18n="thr2_h">Payment Fraud</div>
+          <p class="thr-p" data-i18n="thr2_p">Sticker QR codes placed over real ones on parking meters and restaurant tables — redirecting payments to fraudsters.</p>
+          <div class="risk risk-hi" data-i18n="risk_hi">High risk</div>
         </div>
-        <div class="tcard fade">
-          <div class="tcard-ico">📦</div>
-          <div class="tcard-h">Fake Delivery Scams</div>
-          <p class="tcard-p">"Scan to reschedule your delivery" notices that harvest personal data or silently install tracking software. Common in Japan and across Asia.</p>
-          <div class="risk risk-md">Medium risk</div>
+        <div class="thr-card fade">
+          <div class="thr-ico">📦</div>
+          <div class="thr-h" data-i18n="thr3_h">Fake Delivery Scams</div>
+          <p class="thr-p" data-i18n="thr3_p">"Scan to reschedule delivery" notices that collect personal data or install tracking software. Very common in Japan.</p>
+          <div class="risk risk-md" data-i18n="risk_md">Medium risk</div>
         </div>
-        <div class="tcard fade">
-          <div class="tcard-ico">🔗</div>
-          <div class="tcard-h">Redirect Chains</div>
-          <p class="tcard-p">URL shorteners and multi-hop redirects that hide the real destination — impossible to evaluate without live AI inspection of the final URL.</p>
-          <div class="risk risk-md">Medium risk</div>
+        <div class="thr-card fade">
+          <div class="thr-ico">🔗</div>
+          <div class="thr-h" data-i18n="thr4_h">Redirect Chains</div>
+          <p class="thr-p" data-i18n="thr4_p">URL shorteners that hide the real destination — impossible to evaluate without live AI inspection of the final URL.</p>
+          <div class="risk risk-md" data-i18n="risk_md">Medium risk</div>
         </div>
-        <div class="tcard fade">
-          <div class="tcard-ico">📧</div>
-          <div class="tcard-h">Email Filter Bypass</div>
-          <p class="tcard-p">QR code images embedded in emails bypass text-based spam filters. Now the #1 method used to deliver phishing to corporate inboxes undetected.</p>
-          <div class="risk risk-em">Emerging</div>
+        <div class="thr-card fade">
+          <div class="thr-ico">📧</div>
+          <div class="thr-h" data-i18n="thr5_h">Email Filter Bypass</div>
+          <p class="thr-p" data-i18n="thr5_p">QR images in emails bypass text-based spam filters, landing phishing payloads directly in corporate inboxes.</p>
+          <div class="risk risk-em" data-i18n="risk_em">Emerging</div>
         </div>
-        <div class="tcard fade">
-          <div class="tcard-ico">💻</div>
-          <div class="tcard-h">Malware Droppers</div>
-          <p class="tcard-p">QR codes that trigger app installs or browser exploits — silently installing ransomware or keyloggers without any user interaction beyond the scan.</p>
-          <div class="risk risk-em">Emerging</div>
+        <div class="thr-card fade">
+          <div class="thr-ico">💻</div>
+          <div class="thr-h" data-i18n="thr6_h">Malware Droppers</div>
+          <p class="thr-p" data-i18n="thr6_p">QR codes that trigger browser exploits or app installs — silently deploying ransomware or keyloggers.</p>
+          <div class="risk risk-em" data-i18n="risk_em">Emerging</div>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="threats-tip section--dark">
+  <section class="thr-tips">
     <div class="wrap">
-      <div class="tip-grid">
-        <div>
-          <div class="tip-cta fade">Five red<br/>flags to spot<br/><span>before scanning.</span></div>
-          <p class="tip-cta-sub fade">Even without an AI tool, these signals are worth knowing.</p>
-          <a href="index.html" class="btn btn-blue fade">Scan a QR code now</a>
+      <div class="tips-inner">
+        <div class="fade">
+          <div class="tips-h" data-i18n="tips_h">Five red flags<br/>to spot before scanning.</div>
+          <p class="tips-sub" data-i18n="tips_sub">Even without a tool, these signals are worth knowing.</p>
+          <a href="login.html" class="btn btn-blue" data-i18n="cta_scan_now">Scan a QR code now</a>
         </div>
         <div class="tip-list fade">
-          <div class="tip-item"><div class="tip-n">01</div><div><h4>Sticker over the code</h4><p>Touch the QR code. A sticker on top of a printed QR is a near-certain sign of tampering.</p></div></div>
-          <div class="tip-item"><div class="tip-n">02</div><div><h4>Misspelled domain</h4><p>paypa1.com, amaz0n-secure.net — character substitutions that look right at a glance.</p></div></div>
-          <div class="tip-item"><div class="tip-n">03</div><div><h4>URL shortener</h4><p>bit.ly, tinyurl — the final destination is completely hidden until you land there.</p></div></div>
-          <div class="tip-item"><div class="tip-n">04</div><div><h4>Immediate login request</h4><p>Legitimate services rarely demand credentials the moment you arrive from a QR scan.</p></div></div>
-          <div class="tip-item"><div class="tip-n">05</div><div><h4>Urgency language</h4><p>"Act now or your account closes." Real companies don't deliver ultimatums via QR code.</p></div></div>
+          <div class="tip-item"><div class="tip-num">01</div><div><h4 data-i18n="tip1_h">Sticker over the code</h4><p data-i18n="tip1_p">Touch the QR. A sticker on top of a printed code is a near-certain sign of tampering.</p></div></div>
+          <div class="tip-item"><div class="tip-num">02</div><div><h4 data-i18n="tip2_h">Misspelled domain</h4><p data-i18n="tip2_p">paypa1.com, amaz0n-secure.net — character substitutions that look right at a glance.</p></div></div>
+          <div class="tip-item"><div class="tip-num">03</div><div><h4 data-i18n="tip3_h">URL shortener</h4><p data-i18n="tip3_p">bit.ly, tinyurl — the final destination is completely hidden until you land there.</p></div></div>
+          <div class="tip-item"><div class="tip-num">04</div><div><h4 data-i18n="tip4_h">Immediate login request</h4><p data-i18n="tip4_p">Legitimate services rarely demand credentials the moment you arrive from a QR scan.</p></div></div>
+          <div class="tip-item"><div class="tip-num">05</div><div><h4 data-i18n="tip5_h">Urgency language</h4><p data-i18n="tip5_p">"Act now or your account closes." Real companies don't deliver ultimatums via QR code.</p></div></div>
         </div>
       </div>
     </div>
   </section>
-
 </div>
 
-<!-- ════════════════════════════════════════
+<!-- ══════════════════════════════════
      PAGE: PRICING
-════════════════════════════════════════ -->
+══════════════════════════════════ -->
 <div class="page" id="page-pricing">
-
-  <section class="pricing-hero">
-    <div class="wrap wrap--md">
-      <div class="eyebrow fade">Pricing</div>
-      <h2 class="h2 fade">Simple pricing.<br/>Start for free.</h2>
-      <p class="lead fade">No credit card. No sign-up. Upgrade only when you need more.</p>
+  <section class="pri-hero">
+    <div class="wrap-md">
+      <div class="eyebrow fade" data-i18n="nav_pricing">Pricing</div>
+      <h2 class="h2 fade" data-i18n="pri_h">Simple pricing. Start free.</h2>
+      <p class="lead fade" data-i18n="pri_lead">No credit card. No sign-up. Upgrade only when you need more.</p>
     </div>
   </section>
 
-  <section class="plan-sec">
+  <section class="plans-sec">
     <div class="wrap">
       <div class="plan-grid">
-
         <div class="plan fade">
-          <div class="plan-tier">Free</div>
-          <div class="plan-price"><span class="plan-amt">$0</span><span class="plan-per">/ forever</span></div>
-          <p class="plan-desc">Perfect for occasional QR scanning. No strings attached.</p>
+          <div class="plan-tier" data-i18n="plan_free">Free</div>
+          <div class="plan-price"><span class="plan-amt">$0</span><span class="plan-per" data-i18n="forever">/ forever</span></div>
+          <p class="plan-desc" data-i18n="free_desc">Perfect for occasional scanning. No strings attached.</p>
           <ul class="plan-feats">
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>5 scans per day</li>
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>AI safety verdict</li>
-            <li><div class="feat-n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-dim">Follow-up AI chat</span></li>
-            <li><div class="feat-n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-dim">URL direct analysis</span></li>
-            <li><div class="feat-n"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="feat-dim">Scan history</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_5">5 scans per day</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_verdict">AI safety verdict</span></li>
+            <li><div class="fn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="fdim" data-i18n="feat_chat">Follow-up AI chat</span></li>
+            <li><div class="fn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="fdim" data-i18n="feat_url">URL direct analysis</span></li>
+            <li><div class="fn"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="2" y1="2" x2="10" y2="10"/><line x1="10" y1="2" x2="2" y2="10"/></svg></div><span class="fdim" data-i18n="feat_history">Scan history</span></li>
           </ul>
-          <button class="plan-btn ghost" onclick="location.href='index.html'">Start for free</button>
+          <button class="pbtn ghost" onclick="location.href='login.html'" data-i18n="btn_free">Start for free</button>
         </div>
 
         <div class="plan feat fade">
-          <div class="plan-pop">Most popular</div>
-          <div class="plan-tier">Pro</div>
-          <div class="plan-price"><span class="plan-amt">$2.99</span><span class="plan-per">/ month</span></div>
-          <p class="plan-desc">Full AI power. Best value for daily users.</p>
+          <div class="plan-pop" data-i18n="popular">Most popular</div>
+          <div class="plan-tier" data-i18n="plan_pro">Pro</div>
+          <div class="plan-price"><span class="plan-amt">$2.99</span><span class="plan-per" data-i18n="per_month">/ month</span></div>
+          <p class="plan-desc" data-i18n="pro_desc">Full AI power. Best value for daily users.</p>
           <ul class="plan-feats">
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>20 scans per day</li>
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>AI safety verdict</li>
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>Follow-up AI chat</li>
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>URL direct analysis</li>
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>Live threat search</li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_20">20 scans per day</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_verdict">AI safety verdict</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_chat">Follow-up AI chat</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_url">URL direct analysis</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_threat">Live threat search</span></li>
           </ul>
-          <button class="plan-btn white" onclick="location.href='index.html'">Get Pro →</button>
+          <button class="pbtn wh" onclick="location.href='login.html'" data-i18n="btn_pro">Get Pro →</button>
         </div>
 
         <div class="plan fade" style="border-color:rgba(124,58,237,.25)">
-          <div class="plan-tier">Max</div>
-          <div class="plan-price"><span class="plan-amt">$9.99</span><span class="plan-per">/ month</span></div>
-          <p class="plan-desc">Unlimited scans, history, and sharing.</p>
+          <div class="plan-tier" data-i18n="plan_max">Max</div>
+          <div class="plan-price"><span class="plan-amt">$9.99</span><span class="plan-per" data-i18n="per_month">/ month</span></div>
+          <p class="plan-desc" data-i18n="max_desc">Unlimited scans, history, and sharing.</p>
           <ul class="plan-feats">
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>Unlimited scans</li>
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>Everything in Pro</li>
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>Scan history by date</li>
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>Share results</li>
-            <li><div class="feat-y"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div>Priority support</li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_unlimited">Unlimited scans</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_everything_pro">Everything in Pro</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_history">Scan history</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_share">Share results</span></li>
+            <li><div class="fy"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2 6 5 9 10 3"/></svg></div><span data-i18n="feat_support">Priority support</span></li>
           </ul>
-          <button class="plan-btn purple" onclick="location.href='index.html'">Get Max →</button>
+          <button class="pbtn pur" onclick="location.href='login.html'" data-i18n="btn_max">Get Max →</button>
         </div>
-
       </div>
-      <p class="price-note fade">
+      <p class="pri-note fade">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Secure payment via Stripe · Cancel anytime · No contracts
+        <span data-i18n="stripe_note">Secure payment via Stripe · Cancel anytime · No contracts</span>
       </p>
     </div>
   </section>
 
-  <section class="compare-sec">
+  <section class="cmp-sec">
     <div class="wrap">
-      <div class="eyebrow fade">Compare plans</div>
-      <h2 class="h2 fade">What's included</h2>
-      <table class="compare-table fade">
+      <div class="eyebrow fade" data-i18n="cmp_eyebrow">Compare plans</div>
+      <h2 class="h2 fade" data-i18n="cmp_h">What's included</h2>
+      <table class="cmp-table fade">
         <thead>
           <tr>
-            <th>Feature</th>
-            <th><span class="ct-plan">Free</span></th>
-            <th><span class="ct-plan" style="color:var(--blue)">Pro</span></th>
-            <th><span class="ct-plan" style="color:#7c3aed">Max</span></th>
+            <th data-i18n="cmp_feature">Feature</th>
+            <th><span class="ct-name" data-i18n="plan_free">Free</span></th>
+            <th><span class="ct-name" style="color:var(--blue)" data-i18n="plan_pro">Pro</span></th>
+            <th><span class="ct-name" style="color:#7c3aed" data-i18n="plan_max">Max</span></th>
           </tr>
         </thead>
         <tbody>
-          <tr><td class="ct-feat">Daily scans</td><td>5</td><td>20</td><td>Unlimited</td></tr>
-          <tr><td class="ct-feat">AI safety verdict</td><td class="ct-y">✓</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
-          <tr><td class="ct-feat">Camera scanning</td><td class="ct-y">✓</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
-          <tr><td class="ct-feat">Image upload</td><td class="ct-y">✓</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
-          <tr><td class="ct-feat">URL direct analysis</td><td class="ct-n">—</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
-          <tr><td class="ct-feat">Follow-up AI chat</td><td class="ct-n">—</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
-          <tr><td class="ct-feat">Live threat search</td><td class="ct-n">—</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
-          <tr><td class="ct-feat">Scan history</td><td class="ct-n">—</td><td class="ct-n">—</td><td class="ct-y">✓</td></tr>
-          <tr><td class="ct-feat">Share results</td><td class="ct-n">—</td><td class="ct-n">—</td><td class="ct-y">✓</td></tr>
-          <tr><td class="ct-feat">Priority support</td><td class="ct-n">—</td><td class="ct-n">—</td><td class="ct-y">✓</td></tr>
+          <tr><td class="ct-feat" data-i18n="cmp_daily">Daily scans</td><td>5</td><td>20</td><td data-i18n="unlimited">Unlimited</td></tr>
+          <tr><td class="ct-feat" data-i18n="feat_verdict">AI safety verdict</td><td class="ct-y">✓</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
+          <tr><td class="ct-feat" data-i18n="feat_cam">Camera scanning</td><td class="ct-y">✓</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
+          <tr><td class="ct-feat" data-i18n="feat_upload">Image upload</td><td class="ct-y">✓</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
+          <tr><td class="ct-feat" data-i18n="feat_url">URL direct analysis</td><td class="ct-n">—</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
+          <tr><td class="ct-feat" data-i18n="feat_chat">Follow-up AI chat</td><td class="ct-n">—</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
+          <tr><td class="ct-feat" data-i18n="feat_threat">Live threat search</td><td class="ct-n">—</td><td class="ct-y">✓</td><td class="ct-y">✓</td></tr>
+          <tr><td class="ct-feat" data-i18n="feat_history">Scan history</td><td class="ct-n">—</td><td class="ct-n">—</td><td class="ct-y">✓</td></tr>
+          <tr><td class="ct-feat" data-i18n="feat_share">Share results</td><td class="ct-n">—</td><td class="ct-n">—</td><td class="ct-y">✓</td></tr>
+          <tr><td class="ct-feat" data-i18n="feat_support">Priority support</td><td class="ct-n">—</td><td class="ct-n">—</td><td class="ct-y">✓</td></tr>
         </tbody>
       </table>
     </div>
   </section>
-
 </div>
 
-<!-- ════════════════════════════════════════
+<!-- ══════════════════════════════════
      PAGE: FAQ
-════════════════════════════════════════ -->
+══════════════════════════════════ -->
 <div class="page" id="page-faq">
-
   <section class="faq-hero">
-    <div class="wrap wrap--md">
-      <div class="eyebrow fade">FAQ</div>
-      <h2 class="h2 fade">Common questions</h2>
-      <p class="lead fade">Everything you need to know before your first scan.</p>
+    <div class="wrap-md">
+      <div class="eyebrow fade" data-i18n="nav_faq">FAQ</div>
+      <h2 class="h2 fade" data-i18n="faq_h">Common questions</h2>
+      <p class="lead fade" data-i18n="faq_lead">Everything you need to know before your first scan.</p>
     </div>
   </section>
 
@@ -929,76 +765,68 @@ footer{
     <div class="wrap">
       <div class="faq-layout">
         <div class="faq-cats">
-          <div class="eyebrow" style="padding:0 13px;margin-bottom:10px">Topics</div>
-          <button class="faq-cat on" onclick="scrollToGroup('g-general')">General</button>
-          <button class="faq-cat" onclick="scrollToGroup('g-privacy')">Privacy &amp; Security</button>
-          <button class="faq-cat" onclick="scrollToGroup('g-plans')">Plans &amp; Billing</button>
-          <button class="faq-cat" onclick="scrollToGroup('g-tech')">Technology</button>
+          <div class="faq-cat-label" data-i18n="faq_topics">Topics</div>
+          <button class="faq-cat on" onclick="scrollFaq(this,'fg-gen')"  data-i18n="fcat_gen">General</button>
+          <button class="faq-cat"    onclick="scrollFaq(this,'fg-priv')" data-i18n="fcat_priv">Privacy</button>
+          <button class="faq-cat"    onclick="scrollFaq(this,'fg-plan')" data-i18n="fcat_plan">Plans &amp; Billing</button>
+          <button class="faq-cat"    onclick="scrollFaq(this,'fg-tech')" data-i18n="fcat_tech">Technology</button>
         </div>
         <div class="faq-groups">
-
-          <div id="g-general">
-            <div class="faq-group-h">General</div>
-            <div class="faq-list">
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">Is Scan Shield really free?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">Yes — 5 scans per day, forever free. No credit card, no account required. Upgrade to Pro or Max if you need more daily scans, AI chat, or URL analysis.</div>
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">Do I need to create an account?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">No account needed to use the free plan. For Pro and Max, you'll sign in with an email to activate your subscription after purchasing through Stripe.</div>
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">Does it work in Japanese?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">Yes — full Japanese (日本語) and English support. Switch from the language button in the app. All AI analysis results are delivered in your chosen language.</div>
+          <div id="fg-gen">
+            <div class="faq-gh" data-i18n="fcat_gen">General</div>
+            <div class="fq-list">
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq1_q">Is Scan Shield really free?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq1_a">Yes — 5 scans per day, forever free. No credit card, no account required. Upgrade to Pro or Max if you need more.</span></div>
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq2_q">Do I need to create an account?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq2_a">No account needed for the free plan. For Pro and Max, sign in with the email you used on Stripe to activate your plan.</span></div>
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq3_q">Does it work in Japanese?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq3_a">Yes — full Japanese (日本語) and English support. Switch language from the button in the navigation bar.</span></div>
             </div>
           </div>
-
-          <div id="g-privacy">
-            <div class="faq-group-h">Privacy &amp; Security</div>
-            <div class="faq-list">
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">Does my camera footage get stored?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">Never. QR decoding runs entirely in your browser using <a href="https://github.com/cozmo/jsQR" target="_blank" rel="noopener">jsQR</a>. Your camera feed never leaves your device — only the decoded URL is sent for AI analysis.</div>
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">What data gets sent to the AI?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">Only the URL extracted from the QR code is sent to OpenAI for analysis. The domain name is used for a live threat search via Serper. No personal data, no camera footage, no location data is ever transmitted.</div>
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">Is my scan history stored anywhere?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">Scan history (Max plan only) is stored locally in your browser — it never leaves your device. Free and Pro plans store nothing at all.</div>
+          <div id="fg-priv">
+            <div class="faq-gh" data-i18n="fcat_priv">Privacy</div>
+            <div class="fq-list">
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq4_q">Does my camera footage get stored?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq4_a">Never. QR decoding runs entirely in your browser. Your camera feed never leaves your device — only the decoded URL is sent for AI analysis.</span></div>
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq5_q">What data gets sent to the AI?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq5_a">Only the URL from the QR code is sent for analysis. No personal data, no camera footage, no location data is ever transmitted.</span></div>
             </div>
           </div>
-
-          <div id="g-plans">
-            <div class="faq-group-h">Plans &amp; Billing</div>
-            <div class="faq-list">
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">What's the difference between Pro and Max?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">Pro gives you 20 scans/day, AI chat, URL analysis, and live threat search. Max adds unlimited scans, scan history by date, result sharing (Email, LINE), and priority support — ideal for power users.</div>
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">Can I cancel anytime?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">Absolutely. All plans are month-to-month with no contracts. Cancel through the Stripe customer portal at any time — your plan stays active until the end of the billing period.</div>
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">How do I activate my plan after paying?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">After paying on Stripe, return to the app and enter the email you used for payment. Your plan activates instantly — no wait, no manual review.</div>
+          <div id="fg-plan">
+            <div class="faq-gh" data-i18n="fcat_plan">Plans &amp; Billing</div>
+            <div class="fq-list">
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq6_q">What's the difference between Pro and Max?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq6_a">Pro gives 20 scans/day, AI chat, URL analysis, and live threat search. Max adds unlimited scans, scan history, result sharing, and priority support.</span></div>
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq7_q">Can I cancel anytime?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq7_a">Absolutely. All plans are month-to-month with no contracts. Cancel through the Stripe portal anytime — your plan stays active until the period ends.</span></div>
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq8_q">How do I activate my plan after paying?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq8_a">After paying on Stripe, return to the app and enter the email you used for payment. Your plan activates instantly.</span></div>
             </div>
           </div>
-
-          <div id="g-tech">
-            <div class="faq-group-h">Technology</div>
-            <div class="faq-list">
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">How accurate is the AI detection?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">Our three-layer system catches threats that static blocklists miss. Most phishing domains live under 72 hours — too short for blocklists to catch, but long enough to steal credentials. We use real-time intelligence and GPT-4o reasoning, not pre-cached databases.</div>
-              <button class="fq" onclick="tFaq(this)" aria-expanded="false">Why not just use a blocklist?<div class="fq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
-              <div class="fa">Blocklists are updated every 24–72 hours. Attackers know this and create new domains that are active for exactly that window. Our live search and GPT-4o analysis catches threats the moment they go live — not days later.</div>
+          <div id="fg-tech">
+            <div class="faq-gh" data-i18n="fcat_tech">Technology</div>
+            <div class="fq-list">
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq9_q">How accurate is the AI detection?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq9_a">Our three-layer system catches threats that static blocklists miss. We use real-time intelligence and GPT-4o reasoning, not pre-cached databases.</span></div>
+              <button class="fq" onclick="tFaq(this)" aria-expanded="false"><span data-i18n="fq10_q">Why not just use a blocklist?</span><div class="fq-ic"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="1" x2="6" y2="11"/><line x1="1" y1="6" x2="11" y2="6"/></svg></div></button>
+              <div class="fa"><span data-i18n="fq10_a">Blocklists are updated every 24–72 hours. Attackers create new domains within that window. Our live search and GPT-4o analysis catches threats the moment they appear.</span></div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
   </section>
 
-  <section class="faq-cta section--alt">
-    <div class="wrap wrap--sm">
-      <h3 class="h3 fade">Still have questions?</h3>
-      <p class="fade">Try the app — it's free. Or reach out directly.</p>
-      <div class="hero-btns fade" style="justify-content:center">
-        <a href="index.html" class="btn btn-blue">Start scanning — free</a>
-        <button class="btn btn-outline" onclick="gotoPage('pricing')">View plans</button>
+  <section class="faq-cta-sec">
+    <div class="wrap">
+      <h3 class="h3 fade" data-i18n="faq_cta_h">Still have questions?</h3>
+      <p class="fade" data-i18n="faq_cta_p">Try the app — it's free, no sign-up needed.</p>
+      <div class="btns fade">
+        <a href="login.html" class="btn btn-blue" data-i18n="cta_free">Start scanning — free</a>
+        <button class="btn btn-outline" onclick="nav('pricing')" data-i18n="cta_plans">View plans</button>
       </div>
     </div>
   </section>
-
 </div>
 
 <!-- ═══ FOOTER ═══ -->
@@ -1006,71 +834,268 @@ footer{
   <div class="ft-in">
     <div class="ft-top">
       <div class="ft-brand">
-        <div class="logo" onclick="gotoPage('home')" style="cursor:pointer;color:#fff">
-          <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="logo" onclick="nav('home')" style="color:#fff;cursor:pointer">
+          <div class="logo-gem"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
           <span><em style="color:#93b4ff">Scan</em>Shield</span>
         </div>
-        <p>AI-powered QR safety. Free, private, instant.</p>
+        <p data-i18n="footer_desc">AI-powered QR safety. Free, private, instant.</p>
       </div>
       <div class="ft-cols">
         <div class="fcol">
-          <h4>Pages</h4>
+          <h4 data-i18n="footer_pages">Pages</h4>
           <ul>
-            <li><button onclick="gotoPage('home')">Home</button></li>
-            <li><button onclick="gotoPage('how')">How it works</button></li>
-            <li><button onclick="gotoPage('threats')">Threats</button></li>
-            <li><button onclick="gotoPage('pricing')">Pricing</button></li>
-            <li><button onclick="gotoPage('faq')">FAQ</button></li>
+            <li><button onclick="nav('home')"    data-i18n="nav_home">Home</button></li>
+            <li><button onclick="nav('how')"     data-i18n="nav_how">How it works</button></li>
+            <li><button onclick="nav('threats')" data-i18n="nav_threats">Threats</button></li>
+            <li><button onclick="nav('pricing')" data-i18n="nav_pricing">Pricing</button></li>
+            <li><button onclick="nav('faq')"     data-i18n="nav_faq">FAQ</button></li>
           </ul>
         </div>
         <div class="fcol">
-          <h4>Plans</h4>
+          <h4 data-i18n="footer_plans">Plans</h4>
           <ul>
-            <li><a href="index.html">Free</a></li>
-            <li><a href="index.html">Pro — $2.99/mo</a></li>
-            <li><a href="index.html">Max — $9.99/mo</a></li>
-            <li><a href="https://billing.stripe.com/p/login/8x25kDcPQ2A15m92T39MY00" target="_blank" rel="noopener">Manage subscription</a></li>
+            <li><a href="login.html" data-i18n="plan_free">Free</a></li>
+            <li><a href="login.html" data-i18n="footer_pro">Pro — $2.99/mo</a></li>
+            <li><a href="login.html" data-i18n="footer_max">Max — $9.99/mo</a></li>
+            <li><a href="https://billing.stripe.com/p/login/8x25kDcPQ2A15m92T39MY00" target="_blank" rel="noopener" data-i18n="footer_manage">Manage subscription</a></li>
           </ul>
         </div>
         <div class="fcol">
-          <h4>Legal</h4>
+          <h4 data-i18n="footer_legal">Legal</h4>
           <ul>
-            <li><a href="index.html">Privacy policy</a></li>
-            <li><a href="index.html">Terms of service</a></li>
-            <li><a href="index.html">About</a></li>
+            <li><a href="login.html" data-i18n="footer_privacy">Privacy policy</a></li>
+            <li><a href="login.html" data-i18n="footer_terms">Terms of service</a></li>
+            <li><a href="login.html" data-i18n="footer_about">About</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="ft-bot">
-      <span>© 2025 Scan Shield · Independent developer · AI analysis for informational purposes only.</span>
-      <span><a href="index.html">Privacy</a> · <a href="index.html">Terms</a></span>
+      <span data-i18n="footer_copy">© 2025 Scan Shield · Independent developer · AI analysis for informational purposes only.</span>
+      <span><a href="login.html" data-i18n="footer_privacy">Privacy</a> · <a href="login.html" data-i18n="footer_terms">Terms</a></span>
     </div>
   </div>
 </footer>
 
 <script>
-/* ─── PAGE ROUTING ─── */
-const pages = ['home','how','threats','pricing','faq'];
-let cur = 'home';
+/* ══════════════════════════
+   TRANSLATIONS
+══════════════════════════ */
+const T = {
+  en: {
+    nav_home:'Home', nav_how:'How it works', nav_threats:'Threats',
+    nav_pricing:'Pricing', nav_faq:'FAQ', nav_cta:'Scan now',
+    lang_label:'Language:', dr_open_app:'Open scanner app →',
+    cta_free:'Start scanning — free', cta_plans:'View plans', cta_scan_now:'Scan a QR code now',
+    home_eyebrow:'AI-Powered QR Safety',
+    home_h1:'Know before<br/>you <span class="blue">click.</span>',
+    home_lead:'QR codes can hide anything. Scan Shield checks every link with live AI — detecting phishing, malware, and scams in under 3 seconds.',
+    home_how_btn:'How it works',
+    trust1:'No sign-up · No data stored', trust2:'Camera stays on your device', trust3:'Free forever · No credit card',
+    rc_verdict_txt:'Verified domain. No phishing signals. Safe to open.',
+    rc_domain:'Domain', rc_phishing:'Phishing risk', rc_malware:'Malware',
+    rc_none:'None detected', rc_clean:'Clean', rc_time:'Analyzed in',
+    how_eyebrow:'How it works', how_h2:'Three steps. Under 10 seconds.',
+    step1_title:'Scan, upload, or paste', step1_body:'Camera, image upload, or direct URL — all three modes work on every device, no app needed.',
+    step2_title:'AI runs in parallel',   step2_body:'URL structure check, live threat database search, and GPT-4o page reasoning — all at the same time.',
+    step3_title:'Instant verdict',       step3_body:'✅ Safe · ⚠️ Caution · 🚨 Dangerous — with a clear explanation and AI chat for follow-up questions.',
+    home_cta_h:'Check before you click.', home_cta_p:'Free. Private. No install required.',
+    how_page_h:'Three-layer AI analysis', how_page_lead:'Every scan runs three checks in parallel — catching threats that blocklists miss entirely.',
+    layer1_n:'Layer 01', layer1_h:'URL Structure', layer1_tag:'Structural analysis',
+    layer1_p:'Before any network request, we inspect the URL itself. Unusual TLDs, character substitutions, excessive subdomains, and known redirect patterns are flagged instantly.',
+    lc_age:'Domain age', lc_tld:'TLD risk', lc_typo:'Typosquat',
+    layer2_n:'Layer 02', layer2_h:'Live Threat Intelligence', layer2_tag:'Live search',
+    layer2_p:'We search the web in real time for scam reports, security alerts, and warnings about the domain. Most phishing sites live under 72 hours — too fast for static blocklists.',
+    lc_reports:'Scam reports', lc_found:'3 found (24h)', lc_alerts:'Security alerts', lc_flagged:'Flagged online', lc_rep:'Reputation', lc_unknown:'Unknown',
+    layer3_n:'Layer 03', layer3_h:'GPT-4o Synthesis', layer3_tag:'AI verdict',
+    layer3_p:'All signals go into GPT-4o, which reasons about the full picture. Conservative by design: only flags danger when multiple clear signals align.',
+    lc_struct:'Structural', lc_high:'High risk', lc_live:'Live data', lc_confirmed:'Confirmed', lc_verdict:'Verdict',
+    modes_eyebrow:'Scan methods', modes_h:'Three ways to scan',
+    mode1_h:'Camera', mode1_p:'Point your phone at any QR code for real-time detection. Works in every modern browser.',
+    mode2_h:'Upload',  mode2_p:'Have a screenshot? Upload the image and we\'ll extract the QR code and analyze the link instantly.',
+    mode3_h:'Paste URL', mode3_p:'Already have the link? Paste it directly for an instant AI safety check — no QR code needed.',
+    tag_free:'Free', tag_pro:'Pro & Max',
+    thr_eyebrow:'The threat landscape', thr_h:'QR scams are on the rise',
+    thr_lead:'QR phishing — or "quishing" — is now one of the fastest-growing cybersecurity attack methods worldwide.',
+    thr_types_eyebrow:'Attack types', thr_types_h:'What attackers do',
+    thr1_h:'QR Phishing', thr1_p:'Fake QR codes that redirect to credential-harvesting sites designed to look like banks, carriers, and delivery services.',
+    thr2_h:'Payment Fraud', thr2_p:'Sticker QR codes placed over real ones on parking meters and restaurant tables — redirecting payments to fraudsters.',
+    thr3_h:'Fake Delivery Scams', thr3_p:'"Scan to reschedule delivery" notices that collect personal data or install tracking software. Very common in Japan.',
+    thr4_h:'Redirect Chains', thr4_p:'URL shorteners that hide the real destination — impossible to evaluate without live AI inspection.',
+    thr5_h:'Email Filter Bypass', thr5_p:'QR images in emails bypass text-based spam filters, landing phishing payloads directly in corporate inboxes.',
+    thr6_h:'Malware Droppers', thr6_p:'QR codes that trigger browser exploits or app installs — silently deploying ransomware or keyloggers.',
+    risk_hi:'High risk', risk_md:'Medium risk', risk_em:'Emerging',
+    tips_h:'Five red flags\nto spot before scanning.', tips_sub:'Even without a tool, these signals are worth knowing.',
+    tip1_h:'Sticker over the code',     tip1_p:'Touch the QR. A sticker on top of a printed code is a near-certain sign of tampering.',
+    tip2_h:'Misspelled domain',         tip2_p:'paypa1.com, amaz0n-secure.net — character substitutions that look right at a glance.',
+    tip3_h:'URL shortener',             tip3_p:'bit.ly, tinyurl — the final destination is completely hidden until you land there.',
+    tip4_h:'Immediate login request',   tip4_p:'Legitimate services rarely demand credentials the moment you arrive from a QR scan.',
+    tip5_h:'Urgency language',          tip5_p:'"Act now or your account closes." Real companies don\'t deliver ultimatums via QR code.',
+    pri_h:'Simple pricing. Start free.', pri_lead:'No credit card. No sign-up. Upgrade only when you need more.',
+    plan_free:'Free', plan_pro:'Pro', plan_max:'Max', forever:'/ forever', per_month:'/ month', popular:'Most popular', unlimited:'Unlimited',
+    free_desc:'Perfect for occasional scanning. No strings attached.',
+    pro_desc:'Full AI power. Best value for daily users.',
+    max_desc:'Unlimited scans, history, and sharing.',
+    feat_5:'5 scans per day', feat_20:'20 scans per day', feat_unlimited:'Unlimited scans',
+    feat_verdict:'AI safety verdict', feat_chat:'Follow-up AI chat', feat_url:'URL direct analysis',
+    feat_threat:'Live threat search', feat_history:'Scan history', feat_share:'Share results',
+    feat_support:'Priority support', feat_everything_pro:'Everything in Pro',
+    feat_cam:'Camera scanning', feat_upload:'Image upload',
+    btn_free:'Start for free', btn_pro:'Get Pro →', btn_max:'Get Max →',
+    stripe_note:'Secure payment via Stripe · Cancel anytime · No contracts',
+    cmp_eyebrow:'Compare plans', cmp_h:"What's included", cmp_feature:'Feature', cmp_daily:'Daily scans',
+    faq_h:'Common questions', faq_lead:'Everything you need to know before your first scan.',
+    faq_topics:'Topics', fcat_gen:'General', fcat_priv:'Privacy', fcat_plan:'Plans & Billing', fcat_tech:'Technology',
+    fq1_q:'Is Scan Shield really free?', fq1_a:'Yes — 5 scans per day, forever free. No credit card, no account required. Upgrade to Pro or Max if you need more.',
+    fq2_q:'Do I need to create an account?', fq2_a:'No account needed for the free plan. For Pro and Max, sign in with the email you used on Stripe to activate your plan.',
+    fq3_q:'Does it work in Japanese?', fq3_a:'Yes — full Japanese (日本語) and English support. Switch language from the button in the navigation bar.',
+    fq4_q:'Does my camera footage get stored?', fq4_a:'Never. QR decoding runs entirely in your browser. Your camera feed never leaves your device — only the decoded URL is sent for AI analysis.',
+    fq5_q:'What data gets sent to the AI?', fq5_a:'Only the URL from the QR code is sent for analysis. No personal data, no camera footage, no location data is ever transmitted.',
+    fq6_q:"What's the difference between Pro and Max?", fq6_a:'Pro gives 20 scans/day, AI chat, URL analysis, and live threat search. Max adds unlimited scans, scan history, result sharing, and priority support.',
+    fq7_q:'Can I cancel anytime?', fq7_a:'Absolutely. All plans are month-to-month with no contracts. Cancel through the Stripe portal anytime.',
+    fq8_q:'How do I activate my plan after paying?', fq8_a:'After paying on Stripe, return to the app and enter the email you used for payment. Your plan activates instantly.',
+    fq9_q:'How accurate is the AI detection?', fq9_a:'Our three-layer system catches threats that static blocklists miss. We use real-time intelligence and GPT-4o reasoning, not pre-cached databases.',
+    fq10_q:'Why not just use a blocklist?', fq10_a:'Blocklists are updated every 24–72 hours. Attackers create new domains within that window. Our live search and GPT-4o catches threats the moment they appear.',
+    faq_cta_h:'Still have questions?', faq_cta_p:"Try the app — it's free, no sign-up needed.",
+    footer_desc:'AI-powered QR safety. Free, private, instant.',
+    footer_pages:'Pages', footer_plans:'Plans', footer_legal:'Legal',
+    footer_pro:'Pro — $2.99/mo', footer_max:'Max — $9.99/mo', footer_manage:'Manage subscription',
+    footer_privacy:'Privacy policy', footer_terms:'Terms of service', footer_about:'About',
+    footer_copy:'© 2025 Scan Shield · Independent developer · AI analysis for informational purposes only.',
+  },
+  ja: {
+    nav_home:'ホーム', nav_how:'使い方', nav_threats:'脅威', nav_pricing:'料金', nav_faq:'FAQ', nav_cta:'今すぐスキャン',
+    lang_label:'言語：', dr_open_app:'スキャナーアプリを開く →',
+    cta_free:'無料でスキャンを始める', cta_plans:'料金プランを見る', cta_scan_now:'QRコードをスキャン',
+    home_eyebrow:'AI搭載 QRコード安全チェック',
+    home_h1:'スキャンする前に<br/><span class="blue">確認しよう。</span>',
+    home_lead:'QRコードには何でも隠せます。Scan ShieldがAIでリアルタイムにリンクを検証し、フィッシング・マルウェア・詐欺を3秒以内に検出します。',
+    home_how_btn:'使い方を見る',
+    trust1:'登録不要・データ保存なし', trust2:'カメラ映像はデバイスから出ない', trust3:'永久無料・クレジットカード不要',
+    rc_verdict_txt:'ドメイン確認済み。フィッシング兆候なし。安全に開けます。',
+    rc_domain:'ドメイン', rc_phishing:'フィッシングリスク', rc_malware:'マルウェア',
+    rc_none:'検出なし', rc_clean:'クリーン', rc_time:'分析時間',
+    how_eyebrow:'使い方', how_h2:'3ステップ、10秒以内。',
+    step1_title:'スキャン・アップロード・貼り付け', step1_body:'カメラ・画像アップロード・URL直接入力の3モード。どのデバイスでもアプリ不要で動作します。',
+    step2_title:'AIが並列で分析',              step2_body:'URL構造チェック・ライブ脅威DB検索・GPT-4oによるページ解析を同時実行します。',
+    step3_title:'即時判定',                    step3_body:'✅ 安全 · ⚠️ 注意 · 🚨 危険 — わかりやすい説明とAIチャットによる追加質問対応付き。',
+    home_cta_h:'クリックする前に確認を。', home_cta_p:'無料。プライベート。インストール不要。',
+    how_page_h:'3層AIセキュリティ分析', how_page_lead:'すべてのスキャンで3つのチェックを並列実行し、ブロックリストが見逃す脅威も捉えます。',
+    layer1_n:'レイヤー 01', layer1_h:'URL構造解析', layer1_tag:'構造的分析',
+    layer1_p:'ネットワークリクエスト前にURLそのものを検査します。異常なTLD、文字置換、過剰なサブドメイン、既知のリダイレクトパターンを即座にフラグします。',
+    lc_age:'ドメイン年齢', lc_tld:'TLDリスク', lc_typo:'タイポスクワット',
+    layer2_n:'レイヤー 02', layer2_h:'ライブ脅威インテリジェンス', layer2_tag:'ライブ検索',
+    layer2_p:'詐欺報告・セキュリティアラート・コミュニティ警告をリアルタイムで検索します。ほとんどのフィッシングサイトは72時間以内しか存在しないため、静的ブロックリストでは対応できません。',
+    lc_reports:'詐欺報告', lc_found:'3件（24時間以内）', lc_alerts:'セキュリティアラート', lc_flagged:'オンラインでフラグ済み', lc_rep:'評判', lc_unknown:'不明',
+    layer3_n:'レイヤー 03', layer3_h:'GPT-4o統合判定', layer3_tag:'AI判定',
+    layer3_p:'全シグナルをGPT-4oに入力し、URL・ページ内容・脅威データ・コンテキストを総合的に判断します。複数の明確なシグナルが一致した時のみ危険と判定する保守的設計です。',
+    lc_struct:'構造リスク', lc_high:'高リスク', lc_live:'ライブデータ', lc_confirmed:'確認済み', lc_verdict:'判定',
+    modes_eyebrow:'スキャン方法', modes_h:'3つのスキャン方法',
+    mode1_h:'カメラ', mode1_p:'QRコードにカメラをかざすだけでリアルタイム検出。あらゆるモダンブラウザで動作します。',
+    mode2_h:'アップロード', mode2_p:'スクリーンショットをアップロードすると、QRコードを抽出してリンクを即座に分析します。',
+    mode3_h:'URL貼り付け', mode3_p:'すでにリンクをお持ちの場合は直接貼り付けるだけでAI安全チェックができます。',
+    tag_free:'無料', tag_pro:'Pro・Max',
+    thr_eyebrow:'脅威の現状', thr_h:'QR詐欺は急増しています',
+    thr_lead:'QRコードフィッシング（クイッシング）は、世界で最も急速に拡大しているサイバー攻撃手法の一つです。',
+    thr_types_eyebrow:'攻撃の種類', thr_types_h:'攻撃者がすること',
+    thr1_h:'QRフィッシング', thr1_p:'銀行・配送業者・決済サービスを装った認証情報収集サイトへリダイレクトする偽QRコード。',
+    thr2_h:'決済詐欺', thr2_p:'駐車場メーターやレストランテーブルの正規QRコードの上に貼られたステッカーQR。支払いが詐欺師に送られます。',
+    thr3_h:'偽配送通知', thr3_p:'「再配達のためスキャン」という通知で個人情報を収集したり追跡ソフトをインストールします。日本で特に多いです。',
+    thr4_h:'リダイレクトチェーン', thr4_p:'URLを短縮して最終目的地を隠します。AIによるライブ検査なしでは評価できません。',
+    thr5_h:'メールフィルター回避', thr5_p:'メール内のQR画像がテキスト系スパムフィルターをすり抜け、フィッシングを企業受信箱に直接届けます。',
+    thr6_h:'マルウェアドロッパー', thr6_p:'ブラウザのエクスプロイトやアプリインストールを引き起こし、ランサムウェアやキーロガーをサイレントで展開します。',
+    risk_hi:'高リスク', risk_md:'中リスク', risk_em:'新興',
+    tips_h:'スキャン前に確認すべき\n5つの危険サイン', tips_sub:'ツールがなくても、これらのサインは知っておく価値があります。',
+    tip1_h:'コードの上のステッカー', tip1_p:'QRコードを触ってみてください。印刷されたコードの上にステッカーがあれば改ざんのほぼ確実なサインです。',
+    tip2_h:'スペルミスのドメイン',  tip2_p:'paypa1.com、amaz0n-secure.net — パッと見では正しく見える文字の置き換えに注意。',
+    tip3_h:'URL短縮サービス',       tip3_p:'bit.ly、tinyurl — そこに着くまで最終目的地は完全に隠されています。',
+    tip4_h:'即座のログイン要求',    tip4_p:'QRスキャンから来た瞬間に認証情報を求める正規サービスはほとんどありません。',
+    tip5_h:'緊急を煽る言葉',        tip5_p:'「今すぐ行動しないとアカウントが閉鎖」。本物の企業はQRコードで最後通牒を出しません。',
+    pri_h:'シンプルな料金体系。無料から始める。', pri_lead:'クレジットカード不要。登録不要。必要になったらアップグレード。',
+    plan_free:'無料', plan_pro:'Pro', plan_max:'Max', forever:'/ 永久無料', per_month:'/ 月', popular:'人気No.1', unlimited:'無制限',
+    free_desc:'たまにスキャンする方に最適。制約なし。',
+    pro_desc:'フルAI機能。毎日使う方に最適な価格。',
+    max_desc:'無制限スキャン・履歴・シェア機能付き。',
+    feat_5:'1日5回スキャン', feat_20:'1日20回スキャン', feat_unlimited:'無制限スキャン',
+    feat_verdict:'AI安全判定', feat_chat:'AIフォローアップチャット', feat_url:'URL直接分析',
+    feat_threat:'ライブ脅威検索', feat_history:'スキャン履歴', feat_share:'結果シェア',
+    feat_support:'優先サポート', feat_everything_pro:'Proの全機能',
+    feat_cam:'カメラスキャン', feat_upload:'画像アップロード',
+    btn_free:'無料で始める', btn_pro:'Proを取得 →', btn_max:'Maxを取得 →',
+    stripe_note:'Stripeによる安全な決済 · いつでもキャンセル · 契約なし',
+    cmp_eyebrow:'プランを比較', cmp_h:'含まれる機能', cmp_feature:'機能', cmp_daily:'1日のスキャン数',
+    faq_h:'よくある質問', faq_lead:'最初のスキャン前に知っておきたいこと。',
+    faq_topics:'トピック', fcat_gen:'一般', fcat_priv:'プライバシー', fcat_plan:'プランと請求', fcat_tech:'テクノロジー',
+    fq1_q:'本当に無料ですか？', fq1_a:'はい — 1日5回のスキャンが永久無料です。クレジットカードもアカウントも不要。もっとスキャンが必要な場合はProまたはMaxにアップグレードしてください。',
+    fq2_q:'アカウント作成が必要ですか？', fq2_a:'無料プランにはアカウント不要です。ProとMaxはStripeで購入後、使用したメールアドレスでログインしてプランを有効化してください。',
+    fq3_q:'日本語に対応していますか？', fq3_a:'はい — 日本語と英語のフル対応です。ナビゲーションバーの言語ボタンから切り替えできます。',
+    fq4_q:'カメラ映像は保存されますか？', fq4_a:'絶対にありません。QRデコードはブラウザ内で完結します。カメラ映像はデバイスから出ません。AI分析に送られるのはデコードされたURLのみです。',
+    fq5_q:'AIに送られるデータは何ですか？', fq5_a:'QRコードからのURLのみが分析のために送られます。個人情報・カメラ映像・位置情報は一切送信されません。',
+    fq6_q:'ProとMaxの違いは何ですか？', fq6_a:'Proは1日20スキャン・AIチャット・URL分析・ライブ脅威検索を提供。Maxは無制限スキャン・スキャン履歴・結果シェア・優先サポートが追加されます。',
+    fq7_q:'いつでもキャンセルできますか？', fq7_a:'もちろんです。全プランは月単位で契約なし。Stripeポータルからいつでもキャンセルでき、プランは期間終了まで有効です。',
+    fq8_q:'支払い後にどうやってプランを有効化しますか？', fq8_a:'Stripeで支払い後、アプリに戻り支払いに使用したメールアドレスを入力してください。プランが即座に有効化されます。',
+    fq9_q:'AI検出の精度はどれくらいですか？', fq9_a:'3層システムにより、静的ブロックリストが見逃す脅威を捉えます。事前キャッシュのデータベースではなく、リアルタイムインテリジェンスとGPT-4oの推論を使用します。',
+    fq10_q:'なぜブロックリストを使わないのですか？', fq10_a:'ブロックリストは24〜72時間ごとに更新されます。攻撃者はその時間内に新ドメインを作成します。ライブ検索とGPT-4oは脅威が現れた瞬間に検出します。',
+    faq_cta_h:'まだ質問がありますか？', faq_cta_p:'アプリを試してみてください — 無料で登録不要です。',
+    footer_desc:'AI搭載QRコード安全チェック。無料・プライベート・即時。',
+    footer_pages:'ページ', footer_plans:'プラン', footer_legal:'法的情報',
+    footer_pro:'Pro — $2.99/月', footer_max:'Max — $9.99/月', footer_manage:'サブスクリプション管理',
+    footer_privacy:'プライバシーポリシー', footer_terms:'利用規約', footer_about:'このアプリについて',
+    footer_copy:'© 2025 Scan Shield · 個人開発者 · AI分析は情報提供目的のみです。',
+  }
+};
 
-function gotoPage(id) {
-  if (!pages.includes(id)) return;
-  document.getElementById('page-'+cur)?.classList.remove('active');
+/* ══════════════════════════
+   STATE & INIT
+══════════════════════════ */
+let curLang = localStorage.getItem('ss_lang') || (navigator.language.startsWith('ja') ? 'ja' : 'en');
+let curPage = 'home';
+
+function applyLang() {
+  document.documentElement.lang = curLang;
+  const t = T[curLang];
+  // text nodes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (t[k] !== undefined) el.textContent = t[k];
+  });
+  // html nodes (for spans inside)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const k = el.getAttribute('data-i18n-html');
+    if (t[k] !== undefined) el.innerHTML = t[k];
+  });
+  // lang buttons
+  ['lb-en','lb-en-dr'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.toggle('on', curLang==='en'); });
+  ['lb-ja','lb-ja-dr'].forEach(id => { const el = document.getElementById(id); if(el) el.classList.toggle('on', curLang==='ja'); });
+}
+
+function setLang(lang) {
+  curLang = lang;
+  localStorage.setItem('ss_lang', lang);
+  applyLang();
+}
+
+/* ══════════════════════════
+   PAGE ROUTING
+══════════════════════════ */
+function nav(id) {
+  document.getElementById('page-'+curPage)?.classList.remove('active');
   document.getElementById('page-'+id)?.classList.add('active');
-  cur = id;
-  window.scrollTo({top:0,behavior:'instant'});
-  updateNav();
+  curPage = id;
+  window.scrollTo({top:0, behavior:'instant'});
+  updateNavLinks();
   triggerFades();
 }
 
-function updateNav() {
+function updateNavLinks() {
   document.querySelectorAll('[data-page]').forEach(el => {
-    el.classList.toggle('on', el.dataset.page === cur);
+    el.classList.toggle('on', el.dataset.page === curPage);
   });
 }
 
-/* ─── HAMBURGER ─── */
+/* ══════════════════════════
+   HAMBURGER
+══════════════════════════ */
 function toggleDrawer() {
   const h = document.getElementById('ham');
   const d = document.getElementById('drawer');
@@ -1088,50 +1113,48 @@ function closeDrawer() {
   d.setAttribute('aria-hidden','true');
   document.body.style.overflow = '';
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+document.addEventListener('keydown', e => { if (e.key==='Escape') closeDrawer(); });
 
-/* ─── FAQ ─── */
+/* ══════════════════════════
+   FAQ
+══════════════════════════ */
 function tFaq(btn) {
-  const isOpen = btn.classList.toggle('open');
-  btn.setAttribute('aria-expanded', isOpen);
+  const open = btn.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
   const ans = btn.nextElementSibling;
-  if (ans) ans.classList.toggle('open', isOpen);
-  if (isOpen) {
+  if (ans) ans.classList.toggle('open', open);
+  if (open) {
     document.querySelectorAll('.fq.open').forEach(b => {
-      if (b !== btn) {
-        b.classList.remove('open');
-        b.setAttribute('aria-expanded','false');
-        const a = b.nextElementSibling;
-        if (a) a.classList.remove('open');
-      }
+      if (b !== btn) { b.classList.remove('open'); b.setAttribute('aria-expanded','false'); const a=b.nextElementSibling; if(a) a.classList.remove('open'); }
     });
   }
 }
-
-function scrollToGroup(id) {
+function scrollFaq(btn, id) {
   document.querySelectorAll('.faq-cat').forEach(c => c.classList.remove('on'));
-  event.currentTarget.classList.add('on');
-  const el = document.getElementById(id);
-  if (el) el.scrollIntoView({behavior:'smooth', block:'start'});
+  btn.classList.add('on');
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-/* ─── SCROLL REVEAL ─── */
+/* ══════════════════════════
+   SCROLL REVEAL
+══════════════════════════ */
 function triggerFades() {
-  const page = document.getElementById('page-'+cur);
+  const page = document.getElementById('page-'+curPage);
   if (!page) return;
   const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
-    });
-  }, {threshold: 0.08, rootMargin: '0px 0px -24px 0px'});
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, {threshold:0.07, rootMargin:'0px 0px -20px 0px'});
   page.querySelectorAll('.fade:not(.in)').forEach((el, i) => {
-    el.style.transitionDelay = (i % 6) * 60 + 'ms';
+    el.style.transitionDelay = (i % 5) * 55 + 'ms';
     obs.observe(el);
   });
 }
 
-/* ─── INIT ─── */
-updateNav();
+/* ══════════════════════════
+   BOOT
+══════════════════════════ */
+applyLang();
+updateNavLinks();
 triggerFades();
 </script>
 </body>
