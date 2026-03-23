@@ -508,7 +508,7 @@ async function doGoogle(){
   const {error}=await _sb.auth.signInWithOAuth({
     provider:'google',
     options:{
-      redirectTo: SITE_URL + '/login.html'
+      redirectTo: SITE_URL + '/index2.html'
     }
   });
   if(error){
@@ -544,7 +544,7 @@ async function doAuth(){
     }else{
       res=await _sb.auth.signUp({
         email,password:pw,
-        options:{emailRedirectTo:SITE_URL+'/login.html'}
+        options:{emailRedirectTo:SITE_URL+'/index2.html'}
       });
     }
     if(res.error){
