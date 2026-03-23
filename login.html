@@ -508,8 +508,7 @@ async function doGoogle(){
   const {error}=await _sb.auth.signInWithOAuth({
     provider:'google',
     options:{
-      /* ★ 重要: window.location.origin ではなく SITE_URL を使う */
-      redirectTo: SITE_URL + '/' + APP_PAGE
+      redirectTo: SITE_URL + '/login.html'
     }
   });
   if(error){
@@ -585,27 +584,31 @@ async function doForgot(){
   else showOk(t('ok_reset'));
 }
 
-/* ══════════════════════════════
-   OAUTH CALLBACK (ハッシュにトークン)
-══════════════════════════════ */
+// ページ最下部の即時実行関数を以下に置き換え
 (async()=>{
-  /* Google OAuth コールバック処理 */
-  if(window.location.hash.includes('access_token')||window.location.search.includes('code=')){
+  if(window.location.search.includes('code=')){
+    // PKCEフロー：codeをセッションに交換してからリダイレクト
     document.getElementById('form-view').innerHTML=`
-      <div style="text-align:center;padding:60px 0;color:var(--muted)">
+      <div style="text-align:center;padding:60px 0">
         <div class="spinner" style="margin:0 auto 18px;width:30px;height:30px;border-color:var(--border-lt);border-top-color:var(--blue)"></div>
         <p style="font-size:15px;font-weight:600;color:var(--mid)">${lang==='ja'?'ログイン中…':'Signing you in…'}</p>
       </div>`;
-    _sb.auth.onAuthStateChange((ev,session)=>{
-      if((ev==='SIGNED_IN'||ev==='TOKEN_REFRESHED')&&session?.user){
-        try{localStorage.setItem('ss_email',session.user.email);}catch{}
-        window.location.href=APP_PAGE;
-      }
-    });
-    return;
+
+    const { data, error } = await _sb.auth.exchangeCodeForSession(window.location.search);
+    if(error){
+      // 交換失敗 → ログイン画面に戻す
+      window.location.href = 'login.html';
+      return;
+    }
+    if(data?.session?.user){
+      try{localStorage.setItem('ss_email', data.session.user.email);}catch{}
+      window.location.href = APP_PAGE;
+      return;
+    }
   }
 
-  /* 通常初期化 */
+  // ← access_token のハッシュフローは v2 では使われないので削除
+
   applyLang();
   document.documentElement.lang=lang;
   document.getElementById('lb-en').className='lb '+(lang==='en'?'on':'off');
