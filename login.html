@@ -587,7 +587,6 @@ async function doForgot(){
 // ページ最下部の即時実行関数を以下に置き換え
 (async()=>{
   if(window.location.search.includes('code=')){
-    // PKCEフロー：codeをセッションに交換してからリダイレクト
     document.getElementById('form-view').innerHTML=`
       <div style="text-align:center;padding:60px 0">
         <div class="spinner" style="margin:0 auto 18px;width:30px;height:30px;border-color:var(--border-lt);border-top-color:var(--blue)"></div>
@@ -596,18 +595,22 @@ async function doForgot(){
 
     const { data, error } = await _sb.auth.exchangeCodeForSession(window.location.search);
     if(error){
-      // 交換失敗 → ログイン画面に戻す
-      window.location.href = 'login.html';
+      // 交換失敗 → URLのcodeを消してログイン画面を再表示（ループしない）
+      history.replaceState(null,'',window.location.pathname);
+      applyLang();
+      document.documentElement.lang=lang;
+      document.getElementById('lb-en').className='lb '+(lang==='en'?'on':'off');
+      document.getElementById('lb-ja').className='lb '+(lang==='ja'?'on':'off');
+      switchTab('login');
+      showErr(lang==='ja'?'ログインに失敗しました。もう一度お試しください。':'Login failed. Please try again.');
       return;
     }
     if(data?.session?.user){
       try{localStorage.setItem('ss_email', data.session.user.email);}catch{}
-      window.location.href = APP_PAGE;
+      window.location.href = APP_PAGE;  // ← index2.html へ飛ぶ
       return;
     }
   }
-
-  // ← access_token のハッシュフローは v2 では使われないので削除
 
   applyLang();
   document.documentElement.lang=lang;
